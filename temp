@@ -1,0 +1,104 @@
+
+operator
+  : ANDOP { $$ = new Node("AND", "", yylineno); }
+  | OROP { $$ = new Node("OR", "", yylineno); }
+  | LESSOP { $$ = new Node("Less", "", yylineno); }
+  | GREATOP { $$ = new Node("Great", "", yylineno); }
+  | EQOP { $$ = new Node("Equal", "", yylineno); }
+  | PLUSOP { $$ = new Node("Plus", "", yylineno); }
+  | MINUSOP { $$ = new Node("Minus", "", yylineno); }
+  | MULTOP { $$ = new Node("Mult", "", yylineno); }
+  ;
+
+exp
+  : number exp_alt {
+    $$ = new Node("Exp", "", yylineno);
+    $$->children.push_back($1);
+    $$->children.push_back($2);
+  }
+  | boolean exp_alt {
+    $$ = new Node("Exp", "", yylineno);
+    $$->children.push_back($1);
+    $$->children.push_back($2);
+  }
+  | id exp_alt {
+    $$ = new Node("Exp", "", yylineno);
+    $$->children.push_back($1);
+    $$->children.push_back($2);
+  }
+  | THIS exp_alt {
+    $$ = new Node("Exp", "", yylineno);
+    $$->children.push_back($2);
+  }
+  | new exp_alt {
+    $$ = new Node("Exp", "", yylineno);
+    $$->children.push_back($1);
+    $$->children.push_back($2);
+  }
+  | NOTOP exp exp_alt {
+    $$ = new Node("Exp", "", yylineno);
+    $$->children.push_back($2);
+    $$->children.push_back($3);
+  }
+  | LP exp RP exp_alt {
+    $$ = new Node("Exp", "", yylineno);
+    $$->children.push_back($2);
+    $$->children.push_back($4);
+  }
+  ;
+
+exp_alt
+  : LS exp RS exp_alt {
+    $$ = new Node("()", "", yylineno);
+    $$->children.push_back($2);
+    $$->children.push_back($4);
+  }
+  | attr exp_alt {
+    $$ = new Node("Length", "", yylineno);
+    $$->children.push_back($1);
+    $$->children.push_back($2);
+  }
+  | SEP exp exp_alt {
+    $$ = new Node("Sep", "", yylineno);
+    $$->children.push_back($2);
+    $$->children.push_back($3);
+  }
+  | /* empty */ { $$ = nullptr; } 
+  ;
+
+new
+  : NEW new_alt {
+    $$ = new Node("New Declaration", "", yylineno);
+    $$->children.push_back($2);
+  }
+  ;
+
+new_alt
+  : INT LS exp RS {
+    $$ = new Node("Int Arr", "", yylineno);
+    $$->children.push_back($3);
+  }
+  | id LP RP {
+    $$ = new Node("Custom", "", yylineno);
+    $$->children.push_back($1);
+  }
+  ;
+
+attr
+  : ATTR attr_alt {
+    $$ = new Node("Attribute", "", yylineno);
+    $$->children.push_back($2);
+  }
+  ;
+
+attr_alt
+  : LENGTH {
+    $$ = new Node("Length", "", yylineno);
+  }
+  | id LP RP {
+    $$ = new Node("Custom Attribute", "", yylineno);
+    $$->children.push_back($1);
+  }
+  ;
+
+
