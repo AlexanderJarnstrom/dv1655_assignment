@@ -5,10 +5,10 @@ Terminals unused in grammar
 
 
 State 48 conflicts: 1 shift/reduce
-State 93 conflicts: 2 shift/reduce
-State 114 conflicts: 9 shift/reduce
-State 119 conflicts: 9 shift/reduce
-State 120 conflicts: 1 shift/reduce
+State 91 conflicts: 2 shift/reduce
+State 112 conflicts: 9 shift/reduce
+State 117 conflicts: 9 shift/reduce
+State 118 conflicts: 1 shift/reduce
 
 
 Grammar
@@ -65,8 +65,8 @@ Grammar
    34           | expression LS expression RS
    35           | expression ATTR_OP LENGTH
    36           | expression ATTR_OP id LP expression RP
-   37           | number
-   38           | bool
+   37           | NUMBER
+   38           | BOOL
    39           | id
    40           | THIS
    41           | NEW INT LS expression RS
@@ -82,11 +82,7 @@ Grammar
    50         | LT_OP
    51         | MULT_OP
 
-   52 number: NUMBER
-
-   53 bool: BOOL
-
-   54 id: ID
+   52 id: ID
 
 
 Terminals, with rules where they appear
@@ -117,9 +113,9 @@ Terminals, with rules where they appear
     IF <std::string> (279) 27
     ELSE <std::string> (280) 24
     PRINT <std::string> (281) 29
-    NUMBER <int> (282) 52
-    BOOL <bool> (283) 53
-    ID <std::string> (284) 54
+    NUMBER <int> (282) 37
+    BOOL <bool> (283) 38
+    ID <std::string> (284) 52
     ADD_OP <std::string> (285) 46
     SUB_OP <std::string> (286) 47
     MULT_OP <std::string> (287) 51
@@ -185,14 +181,8 @@ Nonterminals, with rules where they appear
     operator <Node *> (57)
         on left: 46 47 48 49 50 51
         on right: 32
-    number <Node *> (58)
+    id <Node *> (58)
         on left: 52
-        on right: 37
-    bool <Node *> (59)
-        on left: 53
-        on right: 38
-    id <Node *> (60)
-        on left: 54
         on right: 2 5 8 11 12 21 30 31 36 39 42
 
 
@@ -278,9 +268,9 @@ State 8
 
 State 9
 
-   54 id: ID •
+   52 id: ID •
 
-    $default  reduce using rule 54 (id)
+    $default  reduce using rule 52 (id)
 
 
 State 10
@@ -804,9 +794,7 @@ State 63
     $default  reduce using rule 45 (expression)
 
     expression  go to state 80
-    number      go to state 81
-    bool        go to state 82
-    id          go to state 83
+    id          go to state 81
 
 
 State 64
@@ -823,10 +811,8 @@ State 64
 
     $default  reduce using rule 45 (expression)
 
-    expression  go to state 84
-    number      go to state 81
-    bool        go to state 82
-    id          go to state 83
+    expression  go to state 82
+    id          go to state 81
 
 
 State 65
@@ -843,10 +829,8 @@ State 65
 
     $default  reduce using rule 45 (expression)
 
-    expression  go to state 85
-    number      go to state 81
-    bool        go to state 82
-    id          go to state 83
+    expression  go to state 83
+    id          go to state 81
 
 
 State 66
@@ -870,10 +854,8 @@ State 67
 
     $default  reduce using rule 45 (expression)
 
-    expression  go to state 86
-    number      go to state 81
-    bool        go to state 82
-    id          go to state 83
+    expression  go to state 84
+    id          go to state 81
 
 
 State 68
@@ -897,10 +879,8 @@ State 69
 
     $default  reduce using rule 45 (expression)
 
-    expression  go to state 87
-    number      go to state 81
-    bool        go to state 82
-    id          go to state 83
+    expression  go to state 85
+    id          go to state 81
 
 
 State 70
@@ -917,10 +897,8 @@ State 70
 
     $default  reduce using rule 45 (expression)
 
-    expression  go to state 88
-    number      go to state 81
-    bool        go to state 82
-    id          go to state 83
+    expression  go to state 86
+    id          go to state 81
 
 
 State 71
@@ -935,7 +913,7 @@ State 71
 
     $default  reduce using rule 23 (statement_list)
 
-    statement_list  go to state 89
+    statement_list  go to state 87
     statement       go to state 61
     id              go to state 62
 
@@ -968,10 +946,8 @@ State 74
 
     $default  reduce using rule 45 (expression)
 
-    expression  go to state 90
-    number      go to state 81
-    bool        go to state 82
-    id          go to state 83
+    expression  go to state 88
+    id          go to state 81
 
 
 State 75
@@ -979,10 +955,10 @@ State 75
    41 expression: NEW • INT LS expression RS
    42           | NEW • id LP RP
 
-    INT  shift, and go to state 91
+    INT  shift, and go to state 89
     ID   shift, and go to state 9
 
-    id  go to state 92
+    id  go to state 90
 
 
 State 76
@@ -994,16 +970,16 @@ State 76
 
 State 77
 
-   52 number: NUMBER •
+   37 expression: NUMBER •
 
-    $default  reduce using rule 52 (number)
+    $default  reduce using rule 37 (expression)
 
 
 State 78
 
-   53 bool: BOOL •
+   38 expression: BOOL •
 
-    $default  reduce using rule 53 (bool)
+    $default  reduce using rule 38 (expression)
 
 
 State 79
@@ -1020,10 +996,8 @@ State 79
 
     $default  reduce using rule 45 (expression)
 
-    expression  go to state 93
-    number      go to state 81
-    bool        go to state 82
-    id          go to state 83
+    expression  go to state 91
+    id          go to state 81
 
 
 State 80
@@ -1035,42 +1009,28 @@ State 80
    35           | expression • ATTR_OP LENGTH
    36           | expression • ATTR_OP id LP expression RP
 
-    SEP      shift, and go to state 94
-    RP       shift, and go to state 95
-    LS       shift, and go to state 96
-    ADD_OP   shift, and go to state 97
-    SUB_OP   shift, and go to state 98
-    MULT_OP  shift, and go to state 99
-    EQ_OP    shift, and go to state 100
-    LT_OP    shift, and go to state 101
-    GT_OP    shift, and go to state 102
-    ATTR_OP  shift, and go to state 103
+    SEP      shift, and go to state 92
+    RP       shift, and go to state 93
+    LS       shift, and go to state 94
+    ADD_OP   shift, and go to state 95
+    SUB_OP   shift, and go to state 96
+    MULT_OP  shift, and go to state 97
+    EQ_OP    shift, and go to state 98
+    LT_OP    shift, and go to state 99
+    GT_OP    shift, and go to state 100
+    ATTR_OP  shift, and go to state 101
 
-    operator  go to state 104
+    operator  go to state 102
 
 
 State 81
-
-   37 expression: number •
-
-    $default  reduce using rule 37 (expression)
-
-
-State 82
-
-   38 expression: bool •
-
-    $default  reduce using rule 38 (expression)
-
-
-State 83
 
    39 expression: id •
 
     $default  reduce using rule 39 (expression)
 
 
-State 84
+State 82
 
    27 statement: IF LP expression • RP statement statement_else
    32 expression: expression • operator expression
@@ -1079,21 +1039,21 @@ State 84
    35           | expression • ATTR_OP LENGTH
    36           | expression • ATTR_OP id LP expression RP
 
-    SEP      shift, and go to state 94
-    RP       shift, and go to state 105
-    LS       shift, and go to state 96
-    ADD_OP   shift, and go to state 97
-    SUB_OP   shift, and go to state 98
-    MULT_OP  shift, and go to state 99
-    EQ_OP    shift, and go to state 100
-    LT_OP    shift, and go to state 101
-    GT_OP    shift, and go to state 102
-    ATTR_OP  shift, and go to state 103
+    SEP      shift, and go to state 92
+    RP       shift, and go to state 103
+    LS       shift, and go to state 94
+    ADD_OP   shift, and go to state 95
+    SUB_OP   shift, and go to state 96
+    MULT_OP  shift, and go to state 97
+    EQ_OP    shift, and go to state 98
+    LT_OP    shift, and go to state 99
+    GT_OP    shift, and go to state 100
+    ATTR_OP  shift, and go to state 101
 
-    operator  go to state 104
+    operator  go to state 102
 
 
-State 85
+State 83
 
    29 statement: PRINT LP expression • RP DELI
    32 expression: expression • operator expression
@@ -1102,21 +1062,21 @@ State 85
    35           | expression • ATTR_OP LENGTH
    36           | expression • ATTR_OP id LP expression RP
 
-    SEP      shift, and go to state 94
-    RP       shift, and go to state 106
-    LS       shift, and go to state 96
-    ADD_OP   shift, and go to state 97
-    SUB_OP   shift, and go to state 98
-    MULT_OP  shift, and go to state 99
-    EQ_OP    shift, and go to state 100
-    LT_OP    shift, and go to state 101
-    GT_OP    shift, and go to state 102
-    ATTR_OP  shift, and go to state 103
+    SEP      shift, and go to state 92
+    RP       shift, and go to state 104
+    LS       shift, and go to state 94
+    ADD_OP   shift, and go to state 95
+    SUB_OP   shift, and go to state 96
+    MULT_OP  shift, and go to state 97
+    EQ_OP    shift, and go to state 98
+    LT_OP    shift, and go to state 99
+    GT_OP    shift, and go to state 100
+    ATTR_OP  shift, and go to state 101
 
-    operator  go to state 104
+    operator  go to state 102
 
 
-State 86
+State 84
 
    11 method_declaration: PUBLIC type id LP method_arguments RP LB method_content RETURN expression • DELI RB
    32 expression: expression • operator expression
@@ -1125,21 +1085,21 @@ State 86
    35           | expression • ATTR_OP LENGTH
    36           | expression • ATTR_OP id LP expression RP
 
-    SEP      shift, and go to state 94
-    LS       shift, and go to state 96
-    DELI     shift, and go to state 107
-    ADD_OP   shift, and go to state 97
-    SUB_OP   shift, and go to state 98
-    MULT_OP  shift, and go to state 99
-    EQ_OP    shift, and go to state 100
-    LT_OP    shift, and go to state 101
-    GT_OP    shift, and go to state 102
-    ATTR_OP  shift, and go to state 103
+    SEP      shift, and go to state 92
+    LS       shift, and go to state 94
+    DELI     shift, and go to state 105
+    ADD_OP   shift, and go to state 95
+    SUB_OP   shift, and go to state 96
+    MULT_OP  shift, and go to state 97
+    EQ_OP    shift, and go to state 98
+    LT_OP    shift, and go to state 99
+    GT_OP    shift, and go to state 100
+    ATTR_OP  shift, and go to state 101
 
-    operator  go to state 104
+    operator  go to state 102
 
 
-State 87
+State 85
 
    31 statement: id LS expression • RS ASSIGN_OP expression DELI
    32 expression: expression • operator expression
@@ -1148,21 +1108,21 @@ State 87
    35           | expression • ATTR_OP LENGTH
    36           | expression • ATTR_OP id LP expression RP
 
-    SEP      shift, and go to state 94
-    LS       shift, and go to state 96
-    RS       shift, and go to state 108
-    ADD_OP   shift, and go to state 97
-    SUB_OP   shift, and go to state 98
-    MULT_OP  shift, and go to state 99
-    EQ_OP    shift, and go to state 100
-    LT_OP    shift, and go to state 101
-    GT_OP    shift, and go to state 102
-    ATTR_OP  shift, and go to state 103
+    SEP      shift, and go to state 92
+    LS       shift, and go to state 94
+    RS       shift, and go to state 106
+    ADD_OP   shift, and go to state 95
+    SUB_OP   shift, and go to state 96
+    MULT_OP  shift, and go to state 97
+    EQ_OP    shift, and go to state 98
+    LT_OP    shift, and go to state 99
+    GT_OP    shift, and go to state 100
+    ATTR_OP  shift, and go to state 101
 
-    operator  go to state 104
+    operator  go to state 102
 
 
-State 88
+State 86
 
    30 statement: id ASSIGN_OP expression • DELI
    32 expression: expression • operator expression
@@ -1171,28 +1131,28 @@ State 88
    35           | expression • ATTR_OP LENGTH
    36           | expression • ATTR_OP id LP expression RP
 
-    SEP      shift, and go to state 94
-    LS       shift, and go to state 96
-    DELI     shift, and go to state 109
-    ADD_OP   shift, and go to state 97
-    SUB_OP   shift, and go to state 98
-    MULT_OP  shift, and go to state 99
-    EQ_OP    shift, and go to state 100
-    LT_OP    shift, and go to state 101
-    GT_OP    shift, and go to state 102
-    ATTR_OP  shift, and go to state 103
+    SEP      shift, and go to state 92
+    LS       shift, and go to state 94
+    DELI     shift, and go to state 107
+    ADD_OP   shift, and go to state 95
+    SUB_OP   shift, and go to state 96
+    MULT_OP  shift, and go to state 97
+    EQ_OP    shift, and go to state 98
+    LT_OP    shift, and go to state 99
+    GT_OP    shift, and go to state 100
+    ATTR_OP  shift, and go to state 101
 
-    operator  go to state 104
+    operator  go to state 102
 
 
-State 89
+State 87
 
     2 main_class: PUBLIC CLASS id LB PUBLIC STATIC VOID MAIN LP STRING LS RS id RP LB statement_list • RB RB
 
-    RB  shift, and go to state 110
+    RB  shift, and go to state 108
 
 
-State 90
+State 88
 
    32 expression: expression • operator expression
    33           | expression • SEP expression
@@ -1201,35 +1161,35 @@ State 90
    36           | expression • ATTR_OP id LP expression RP
    44           | LP expression • RP
 
-    SEP      shift, and go to state 94
-    RP       shift, and go to state 111
-    LS       shift, and go to state 96
-    ADD_OP   shift, and go to state 97
-    SUB_OP   shift, and go to state 98
-    MULT_OP  shift, and go to state 99
-    EQ_OP    shift, and go to state 100
-    LT_OP    shift, and go to state 101
-    GT_OP    shift, and go to state 102
-    ATTR_OP  shift, and go to state 103
+    SEP      shift, and go to state 92
+    RP       shift, and go to state 109
+    LS       shift, and go to state 94
+    ADD_OP   shift, and go to state 95
+    SUB_OP   shift, and go to state 96
+    MULT_OP  shift, and go to state 97
+    EQ_OP    shift, and go to state 98
+    LT_OP    shift, and go to state 99
+    GT_OP    shift, and go to state 100
+    ATTR_OP  shift, and go to state 101
 
-    operator  go to state 104
+    operator  go to state 102
 
 
-State 91
+State 89
 
    41 expression: NEW INT • LS expression RS
 
-    LS  shift, and go to state 112
+    LS  shift, and go to state 110
 
 
-State 92
+State 90
 
    42 expression: NEW id • LP RP
 
-    LP  shift, and go to state 113
+    LP  shift, and go to state 111
 
 
-State 93
+State 91
 
    32 expression: expression • operator expression
    33           | expression • SEP expression
@@ -1238,18 +1198,18 @@ State 93
    36           | expression • ATTR_OP id LP expression RP
    43           | NOT_OP expression •
 
-    SEP      shift, and go to state 94
-    LS       shift, and go to state 96
-    ATTR_OP  shift, and go to state 103
+    SEP      shift, and go to state 92
+    LS       shift, and go to state 94
+    ATTR_OP  shift, and go to state 101
 
     SEP       [reduce using rule 43 (expression)]
     LS        [reduce using rule 43 (expression)]
     $default  reduce using rule 43 (expression)
 
-    operator  go to state 104
+    operator  go to state 102
 
 
-State 94
+State 92
 
    33 expression: expression SEP • expression
 
@@ -1263,13 +1223,11 @@ State 94
 
     $default  reduce using rule 45 (expression)
 
-    expression  go to state 114
-    number      go to state 81
-    bool        go to state 82
-    id          go to state 83
+    expression  go to state 112
+    id          go to state 81
 
 
-State 95
+State 93
 
    28 statement: WHILE LP expression RP • statement
 
@@ -1279,11 +1237,11 @@ State 95
     PRINT  shift, and go to state 54
     ID     shift, and go to state 9
 
-    statement  go to state 115
+    statement  go to state 113
     id         go to state 62
 
 
-State 96
+State 94
 
    34 expression: expression LS • expression RS
 
@@ -1297,66 +1255,64 @@ State 96
 
     $default  reduce using rule 45 (expression)
 
-    expression  go to state 116
-    number      go to state 81
-    bool        go to state 82
-    id          go to state 83
+    expression  go to state 114
+    id          go to state 81
 
 
-State 97
+State 95
 
    46 operator: ADD_OP •
 
     $default  reduce using rule 46 (operator)
 
 
-State 98
+State 96
 
    47 operator: SUB_OP •
 
     $default  reduce using rule 47 (operator)
 
 
-State 99
+State 97
 
    51 operator: MULT_OP •
 
     $default  reduce using rule 51 (operator)
 
 
-State 100
+State 98
 
    48 operator: EQ_OP •
 
     $default  reduce using rule 48 (operator)
 
 
-State 101
+State 99
 
    50 operator: LT_OP •
 
     $default  reduce using rule 50 (operator)
 
 
-State 102
+State 100
 
    49 operator: GT_OP •
 
     $default  reduce using rule 49 (operator)
 
 
-State 103
+State 101
 
    35 expression: expression ATTR_OP • LENGTH
    36           | expression ATTR_OP • id LP expression RP
 
-    LENGTH  shift, and go to state 117
+    LENGTH  shift, and go to state 115
     ID      shift, and go to state 9
 
-    id  go to state 118
+    id  go to state 116
 
 
-State 104
+State 102
 
    32 expression: expression operator • expression
 
@@ -1370,13 +1326,11 @@ State 104
 
     $default  reduce using rule 45 (expression)
 
-    expression  go to state 119
-    number      go to state 81
-    bool        go to state 82
-    id          go to state 83
+    expression  go to state 117
+    id          go to state 81
 
 
-State 105
+State 103
 
    27 statement: IF LP expression RP • statement statement_else
 
@@ -1386,53 +1340,53 @@ State 105
     PRINT  shift, and go to state 54
     ID     shift, and go to state 9
 
-    statement  go to state 120
+    statement  go to state 118
     id         go to state 62
+
+
+State 104
+
+   29 statement: PRINT LP expression RP • DELI
+
+    DELI  shift, and go to state 119
+
+
+State 105
+
+   11 method_declaration: PUBLIC type id LP method_arguments RP LB method_content RETURN expression DELI • RB
+
+    RB  shift, and go to state 120
 
 
 State 106
 
-   29 statement: PRINT LP expression RP • DELI
+   31 statement: id LS expression RS • ASSIGN_OP expression DELI
 
-    DELI  shift, and go to state 121
+    ASSIGN_OP  shift, and go to state 121
 
 
 State 107
-
-   11 method_declaration: PUBLIC type id LP method_arguments RP LB method_content RETURN expression DELI • RB
-
-    RB  shift, and go to state 122
-
-
-State 108
-
-   31 statement: id LS expression RS • ASSIGN_OP expression DELI
-
-    ASSIGN_OP  shift, and go to state 123
-
-
-State 109
 
    30 statement: id ASSIGN_OP expression DELI •
 
     $default  reduce using rule 30 (statement)
 
 
-State 110
+State 108
 
     2 main_class: PUBLIC CLASS id LB PUBLIC STATIC VOID MAIN LP STRING LS RS id RP LB statement_list RB • RB
 
-    RB  shift, and go to state 124
+    RB  shift, and go to state 122
 
 
-State 111
+State 109
 
    44 expression: LP expression RP •
 
     $default  reduce using rule 44 (expression)
 
 
-State 112
+State 110
 
    41 expression: NEW INT LS • expression RS
 
@@ -1446,20 +1400,18 @@ State 112
 
     $default  reduce using rule 45 (expression)
 
-    expression  go to state 125
-    number      go to state 81
-    bool        go to state 82
-    id          go to state 83
+    expression  go to state 123
+    id          go to state 81
 
 
-State 113
+State 111
 
    42 expression: NEW id LP • RP
 
-    RP  shift, and go to state 126
+    RP  shift, and go to state 124
 
 
-State 114
+State 112
 
    32 expression: expression • operator expression
    33           | expression • SEP expression
@@ -1468,15 +1420,15 @@ State 114
    35           | expression • ATTR_OP LENGTH
    36           | expression • ATTR_OP id LP expression RP
 
-    SEP      shift, and go to state 94
-    LS       shift, and go to state 96
-    ADD_OP   shift, and go to state 97
-    SUB_OP   shift, and go to state 98
-    MULT_OP  shift, and go to state 99
-    EQ_OP    shift, and go to state 100
-    LT_OP    shift, and go to state 101
-    GT_OP    shift, and go to state 102
-    ATTR_OP  shift, and go to state 103
+    SEP      shift, and go to state 92
+    LS       shift, and go to state 94
+    ADD_OP   shift, and go to state 95
+    SUB_OP   shift, and go to state 96
+    MULT_OP  shift, and go to state 97
+    EQ_OP    shift, and go to state 98
+    LT_OP    shift, and go to state 99
+    GT_OP    shift, and go to state 100
+    ATTR_OP  shift, and go to state 101
 
     SEP       [reduce using rule 33 (expression)]
     LS        [reduce using rule 33 (expression)]
@@ -1489,17 +1441,17 @@ State 114
     ATTR_OP   [reduce using rule 33 (expression)]
     $default  reduce using rule 33 (expression)
 
-    operator  go to state 104
+    operator  go to state 102
 
 
-State 115
+State 113
 
    28 statement: WHILE LP expression RP statement •
 
     $default  reduce using rule 28 (statement)
 
 
-State 116
+State 114
 
    32 expression: expression • operator expression
    33           | expression • SEP expression
@@ -1508,35 +1460,35 @@ State 116
    35           | expression • ATTR_OP LENGTH
    36           | expression • ATTR_OP id LP expression RP
 
-    SEP      shift, and go to state 94
-    LS       shift, and go to state 96
-    RS       shift, and go to state 127
-    ADD_OP   shift, and go to state 97
-    SUB_OP   shift, and go to state 98
-    MULT_OP  shift, and go to state 99
-    EQ_OP    shift, and go to state 100
-    LT_OP    shift, and go to state 101
-    GT_OP    shift, and go to state 102
-    ATTR_OP  shift, and go to state 103
+    SEP      shift, and go to state 92
+    LS       shift, and go to state 94
+    RS       shift, and go to state 125
+    ADD_OP   shift, and go to state 95
+    SUB_OP   shift, and go to state 96
+    MULT_OP  shift, and go to state 97
+    EQ_OP    shift, and go to state 98
+    LT_OP    shift, and go to state 99
+    GT_OP    shift, and go to state 100
+    ATTR_OP  shift, and go to state 101
 
-    operator  go to state 104
+    operator  go to state 102
 
 
-State 117
+State 115
 
    35 expression: expression ATTR_OP LENGTH •
 
     $default  reduce using rule 35 (expression)
 
 
-State 118
+State 116
 
    36 expression: expression ATTR_OP id • LP expression RP
 
-    LP  shift, and go to state 128
+    LP  shift, and go to state 126
 
 
-State 119
+State 117
 
    32 expression: expression • operator expression
    32           | expression operator expression •
@@ -1545,15 +1497,15 @@ State 119
    35           | expression • ATTR_OP LENGTH
    36           | expression • ATTR_OP id LP expression RP
 
-    SEP      shift, and go to state 94
-    LS       shift, and go to state 96
-    ADD_OP   shift, and go to state 97
-    SUB_OP   shift, and go to state 98
-    MULT_OP  shift, and go to state 99
-    EQ_OP    shift, and go to state 100
-    LT_OP    shift, and go to state 101
-    GT_OP    shift, and go to state 102
-    ATTR_OP  shift, and go to state 103
+    SEP      shift, and go to state 92
+    LS       shift, and go to state 94
+    ADD_OP   shift, and go to state 95
+    SUB_OP   shift, and go to state 96
+    MULT_OP  shift, and go to state 97
+    EQ_OP    shift, and go to state 98
+    LT_OP    shift, and go to state 99
+    GT_OP    shift, and go to state 100
+    ATTR_OP  shift, and go to state 101
 
     SEP       [reduce using rule 32 (expression)]
     LS        [reduce using rule 32 (expression)]
@@ -1566,36 +1518,36 @@ State 119
     ATTR_OP   [reduce using rule 32 (expression)]
     $default  reduce using rule 32 (expression)
 
-    operator  go to state 104
+    operator  go to state 102
 
 
-State 120
+State 118
 
    27 statement: IF LP expression RP statement • statement_else
 
-    ELSE  shift, and go to state 129
+    ELSE  shift, and go to state 127
 
     ELSE      [reduce using rule 25 (statement_else)]
     $default  reduce using rule 25 (statement_else)
 
-    statement_else  go to state 130
+    statement_else  go to state 128
 
 
-State 121
+State 119
 
    29 statement: PRINT LP expression RP DELI •
 
     $default  reduce using rule 29 (statement)
 
 
-State 122
+State 120
 
    11 method_declaration: PUBLIC type id LP method_arguments RP LB method_content RETURN expression DELI RB •
 
     $default  reduce using rule 11 (method_declaration)
 
 
-State 123
+State 121
 
    31 statement: id LS expression RS ASSIGN_OP • expression DELI
 
@@ -1609,20 +1561,18 @@ State 123
 
     $default  reduce using rule 45 (expression)
 
-    expression  go to state 131
-    number      go to state 81
-    bool        go to state 82
-    id          go to state 83
+    expression  go to state 129
+    id          go to state 81
 
 
-State 124
+State 122
 
     2 main_class: PUBLIC CLASS id LB PUBLIC STATIC VOID MAIN LP STRING LS RS id RP LB statement_list RB RB •
 
     $default  reduce using rule 2 (main_class)
 
 
-State 125
+State 123
 
    32 expression: expression • operator expression
    33           | expression • SEP expression
@@ -1631,35 +1581,35 @@ State 125
    36           | expression • ATTR_OP id LP expression RP
    41           | NEW INT LS expression • RS
 
-    SEP      shift, and go to state 94
-    LS       shift, and go to state 96
-    RS       shift, and go to state 132
-    ADD_OP   shift, and go to state 97
-    SUB_OP   shift, and go to state 98
-    MULT_OP  shift, and go to state 99
-    EQ_OP    shift, and go to state 100
-    LT_OP    shift, and go to state 101
-    GT_OP    shift, and go to state 102
-    ATTR_OP  shift, and go to state 103
+    SEP      shift, and go to state 92
+    LS       shift, and go to state 94
+    RS       shift, and go to state 130
+    ADD_OP   shift, and go to state 95
+    SUB_OP   shift, and go to state 96
+    MULT_OP  shift, and go to state 97
+    EQ_OP    shift, and go to state 98
+    LT_OP    shift, and go to state 99
+    GT_OP    shift, and go to state 100
+    ATTR_OP  shift, and go to state 101
 
-    operator  go to state 104
+    operator  go to state 102
 
 
-State 126
+State 124
 
    42 expression: NEW id LP RP •
 
     $default  reduce using rule 42 (expression)
 
 
-State 127
+State 125
 
    34 expression: expression LS expression RS •
 
     $default  reduce using rule 34 (expression)
 
 
-State 128
+State 126
 
    36 expression: expression ATTR_OP id LP • expression RP
 
@@ -1673,13 +1623,11 @@ State 128
 
     $default  reduce using rule 45 (expression)
 
-    expression  go to state 133
-    number      go to state 81
-    bool        go to state 82
-    id          go to state 83
+    expression  go to state 131
+    id          go to state 81
 
 
-State 129
+State 127
 
    24 statement_else: ELSE • statement
 
@@ -1689,18 +1637,18 @@ State 129
     PRINT  shift, and go to state 54
     ID     shift, and go to state 9
 
-    statement  go to state 134
+    statement  go to state 132
     id         go to state 62
 
 
-State 130
+State 128
 
    27 statement: IF LP expression RP statement statement_else •
 
     $default  reduce using rule 27 (statement)
 
 
-State 131
+State 129
 
    31 statement: id LS expression RS ASSIGN_OP expression • DELI
    32 expression: expression • operator expression
@@ -1709,28 +1657,28 @@ State 131
    35           | expression • ATTR_OP LENGTH
    36           | expression • ATTR_OP id LP expression RP
 
-    SEP      shift, and go to state 94
-    LS       shift, and go to state 96
-    DELI     shift, and go to state 135
-    ADD_OP   shift, and go to state 97
-    SUB_OP   shift, and go to state 98
-    MULT_OP  shift, and go to state 99
-    EQ_OP    shift, and go to state 100
-    LT_OP    shift, and go to state 101
-    GT_OP    shift, and go to state 102
-    ATTR_OP  shift, and go to state 103
+    SEP      shift, and go to state 92
+    LS       shift, and go to state 94
+    DELI     shift, and go to state 133
+    ADD_OP   shift, and go to state 95
+    SUB_OP   shift, and go to state 96
+    MULT_OP  shift, and go to state 97
+    EQ_OP    shift, and go to state 98
+    LT_OP    shift, and go to state 99
+    GT_OP    shift, and go to state 100
+    ATTR_OP  shift, and go to state 101
 
-    operator  go to state 104
+    operator  go to state 102
 
 
-State 132
+State 130
 
    41 expression: NEW INT LS expression RS •
 
     $default  reduce using rule 41 (expression)
 
 
-State 133
+State 131
 
    32 expression: expression • operator expression
    33           | expression • SEP expression
@@ -1739,35 +1687,35 @@ State 133
    36           | expression • ATTR_OP id LP expression RP
    36           | expression ATTR_OP id LP expression • RP
 
-    SEP      shift, and go to state 94
-    RP       shift, and go to state 136
-    LS       shift, and go to state 96
-    ADD_OP   shift, and go to state 97
-    SUB_OP   shift, and go to state 98
-    MULT_OP  shift, and go to state 99
-    EQ_OP    shift, and go to state 100
-    LT_OP    shift, and go to state 101
-    GT_OP    shift, and go to state 102
-    ATTR_OP  shift, and go to state 103
+    SEP      shift, and go to state 92
+    RP       shift, and go to state 134
+    LS       shift, and go to state 94
+    ADD_OP   shift, and go to state 95
+    SUB_OP   shift, and go to state 96
+    MULT_OP  shift, and go to state 97
+    EQ_OP    shift, and go to state 98
+    LT_OP    shift, and go to state 99
+    GT_OP    shift, and go to state 100
+    ATTR_OP  shift, and go to state 101
 
-    operator  go to state 104
+    operator  go to state 102
 
 
-State 134
+State 132
 
    24 statement_else: ELSE statement •
 
     $default  reduce using rule 24 (statement_else)
 
 
-State 135
+State 133
 
    31 statement: id LS expression RS ASSIGN_OP expression DELI •
 
     $default  reduce using rule 31 (statement)
 
 
-State 136
+State 134
 
    36 expression: expression ATTR_OP id LP expression RP •
 

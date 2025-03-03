@@ -399,8 +399,6 @@ namespace yy {
       // statement
       // expression
       // operator
-      // number
-      // bool
       // id
       char dummy1[sizeof (Node *)];
 
@@ -604,9 +602,7 @@ namespace yy {
         S_statement = 55,                        // statement
         S_expression = 56,                       // expression
         S_operator = 57,                         // operator
-        S_number = 58,                           // number
-        S_bool = 59,                             // bool
-        S_id = 60                                // id
+        S_id = 58                                // id
       };
     };
 
@@ -657,8 +653,6 @@ namespace yy {
       case symbol_kind::S_statement: // statement
       case symbol_kind::S_expression: // expression
       case symbol_kind::S_operator: // operator
-      case symbol_kind::S_number: // number
-      case symbol_kind::S_bool: // bool
       case symbol_kind::S_id: // id
         value.move< Node * > (std::move (that.value));
         break;
@@ -819,8 +813,6 @@ switch (yykind)
       case symbol_kind::S_statement: // statement
       case symbol_kind::S_expression: // expression
       case symbol_kind::S_operator: // operator
-      case symbol_kind::S_number: // number
-      case symbol_kind::S_bool: // bool
       case symbol_kind::S_id: // id
         value.template destroy< Node * > ();
         break;
@@ -1737,7 +1729,7 @@ switch (yykind)
     // number is the opposite.  If YYTABLE_NINF, syntax error.
     static const unsigned char yytable_[];
 
-    static const short yycheck_[];
+    static const signed char yycheck_[];
 
     // YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
     // state STATE-NUM.
@@ -1979,8 +1971,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 310,     ///< Last index in yytable_.
-      yynnts_ = 20,  ///< Number of nonterminal symbols.
+      yylast_ = 308,     ///< Last index in yytable_.
+      yynnts_ = 18,  ///< Number of nonterminal symbols.
       yyfinal_ = 5 ///< Termination state number.
     };
 
@@ -2064,8 +2056,6 @@ switch (yykind)
       case symbol_kind::S_statement: // statement
       case symbol_kind::S_expression: // expression
       case symbol_kind::S_operator: // operator
-      case symbol_kind::S_number: // number
-      case symbol_kind::S_bool: // bool
       case symbol_kind::S_id: // id
         value.copy< Node * > (YY_MOVE (that.value));
         break;
@@ -2164,8 +2154,6 @@ switch (yykind)
       case symbol_kind::S_statement: // statement
       case symbol_kind::S_expression: // expression
       case symbol_kind::S_operator: // operator
-      case symbol_kind::S_number: // number
-      case symbol_kind::S_bool: // bool
       case symbol_kind::S_id: // id
         value.move< Node * > (YY_MOVE (s.value));
         break;
@@ -2282,7 +2270,7 @@ switch (yykind)
 
 
 } // yy
-#line 2286 "parser.tab.hh"
+#line 2274 "parser.tab.hh"
 
 
 

@@ -1034,9 +1034,9 @@ YY_RULE_SETUP
                             printf("BOOL (%s) ", yytext);
                           } else {
                             if (strcmp(yytext, "true")) {
-                              return yy::parser::make_BOOL(true);
-                            } else if (strcmp(yytext, "false")) {
                               return yy::parser::make_BOOL(false);
+                            } else if (strcmp(yytext, "false")) {
+                              return yy::parser::make_BOOL(true);
                             }
                           }
                         }
