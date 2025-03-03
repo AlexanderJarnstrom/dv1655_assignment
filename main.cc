@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include "parser.tab.hh"
-#include "sympol_table.h"
+#include "symbol_stack.h"
 
 extern Node *root;
 extern FILE *yyin;
@@ -67,9 +67,12 @@ int main(int argc, char **argv)
         root->print_tree();
         root->generate_tree();
 
-        /*SymbolTable table;*/
-        /*table.extract_symbols(root);*/
-        /*table.print();*/
+        SymbolStack table;
+        table.extract_symbols(root);
+        table.print();
+
+        SymbolLinkedList* node = table.find("Search", "bs01");
+        printf("\n%s\n", node->name.c_str());
       }
       catch (...)
       {
