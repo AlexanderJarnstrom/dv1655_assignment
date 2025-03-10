@@ -29,6 +29,19 @@ public:
     for(auto i=children.begin(); i!=children.end(); i++)
       (*i)->print_tree(depth+1);
   }
+
+  Node* operator[](const int& i) {
+    int x = 0;
+
+    for (Node* child : this->children) {
+      if (x == i) {
+        return child;
+      }
+      x++;
+    }
+
+    return nullptr;
+  }
   
   void generate_tree() {
     std::ofstream outStream;

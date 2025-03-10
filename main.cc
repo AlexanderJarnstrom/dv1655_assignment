@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include "parser.tab.hh"
+#include "symbol_table.h"
 
 extern Node *root;
 extern FILE *yyin;
@@ -65,6 +66,16 @@ int main(int argc, char **argv)
       {
         root->print_tree();
         root->generate_tree();
+
+        SymbolTable* symbol_table = new SymbolTable("Root", node_type::ROOT, "");
+
+        symbol_table->build_table(root);
+        symbol_table->print();
+
+        if (symbol_table->is_in_scope("aux02", "num1", "Compare")) {
+          printf("In scope\n");
+        }
+        delete symbol_table;
       }
       catch (...)
       {
