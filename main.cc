@@ -1,7 +1,6 @@
 #include <cstdio>
 #include <iostream>
 #include "parser.tab.hh"
-#include "symbol_stack.h"
 
 extern Node *root;
 extern FILE *yyin;
@@ -66,18 +65,6 @@ int main(int argc, char **argv)
       {
         root->print_tree();
         root->generate_tree();
-
-        SymbolStack table;
-        table.extract_symbols(root);
-        table.print();
-
-        SymbolLinkedList* node = table.find("bs011");
-
-        if (node != nullptr) {
-          printf("\n%s\n", node->name.c_str());
-        } else {
-          printf("Outside scope.\n");
-        }
       }
       catch (...)
       {
