@@ -71,8 +71,13 @@ int main(int argc, char **argv)
         table.extract_symbols(root);
         table.print();
 
-        SymbolLinkedList* node = table.find("Search", "bs01");
-        printf("\n%s\n", node->name.c_str());
+        SymbolLinkedList* node = table.find("bs011");
+
+        if (node != nullptr) {
+          printf("\n%s\n", node->name.c_str());
+        } else {
+          printf("Outside scope.\n");
+        }
       }
       catch (...)
       {

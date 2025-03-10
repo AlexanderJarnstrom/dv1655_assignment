@@ -21,10 +21,11 @@ void SymbolStack::pop() {
   this->arr.pop_back();
 }
 
-SymbolLinkedList* SymbolStack::find(const std::string& scope, const std::string& name) {
+SymbolLinkedList* SymbolStack::find(const std::string& name) {
+  SymbolLinkedList* temp;
   for (SymbolLinkedList* row : this->arr) {
-    if (scope == row->name) {
-      return row->find(name);
+    if ((temp = row->find(name)) != nullptr) {
+      return temp;
     }
   }
 
