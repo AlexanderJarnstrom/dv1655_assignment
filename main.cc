@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include "parser.tab.hh"
-#include "symbol_table.h"
+#include "SymbolTable.h"
 
 extern Node *root;
 extern FILE *yyin;
