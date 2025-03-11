@@ -1,12 +1,8 @@
 #include "SymbolTable.h"
 
 bool SymbolTable::check_scope(std::string searched, SymbolTable* start) {
-  for (
-  auto node = std::find(this->children.rbegin(), this->children.rend(), start) + 1;
-  node != this->children.rend();
-  node++
-) {
-    if ((*node)->name == searched) {
+  for (SymbolTable* node : this->children) {
+    if (node->name == searched) {
       return true;
     }
   }
@@ -18,7 +14,26 @@ bool SymbolTable::check_scope(std::string searched, SymbolTable* start) {
   return this->parent->check_scope(searched, this);
 }
 
+std::string SymbolTable::get_name() {
+  return this->name;
+}
+
+enum node_type SymbolTable::get_type() {
+  return this->type;
+}
+
+std::string SymbolTable::get_exp_type() {
+  return this->exp_type;
+}
+
+int SymbolTable::get_line_number() {
+  return this->line_nr;
+}
+
 void SymbolTable::print(int level) {
+  if (level == 0) {
+    printf("\nPrint table ([<record>] <name> <type>):\n");
+  }
   for (int i = 0; i < level; i++) {
     printf("  ");
   }
@@ -37,7 +52,8 @@ void SymbolTable::build_table(Node* parse_node) {
     node = new SymbolTable(
       (*parse_node)[0]->value,
       node_type::MAIN_CLASS,
-      ""
+      "",
+      (*parse_node)[0]->lineno
     );
 
     for (Node* parse_child : parse_node->children) {
@@ -51,7 +67,8 @@ void SymbolTable::build_table(Node* parse_node) {
     node = new SymbolTable(
       (*parse_node)[0]->value,
       node_type::CLASS,
-      ""
+      "",
+      (*parse_node)[0]->lineno
     );
 
     node->parent = this;
@@ -66,7 +83,8 @@ void SymbolTable::build_table(Node* parse_node) {
     node = new SymbolTable(
       (*parse_node)[1]->value,
       node_type::METHOD,
-      (*parse_node)[0]->value
+      (*parse_node)[0]->value,
+      (*parse_node)[0]->lineno
     );
 
     node->parent = this;
@@ -81,7 +99,8 @@ void SymbolTable::build_table(Node* parse_node) {
     node = new SymbolTable(
       (*parse_node)[1]->value,
       node_type::METHOD_VAR,
-      (*parse_node)[0]->value
+      (*parse_node)[0]->value,
+      (*parse_node)[0]->lineno
     );
 
     for (Node* parse_child : parse_node->children) {
@@ -95,7 +114,8 @@ void SymbolTable::build_table(Node* parse_node) {
     node = new SymbolTable(
       (*parse_node)[1]->value,
       node_type::VARIABLE,
-      (*parse_node)[0]->value
+      (*parse_node)[0]->value,
+      (*parse_node)[0]->lineno
     ); 
 
     node->parent = this;
@@ -122,17 +142,29 @@ void SymbolTable::remove(const std::string& name) {
   }
 }
 
-SymbolTable* SymbolTable::get() {
+SymbolTable* SymbolTable::get(const std::string& name) {
+
+  for (SymbolTable* child : this->children) {
+    SymbolTable *found;
+    if (child->name == name) {
+      return child;
+    } else {
+      if ((found = child->get(name)) != nullptr) {
+        return found;
+      }
+    }
+  }
+
   return nullptr;
 }
 
-bool SymbolTable::is_in_scope(std::string at, std::string searched, std::string scope) {
-  if (this->name == at && this->parent->name == scope) {
-    return this->parent->check_scope(searched, this);
+bool SymbolTable::is_in_scope(std::string searched, std::string scope) {
+  if (this->name == scope) {
+    return this->check_scope(searched, this);
   }
 
   for (SymbolTable* child : this->children) {
-    if (child->is_in_scope(at, searched, scope)) {
+    if (child->is_in_scope(searched, scope)) {
       return true;
     }
   }

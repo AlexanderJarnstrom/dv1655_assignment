@@ -1,7 +1,7 @@
-compiler: lex.yy.c parser.tab.o main.cc SymbolTable.cc
-		g++ -g -w -ocompiler parser.tab.o lex.yy.c main.cc SymbolTable.cc -std=c++14
+compiler: lex.yy.c parser.tab.o main.cc SymbolTable.cc SemanticFunctions.cc
+		g++ -ggdb -w -ocompiler parser.tab.o lex.yy.c main.cc SymbolTable.cc SemanticFunctions.cc -std=c++14
 parser.tab.o: parser.tab.cc
-		g++ -g -w -c parser.tab.cc -std=c++14
+		g++ -ggdb -w -c parser.tab.cc -std=c++14
 parser.tab.cc: parser.yy
 		bison -v parser.yy
 lex.yy.c: lexer.flex parser.tab.cc

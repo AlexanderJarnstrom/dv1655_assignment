@@ -35,6 +35,7 @@ private:
   std::string name;
   enum node_type type;
   std::string exp_type;
+  int line_nr;
 
   std::vector<SymbolTable*> children;
   SymbolTable* parent;
@@ -43,14 +44,22 @@ private:
 
 public:
 
-  SymbolTable(std::string name, enum node_type type, std::string exp_type) :
-    name(name), type(type), exp_type(exp_type) {}
+  SymbolTable(std::string n, enum node_type t, std::string e, int r) :
+    name(n), type(t), exp_type(e), line_nr(r) {}
 
   ~SymbolTable() {
     for (SymbolTable* child : this->children) {
       delete child;
     }
   }
+
+  std::string get_name();
+
+  enum node_type get_type();
+
+  std::string get_exp_type();
+
+  int get_line_number();
 
   void print(int level = 0);
 
@@ -60,9 +69,9 @@ public:
 
   void remove(const std::string& name);
 
-  SymbolTable* get();
+  SymbolTable* get(const std::string& name);
 
-  bool is_in_scope(std::string at, std::string searched, std::string scope);
+  bool is_in_scope(std::string searched, std::string scope);
 };
 
 #endif // !SYMBOL_TABLE

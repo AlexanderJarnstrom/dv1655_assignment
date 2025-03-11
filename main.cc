@@ -1,5 +1,7 @@
 #include <cstdio>
 #include <iostream>
+#include <stdexcept>
+#include "SemanticFunctions.h"
 #include "parser.tab.hh"
 #include "SymbolTable.h"
 
@@ -36,19 +38,16 @@ void yy::parser::error(std::string const &err)
 int main(int argc, char **argv)
 {
   // Reads from file if a file name is passed as an argument. Otherwise, reads from stdin.
-  if (argc > 1)
-  {
-    if (!(yyin = fopen(argv[1], "r")))
-    {
+  if (argc > 1) {
+    if (!(yyin = fopen(argv[1], "r"))) {
       perror(argv[1]);
       return 1;
     }
   }
-  //
-  if (USE_LEX_ONLY)
+
+  if (USE_LEX_ONLY) {
     yylex();
-  else
-  {
+  } else {
     yy::parser parser;
 
     bool parseSuccess = !parser.parse();
@@ -57,31 +56,34 @@ int main(int argc, char **argv)
       errCode = errCodes::LEXICAL_ERROR;
 
 
-    if (parseSuccess && !lexical_errors)
-    {
+    if (parseSuccess && !lexical_errors) {
       printf("\nThe compiler successfuly generated a syntax tree for the given input! \n");
 
       printf("\nPrint Tree:  \n");
-      try
-      {
+      try {
         root->print_tree();
         root->generate_tree();
-
-        SymbolTable* symbol_table = new SymbolTable("Root", node_type::ROOT, "");
-
-        symbol_table->build_table(root);
-        symbol_table->print();
-
-        if (symbol_table->is_in_scope("aux02", "num1", "Compare")) {
-          printf("In scope\n");
-        }
-        delete symbol_table;
-      }
-      catch (...)
-      {
+      } catch (...) {
         errCode = errCodes::AST_ERROR;
       }
     }
+
+    if (!lexical_errors && !errCode) {
+      SymbolTable* symbol_table = new SymbolTable("Root", node_type::ROOT, "", 0);
+
+      symbol_table->build_table(root);
+      symbol_table->print();
+
+      try {
+        analyse(root, "Root", symbol_table);
+      } catch (const runtime_error& err) {
+        printf("%s\n", err.what());
+        errCode = errCodes::SEMANTIC_ERROR;
+      }
+
+      delete symbol_table;
+    }
+
   }
 
   return errCode;
