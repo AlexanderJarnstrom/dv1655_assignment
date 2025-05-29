@@ -1,6 +1,6 @@
     #include "parser.tab.hh"
     #define YY_DECL yy::parser::symbol_type yylex()
-    #include "Node.h"
+    #include "./inc/Node.h"
     int lexical_errors = 0;
 
 #line 6 "lex.yy.c"

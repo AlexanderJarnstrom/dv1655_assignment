@@ -8,7 +8,7 @@
 /* Required code included before the parser definition begins */
 %code requires{
   #include <string>
-  #include "Node.h"
+  #include "./inc/Node.h"
   #define USE_LEX_ONLY false //change this macro to true if you want to isolate the lexer from the parser.
   #define DEBUG true
 }

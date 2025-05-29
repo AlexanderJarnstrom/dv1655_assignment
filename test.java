@@ -5,6 +5,22 @@ public class BinarySearch{
 }
 
 class User {
-  int [] hej;
+  public int hej() {
+    int i;
+    boolean is_happy;
+    if (true) {
+      i = 0;
+    } else {
+      i = 1;
+    }
+
+    return 0;
+  }
+
+  public boolean nej() {
+    int x;
+
+    return false;
+  }
 }
 
