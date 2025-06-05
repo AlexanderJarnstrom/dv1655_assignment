@@ -20,7 +20,8 @@ public:
 	Node()
 	{
 		type = "uninitialised";
-		value = "uninitialised"; }   // Bison needs this.
+		value = "uninitialised";
+  }   // Bison needs this.
   
   void print_tree(int depth=0) {
     for(int i=0; i<depth; i++)

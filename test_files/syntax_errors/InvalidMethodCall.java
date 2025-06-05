@@ -12,7 +12,7 @@ class MyClass {
         return false;
     }
 
-    public int Bar(int a, ) {
+    public int Bar(int a) {
         return 1;
     }
 }

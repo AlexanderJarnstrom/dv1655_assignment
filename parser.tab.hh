@@ -50,9 +50,8 @@
   #include <string>
   #include "./inc/Node.h"
   #define USE_LEX_ONLY false //change this macro to true if you want to isolate the lexer from the parser.
-  #define DEBUG true
 
-#line 56 "parser.tab.hh"
+#line 55 "parser.tab.hh"
 
 
 # include <cstdlib> // std::abort
@@ -183,11 +182,11 @@
 
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 
 namespace yy {
-#line 191 "parser.tab.hh"
+#line 190 "parser.tab.hh"
 
 
 
@@ -387,17 +386,21 @@ namespace yy {
       // main_class
       // class_declaration_list
       // class_declaration
+      // class_content
       // var_declaration_list
       // var_declaration
       // method_declaration_list
       // method_declaration
+      // method_head
+      // method_body
       // method_arguments
       // method_content
       // type
       // statement_list
-      // statement_else
       // statement
-      // expression
+      // expression_lst
+      // expression_head
+      // expression_body
       // operator
       // id
       char dummy1[sizeof (Node *)];
@@ -590,19 +593,23 @@ namespace yy {
         S_main_class = 43,                       // main_class
         S_class_declaration_list = 44,           // class_declaration_list
         S_class_declaration = 45,                // class_declaration
-        S_var_declaration_list = 46,             // var_declaration_list
-        S_var_declaration = 47,                  // var_declaration
-        S_method_declaration_list = 48,          // method_declaration_list
-        S_method_declaration = 49,               // method_declaration
-        S_method_arguments = 50,                 // method_arguments
-        S_method_content = 51,                   // method_content
-        S_type = 52,                             // type
-        S_statement_list = 53,                   // statement_list
-        S_statement_else = 54,                   // statement_else
-        S_statement = 55,                        // statement
-        S_expression = 56,                       // expression
-        S_operator = 57,                         // operator
-        S_id = 58                                // id
+        S_class_content = 46,                    // class_content
+        S_var_declaration_list = 47,             // var_declaration_list
+        S_var_declaration = 48,                  // var_declaration
+        S_method_declaration_list = 49,          // method_declaration_list
+        S_method_declaration = 50,               // method_declaration
+        S_method_head = 51,                      // method_head
+        S_method_body = 52,                      // method_body
+        S_method_arguments = 53,                 // method_arguments
+        S_method_content = 54,                   // method_content
+        S_type = 55,                             // type
+        S_statement_list = 56,                   // statement_list
+        S_statement = 57,                        // statement
+        S_expression_lst = 58,                   // expression_lst
+        S_expression_head = 59,                  // expression_head
+        S_expression_body = 60,                  // expression_body
+        S_operator = 61,                         // operator
+        S_id = 62                                // id
       };
     };
 
@@ -641,17 +648,21 @@ namespace yy {
       case symbol_kind::S_main_class: // main_class
       case symbol_kind::S_class_declaration_list: // class_declaration_list
       case symbol_kind::S_class_declaration: // class_declaration
+      case symbol_kind::S_class_content: // class_content
       case symbol_kind::S_var_declaration_list: // var_declaration_list
       case symbol_kind::S_var_declaration: // var_declaration
       case symbol_kind::S_method_declaration_list: // method_declaration_list
       case symbol_kind::S_method_declaration: // method_declaration
+      case symbol_kind::S_method_head: // method_head
+      case symbol_kind::S_method_body: // method_body
       case symbol_kind::S_method_arguments: // method_arguments
       case symbol_kind::S_method_content: // method_content
       case symbol_kind::S_type: // type
       case symbol_kind::S_statement_list: // statement_list
-      case symbol_kind::S_statement_else: // statement_else
       case symbol_kind::S_statement: // statement
-      case symbol_kind::S_expression: // expression
+      case symbol_kind::S_expression_lst: // expression_lst
+      case symbol_kind::S_expression_head: // expression_head
+      case symbol_kind::S_expression_body: // expression_body
       case symbol_kind::S_operator: // operator
       case symbol_kind::S_id: // id
         value.move< Node * > (std::move (that.value));
@@ -801,17 +812,21 @@ switch (yykind)
       case symbol_kind::S_main_class: // main_class
       case symbol_kind::S_class_declaration_list: // class_declaration_list
       case symbol_kind::S_class_declaration: // class_declaration
+      case symbol_kind::S_class_content: // class_content
       case symbol_kind::S_var_declaration_list: // var_declaration_list
       case symbol_kind::S_var_declaration: // var_declaration
       case symbol_kind::S_method_declaration_list: // method_declaration_list
       case symbol_kind::S_method_declaration: // method_declaration
+      case symbol_kind::S_method_head: // method_head
+      case symbol_kind::S_method_body: // method_body
       case symbol_kind::S_method_arguments: // method_arguments
       case symbol_kind::S_method_content: // method_content
       case symbol_kind::S_type: // type
       case symbol_kind::S_statement_list: // statement_list
-      case symbol_kind::S_statement_else: // statement_else
       case symbol_kind::S_statement: // statement
-      case symbol_kind::S_expression: // expression
+      case symbol_kind::S_expression_lst: // expression_lst
+      case symbol_kind::S_expression_head: // expression_head
+      case symbol_kind::S_expression_body: // expression_body
       case symbol_kind::S_operator: // operator
       case symbol_kind::S_id: // id
         value.template destroy< Node * > ();
@@ -1729,7 +1744,7 @@ switch (yykind)
     // number is the opposite.  If YYTABLE_NINF, syntax error.
     static const unsigned char yytable_[];
 
-    static const signed char yycheck_[];
+    static const short yycheck_[];
 
     // YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
     // state STATE-NUM.
@@ -1971,8 +1986,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 308,     ///< Last index in yytable_.
-      yynnts_ = 18,  ///< Number of nonterminal symbols.
+      yylast_ = 202,     ///< Last index in yytable_.
+      yynnts_ = 22,  ///< Number of nonterminal symbols.
       yyfinal_ = 5 ///< Termination state number.
     };
 
@@ -2044,17 +2059,21 @@ switch (yykind)
       case symbol_kind::S_main_class: // main_class
       case symbol_kind::S_class_declaration_list: // class_declaration_list
       case symbol_kind::S_class_declaration: // class_declaration
+      case symbol_kind::S_class_content: // class_content
       case symbol_kind::S_var_declaration_list: // var_declaration_list
       case symbol_kind::S_var_declaration: // var_declaration
       case symbol_kind::S_method_declaration_list: // method_declaration_list
       case symbol_kind::S_method_declaration: // method_declaration
+      case symbol_kind::S_method_head: // method_head
+      case symbol_kind::S_method_body: // method_body
       case symbol_kind::S_method_arguments: // method_arguments
       case symbol_kind::S_method_content: // method_content
       case symbol_kind::S_type: // type
       case symbol_kind::S_statement_list: // statement_list
-      case symbol_kind::S_statement_else: // statement_else
       case symbol_kind::S_statement: // statement
-      case symbol_kind::S_expression: // expression
+      case symbol_kind::S_expression_lst: // expression_lst
+      case symbol_kind::S_expression_head: // expression_head
+      case symbol_kind::S_expression_body: // expression_body
       case symbol_kind::S_operator: // operator
       case symbol_kind::S_id: // id
         value.copy< Node * > (YY_MOVE (that.value));
@@ -2142,17 +2161,21 @@ switch (yykind)
       case symbol_kind::S_main_class: // main_class
       case symbol_kind::S_class_declaration_list: // class_declaration_list
       case symbol_kind::S_class_declaration: // class_declaration
+      case symbol_kind::S_class_content: // class_content
       case symbol_kind::S_var_declaration_list: // var_declaration_list
       case symbol_kind::S_var_declaration: // var_declaration
       case symbol_kind::S_method_declaration_list: // method_declaration_list
       case symbol_kind::S_method_declaration: // method_declaration
+      case symbol_kind::S_method_head: // method_head
+      case symbol_kind::S_method_body: // method_body
       case symbol_kind::S_method_arguments: // method_arguments
       case symbol_kind::S_method_content: // method_content
       case symbol_kind::S_type: // type
       case symbol_kind::S_statement_list: // statement_list
-      case symbol_kind::S_statement_else: // statement_else
       case symbol_kind::S_statement: // statement
-      case symbol_kind::S_expression: // expression
+      case symbol_kind::S_expression_lst: // expression_lst
+      case symbol_kind::S_expression_head: // expression_head
+      case symbol_kind::S_expression_body: // expression_body
       case symbol_kind::S_operator: // operator
       case symbol_kind::S_id: // id
         value.move< Node * > (YY_MOVE (s.value));
@@ -2270,7 +2293,7 @@ switch (yykind)
 
 
 } // yy
-#line 2274 "parser.tab.hh"
+#line 2297 "parser.tab.hh"
 
 
 

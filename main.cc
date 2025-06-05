@@ -1,13 +1,13 @@
 #include <cstdio>
 #include <iostream>
 #include "parser.tab.hh"
-#include "symbol_stack.h"
 
 extern Node *root;
 extern FILE *yyin;
 extern int yylineno;
 extern int lexical_errors;
 extern yy::parser::symbol_type yylex();
+
 
 enum errCodes
 {

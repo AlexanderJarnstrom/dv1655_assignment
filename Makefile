@@ -5,7 +5,7 @@ compiler: lex.yy.c ./obj/parser.tab.o ./src/main.cc ./src/types.cc ./src/symbolT
 		g++ -ggdb -w -c parser.tab.cc -std=c++14 -o ./obj/parser.tab.o
 
 parser.tab.cc: parser.yy
-	bison -v parser.yy
+	bison -t parser.yy
 
 lex.yy.c: lexer.flex parser.tab.cc
 		flex lexer.flex
@@ -20,3 +20,16 @@ clean:
 syntax: compiler testScript.py
 	python testScript.py -syntax
 
+semantic: compiler testScript.py
+	python testScript.py -semantic
+	
+valid: compiler testScript.py
+	python testScript.py -valid
+
+interpreter: compiler testScript.py
+	python testScript.py -interpreter
+
+lexical: compiler testScript.py
+	python testScript.py -lexical
+
+all: lexical syntax semantic interpreter valid

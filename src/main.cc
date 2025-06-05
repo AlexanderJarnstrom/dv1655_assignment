@@ -3,7 +3,6 @@
 #include "../parser.tab.hh"
 #include "../inc/symbolTable.h"
 #include "../inc/symanticFunction.h"
-
 extern Node *root;
 extern FILE *yyin;
 extern int yylineno;
