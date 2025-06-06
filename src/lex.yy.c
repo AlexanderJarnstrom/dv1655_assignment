@@ -1,9 +1,10 @@
-    #include "parser.tab.hh"
+#line 1 "src/lex.yy.c"
+    #include "../inc/parser.tab.h"
     #define YY_DECL yy::parser::symbol_type yylex()
-    #include "./inc/Node.h"
+    #include "../inc/node.h"
     int lexical_errors = 0;
 
-#line 6 "lex.yy.c"
+#line 7 "src/lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -557,10 +558,10 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "lexer.flex"
+#line 1 "src/bison/lexer.flex"
 
 #define YY_NO_INPUT 1
-#line 563 "lex.yy.c"
+#line 564 "src/lex.yy.c"
 
 #define INITIAL 0
 
@@ -785,10 +786,10 @@ YY_DECL
 		}
 
 	{
-#line 8 "lexer.flex"
+#line 8 "src/bison/lexer.flex"
 
 
-#line 791 "lex.yy.c"
+#line 792 "src/lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -853,182 +854,182 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 10 "lexer.flex"
+#line 10 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("ADD_OP ");} else {return yy::parser::make_ADD_OP(yytext);}}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 11 "lexer.flex"
+#line 11 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("SUB_OP ");} else {return yy::parser::make_SUB_OP(yytext);}}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 12 "lexer.flex"
+#line 12 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("MULT_OP ");} else {return yy::parser::make_MULT_OP(yytext);}}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 13 "lexer.flex"
+#line 13 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("AND_OP ");}  else {return yy::parser::make_AND_OP(yytext);} }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 14 "lexer.flex"
+#line 14 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("OR_OP ");}  else {return yy::parser::make_OR_OP(yytext);} }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 15 "lexer.flex"
+#line 15 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("LT_OP ");}  else {return yy::parser::make_LT_OP(yytext);} }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 16 "lexer.flex"
+#line 16 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("GT_OP ");}  else {return yy::parser::make_GT_OP(yytext);} }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 17 "lexer.flex"
+#line 17 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("EQ_OP ");}  else {return yy::parser::make_EQ_OP(yytext);} }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 18 "lexer.flex"
+#line 18 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("NOT_OP ");}  else {return yy::parser::make_NOT_OP(yytext);} }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 19 "lexer.flex"
+#line 19 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("ASSIGN_OP ");}  else {return yy::parser::make_ASSIGN_OP(yytext);} }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 20 "lexer.flex"
+#line 20 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("DELI ");} else {return yy::parser::make_DELI(yytext);}}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 21 "lexer.flex"
+#line 21 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("ATTR_OP ");}  else {return yy::parser::make_ATTR_OP(yytext);} }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 22 "lexer.flex"
+#line 22 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("LENGTH ");}  else {return yy::parser::make_LENGTH(yytext);} }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 23 "lexer.flex"
+#line 23 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("SEP ");}  else {return yy::parser::make_SEP(yytext);} }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 25 "lexer.flex"
+#line 25 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("LP ");} else {return yy::parser::make_LP(yytext);}}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 26 "lexer.flex"
+#line 26 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("RP ");} else {return yy::parser::make_RP(yytext);}}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 27 "lexer.flex"
+#line 27 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("LB ");} else {return yy::parser::make_LB(yytext);} }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 28 "lexer.flex"
+#line 28 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("RB ");} else {return yy::parser::make_RB(yytext);} }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 29 "lexer.flex"
+#line 29 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("LS ");} else {return yy::parser::make_LS(yytext);}}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 30 "lexer.flex"
+#line 30 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("RS ");} else {return yy::parser::make_RS(yytext);}}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 32 "lexer.flex"
+#line 32 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("INT ");} else {return yy::parser::make_INT(yytext);}}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 33 "lexer.flex"
+#line 33 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("BOOLEAN ");} else {return yy::parser::make_BOOLEAN(yytext);}}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 34 "lexer.flex"
+#line 34 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("STRING ");} else {return yy::parser::make_STRING(yytext);}}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 35 "lexer.flex"
+#line 35 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("VOID ");} else {return yy::parser::make_VOID(yytext);}}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 36 "lexer.flex"
+#line 36 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("NEW ");} else {return yy::parser::make_NEW(yytext);} }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 37 "lexer.flex"
+#line 37 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("PUBLIC ");} else {return yy::parser::make_PUBLIC(yytext);} }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 38 "lexer.flex"
+#line 38 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("CLASS ");} else {return yy::parser::make_CLASS(yytext);} }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 39 "lexer.flex"
+#line 39 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("STATIC ");} else {return yy::parser::make_STATIC(yytext);} }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 40 "lexer.flex"
+#line 40 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("MAIN ");} else {return yy::parser::make_MAIN(yytext);} }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 41 "lexer.flex"
+#line 41 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("RETURN ");}  else {return yy::parser::make_RETURN(yytext);} }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 42 "lexer.flex"
+#line 42 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("THIS ");}  else {return yy::parser::make_THIS(yytext);} }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 43 "lexer.flex"
+#line 43 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("WHILE ");}  else {return yy::parser::make_WHILE(yytext);} }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 44 "lexer.flex"
+#line 44 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("IF ");}  else {return yy::parser::make_IF(yytext);} }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 45 "lexer.flex"
+#line 45 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("ELSE ");}  else {return yy::parser::make_ELSE(yytext);} }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 46 "lexer.flex"
+#line 46 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("PRINT ");}  else {return yy::parser::make_PRINT(yytext);} }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 48 "lexer.flex"
+#line 48 "src/bison/lexer.flex"
 {
                           if(USE_LEX_ONLY) {
                             printf("BOOL (%s) ", yytext);
@@ -1043,40 +1044,40 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 59 "lexer.flex"
+#line 59 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("ID (%s) ", yytext);} else {return yy::parser::make_ID(yytext);}}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 60 "lexer.flex"
+#line 60 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("NUMBER (%s) ", yytext);} else {return yy::parser::make_NUMBER(atoi(yytext));}}
 	YY_BREAK
 case 39:
 /* rule 39 can match eol */
 YY_RULE_SETUP
-#line 62 "lexer.flex"
+#line 62 "src/bison/lexer.flex"
 {if(USE_LEX_ONLY) {printf("%s", yytext);}}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 63 "lexer.flex"
+#line 63 "src/bison/lexer.flex"
 {}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 64 "lexer.flex"
+#line 64 "src/bison/lexer.flex"
 {if(!lexical_errors) fprintf(stderr, "Lexical errors found! See the logs below: \n"); fprintf(stderr,"\t@error at line %d. Character %s is not recognized\n", yylineno, yytext); lexical_errors = 1;}
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 65 "lexer.flex"
+#line 65 "src/bison/lexer.flex"
 {return yy::parser::make_END();}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 66 "lexer.flex"
+#line 66 "src/bison/lexer.flex"
 ECHO;
 	YY_BREAK
-#line 1079 "lex.yy.c"
+#line 1080 "src/lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2097,7 +2098,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 66 "lexer.flex"
+#line 66 "src/bison/lexer.flex"
 
 
 

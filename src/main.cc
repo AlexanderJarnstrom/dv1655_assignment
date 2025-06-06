@@ -1,8 +1,6 @@
 #include <cstdio>
 #include <iostream>
-#include "../parser.tab.hh"
-#include "../inc/symbolTable.h"
-#include "../inc/symanticFunction.h"
+#include "../inc/parser.tab.h"
 extern Node *root;
 extern FILE *yyin;
 extern int yylineno;
@@ -65,11 +63,6 @@ int main(int argc, char **argv)
     }
 
     if (!lexical_errors && !errCode) {
-      sym::SymbolTable table = sym::create_table();
-      table.generate_table(root);
-      table.print();
-      definition_check(root, table);
-      scope_check(root, table);
     }
 
   }

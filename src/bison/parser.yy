@@ -1,5 +1,6 @@
 /* Skeleton and definitions for generating a LALR(1) parser in C++ */
-%skeleton "lalr1.cc" 
+%skeleton "lalr1.cc"
+%require "3.2"
 %defines
 %define parse.error verbose
 %define api.value.type variant
@@ -8,7 +9,7 @@
 /* Required code included before the parser definition begins */
 %code requires{
   #include <string>
-  #include "./inc/Node.h"
+  #include "node.h"
   #define USE_LEX_ONLY false //change this macro to true if you want to isolate the lexer from the parser.
 }
 

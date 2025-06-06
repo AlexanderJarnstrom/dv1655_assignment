@@ -1,35 +1,55 @@
-compiler: lex.yy.c ./obj/parser.tab.o ./src/main.cc ./src/types.cc ./src/symbolTable.cc ./src/symanticFunction.cc
-	g++ -ggdb -w -ocompiler ./obj/parser.tab.o lex.yy.c ./src/main.cc ./src/types.cc ./src/symbolTable.cc ./src/symanticFunction.cc -std=c++14
+LIBS=-std=c++14 
+CFLAGS=-Wall -Wextra -g
+LDFLAGS=$(LIBS) -I/usr/include/postgresqlCC=gcc
+BIN=compiler
+CC=g++
 
-./obj/parser.tab.o: parser.tab.cc
-		g++ -ggdb -w -c parser.tab.cc -std=c++14 -o ./obj/parser.tab.o
+SDIR=src
+ODIR=obj
+IDIR=inc
+BDIR=src/bison
 
-parser.tab.cc: parser.yy
-	bison -t parser.yy
+_OBJ=main.o parser.tab.o
+OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ))
 
-lex.yy.c: lexer.flex parser.tab.cc
-		flex lexer.flex
+$(BIN): $(SDIR)/lex.yy.c $(OBJ)
+	$(CC) $^ -o $@ $(LDFLAGS)
 
-tree: 
-		 dot -Tpdf tree.dot -otree.pdf
+$(ODIR)/%.o: $(SDIR)/%.cc $(ODIR)
+	$(CC) -c $(CFLAGS) -o $@ $<
+
+$(ODIR):
+	mkdir -p $(ODIR)
+
+$(SDIR)/lex.yy.c: $(BDIR)/lexer.flex $(SDIR)/parser.tab.cc
+	flex -o$(SDIR)/lex.yy.c $(BDIR)/lexer.flex
+
+$(SDIR)/parser.tab.cc: $(BDIR)/parser.yy
+	bison -H$(IDIR)/parser.tab.h -o$(SDIR)/parser.tab.cc $(BDIR)/parser.yy
 
 clean:
-		rm -f parser.tab.* lex.yy.c* compiler stack.hh position.hh location.hh tree.dot tree.pdf
-		rm -R compiler.dSYM
+	rm -r $(ODIR)
+	rm $(BIN)
+	rm $(SDIR)/lex.yy.c
+	rm $(SDIR)/parser.tab.cc
+	rm $(IDIR)/parser.tab.h
+	rm tree.dot 
+	rm tree.pdf
 
-syntax: compiler testScript.py
+syntax: $(BIN) testScript.py
 	python testScript.py -syntax
 
-semantic: compiler testScript.py
+semantic: $(BIN) testScript.py
 	python testScript.py -semantic
 	
-valid: compiler testScript.py
+valid: $(BIN) testScript.py
 	python testScript.py -valid
 
-interpreter: compiler testScript.py
+interpreter: $(BIN) testScript.py
 	python testScript.py -interpreter
 
-lexical: compiler testScript.py
+lexical: $(BIN) testScript.py
 	python testScript.py -lexical
 
-all: lexical syntax semantic interpreter valid
+tree:
+	dot -Tpdf tree.dot -otree.pdf

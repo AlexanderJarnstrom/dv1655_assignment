@@ -32,7 +32,7 @@
 
 
 /**
- ** \file parser.tab.hh
+ ** \file inc/parser.tab.h
  ** Define the yy::parser class.
  */
 
@@ -42,16 +42,16 @@
 // especially those whose name start with YY_ or yy_.  They are
 // private implementation details that can be changed or removed.
 
-#ifndef YY_YY_PARSER_TAB_HH_INCLUDED
-# define YY_YY_PARSER_TAB_HH_INCLUDED
+#ifndef YY_YY_INC_PARSER_TAB_H_INCLUDED
+# define YY_YY_INC_PARSER_TAB_H_INCLUDED
 // "%code requires" blocks.
-#line 9 "parser.yy"
+#line 10 "src/bison/parser.yy"
 
   #include <string>
-  #include "./inc/Node.h"
+  #include "node.h"
   #define USE_LEX_ONLY false //change this macro to true if you want to isolate the lexer from the parser.
 
-#line 55 "parser.tab.hh"
+#line 55 "inc/parser.tab.h"
 
 
 # include <cstdlib> // std::abort
@@ -182,11 +182,11 @@
 
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 1
+# define YYDEBUG 0
 #endif
 
 namespace yy {
-#line 190 "parser.tab.hh"
+#line 190 "inc/parser.tab.h"
 
 
 
@@ -2293,9 +2293,9 @@ switch (yykind)
 
 
 } // yy
-#line 2297 "parser.tab.hh"
+#line 2297 "inc/parser.tab.h"
 
 
 
 
-#endif // !YY_YY_PARSER_TAB_HH_INCLUDED
+#endif // !YY_YY_INC_PARSER_TAB_H_INCLUDED
