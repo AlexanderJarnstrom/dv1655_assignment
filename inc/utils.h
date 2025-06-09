@@ -8,6 +8,7 @@
 void extract_root(Node*, SymbolNode**);
 void extract_class(Node*, SymbolNode**);
 void extract_main_class(Node*, SymbolNode**);
+void extract_main_class_args(Node*, SymbolNode**);
 void extract_statement(Node*, SymbolNode**, int);
 void extract_expresion(Node*, SymbolNode**);
 void extract_variable(Node*, SymbolNode**);

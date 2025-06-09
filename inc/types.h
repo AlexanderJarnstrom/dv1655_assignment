@@ -1,6 +1,8 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+typedef unsigned int hash_t ;
+
 typedef enum {
   ROOT,
   MAIN_CLASS,
@@ -16,6 +18,7 @@ typedef enum {
   INT,
   INT_ARR,
   STRING,
+  STRING_ARR,
   BOOL,
   USER_DEF,
   NONE

@@ -2,7 +2,6 @@
 #define SYM_NODE
 
 #include "node.h"
-#include "hasher.h"
 #include "types.h"
 
 #include <string>

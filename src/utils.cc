@@ -28,6 +28,15 @@ extract_main_class(Node* p_n, SymbolNode **pp_sn)
   *pp_sn = new SymbolNode(name, MAIN_CLASS, NONE);
 }
 
+void
+extract_main_class_args(Node* p_n, SymbolNode** pp_sn)
+{
+  Node n = *p_n;
+
+  string name = n[1]->value;
+  *pp_sn = new SymbolNode(name, VARIABLE, STRING_ARR);
+}
+
 void 
 extract_statement(Node* p_n, SymbolNode **pp_sn, int counter)
 {
@@ -90,3 +99,5 @@ extract_method(Node* p_n, SymbolNode **pp_sn)
 
   *pp_sn = new SymbolNode(name, METHOD, value);
 }
+
+

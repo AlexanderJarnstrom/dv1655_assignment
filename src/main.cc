@@ -1,11 +1,8 @@
-#include <cstddef>
 #include <cstdio>
-#include <functional>
 #include <iostream>
-#include <vector>
-#include "../inc/hasher.h"
 #include "../inc/symbol_node.h"
 #include "../inc/parser.tab.h"
+
 extern Node *root;
 extern FILE *yyin;
 extern int yylineno;
@@ -65,6 +62,7 @@ int main(int argc, char **argv)
         SymbolNode table("root", ROOT, NONE);
         int counter = 0;
         table.generate_table(root, counter);
+        table.print();
       } catch (...) {
         errCode = errCodes::AST_ERROR;
       }

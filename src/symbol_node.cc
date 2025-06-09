@@ -40,6 +40,8 @@ SymbolNode::generate_table(Node* n, int &counter)
       node->mp_table = new SymbolNode(node->m_name, MAIN_CLASS, NONE);
       root->isnert_node(node);
       root = node->mp_table;
+      extract_main_class_args(n, &node);
+      root->isnert_node(node);
       break;
     case STATEMENT:
       extract_statement(n, &node, counter);
