@@ -399,8 +399,7 @@ namespace yy {
       // statement_list
       // statement
       // expression_lst
-      // expression_head
-      // expression_body
+      // expression
       // operator
       // id
       char dummy1[sizeof (Node *)];
@@ -606,10 +605,9 @@ namespace yy {
         S_statement_list = 56,                   // statement_list
         S_statement = 57,                        // statement
         S_expression_lst = 58,                   // expression_lst
-        S_expression_head = 59,                  // expression_head
-        S_expression_body = 60,                  // expression_body
-        S_operator = 61,                         // operator
-        S_id = 62                                // id
+        S_expression = 59,                       // expression
+        S_operator = 60,                         // operator
+        S_id = 61                                // id
       };
     };
 
@@ -661,8 +659,7 @@ namespace yy {
       case symbol_kind::S_statement_list: // statement_list
       case symbol_kind::S_statement: // statement
       case symbol_kind::S_expression_lst: // expression_lst
-      case symbol_kind::S_expression_head: // expression_head
-      case symbol_kind::S_expression_body: // expression_body
+      case symbol_kind::S_expression: // expression
       case symbol_kind::S_operator: // operator
       case symbol_kind::S_id: // id
         value.move< Node * > (std::move (that.value));
@@ -825,8 +822,7 @@ switch (yykind)
       case symbol_kind::S_statement_list: // statement_list
       case symbol_kind::S_statement: // statement
       case symbol_kind::S_expression_lst: // expression_lst
-      case symbol_kind::S_expression_head: // expression_head
-      case symbol_kind::S_expression_body: // expression_body
+      case symbol_kind::S_expression: // expression
       case symbol_kind::S_operator: // operator
       case symbol_kind::S_id: // id
         value.template destroy< Node * > ();
@@ -1737,7 +1733,7 @@ switch (yykind)
     static const short yypgoto_[];
 
     // YYDEFGOTO[NTERM-NUM].
-    static const unsigned char yydefgoto_[];
+    static const signed char yydefgoto_[];
 
     // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
     // positive, shift that token.  If negative, reduce the rule whose
@@ -1986,8 +1982,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 202,     ///< Last index in yytable_.
-      yynnts_ = 22,  ///< Number of nonterminal symbols.
+      yylast_ = 366,     ///< Last index in yytable_.
+      yynnts_ = 21,  ///< Number of nonterminal symbols.
       yyfinal_ = 5 ///< Termination state number.
     };
 
@@ -2072,8 +2068,7 @@ switch (yykind)
       case symbol_kind::S_statement_list: // statement_list
       case symbol_kind::S_statement: // statement
       case symbol_kind::S_expression_lst: // expression_lst
-      case symbol_kind::S_expression_head: // expression_head
-      case symbol_kind::S_expression_body: // expression_body
+      case symbol_kind::S_expression: // expression
       case symbol_kind::S_operator: // operator
       case symbol_kind::S_id: // id
         value.copy< Node * > (YY_MOVE (that.value));
@@ -2174,8 +2169,7 @@ switch (yykind)
       case symbol_kind::S_statement_list: // statement_list
       case symbol_kind::S_statement: // statement
       case symbol_kind::S_expression_lst: // expression_lst
-      case symbol_kind::S_expression_head: // expression_head
-      case symbol_kind::S_expression_body: // expression_body
+      case symbol_kind::S_expression: // expression
       case symbol_kind::S_operator: // operator
       case symbol_kind::S_id: // id
         value.move< Node * > (YY_MOVE (s.value));
@@ -2293,7 +2287,7 @@ switch (yykind)
 
 
 } // yy
-#line 2297 "inc/parser.tab.h"
+#line 2291 "inc/parser.tab.h"
 
 
 

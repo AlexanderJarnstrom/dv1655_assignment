@@ -1,32 +1,24 @@
-#pragma once
+#ifndef TYPES_H
+#define TYPES_H
 
-#include <string>
+typedef enum {
+  ROOT,
+  MAIN_CLASS,
+  CLASS,
+  METHOD,
+  STATEMENT,
+  EXPRESION,
+  VARIABLE,
+  OTHER
+} node_t;
 
-namespace comp {
+typedef enum {
+  INT,
+  INT_ARR,
+  STRING,
+  BOOL,
+  USER_DEF,
+  NONE
+} value_t;
 
-enum NodeType {
-  Method,
-  Class,
-  MainClass,
-  Variable,
-  Root,
-  Expression,
-  Statement,
-  Uninitialized,
-  Error,
-};
-
-enum ValueType {
-  Int,
-  String,
-  Bool,
-  IntArr,
-  User,
-  ArgArr,
-  None,
-};
-
-NodeType to_node_type(std::string);
-std::string to_string(NodeType);
-}
-
+#endif // !TYPES_H

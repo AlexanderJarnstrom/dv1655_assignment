@@ -1,5 +1,10 @@
+#include <cstddef>
 #include <cstdio>
+#include <functional>
 #include <iostream>
+#include <vector>
+#include "../inc/hasher.h"
+#include "../inc/symbol_node.h"
 #include "../inc/parser.tab.h"
 extern Node *root;
 extern FILE *yyin;
@@ -49,7 +54,6 @@ int main(int argc, char **argv)
 
     if (lexical_errors)
       errCode = errCodes::LEXICAL_ERROR;
-
     if (parseSuccess && !lexical_errors) {
       printf("\nThe compiler successfuly generated a syntax tree for the given input! \n");
 
@@ -57,14 +61,14 @@ int main(int argc, char **argv)
       try {
         root->print_tree();
         root->generate_tree();
+
+        SymbolNode table("root", ROOT, NONE);
+        int counter = 0;
+        table.generate_table(root, counter);
       } catch (...) {
         errCode = errCodes::AST_ERROR;
       }
     }
-
-    if (!lexical_errors && !errCode) {
-    }
-
   }
 
   return errCode;

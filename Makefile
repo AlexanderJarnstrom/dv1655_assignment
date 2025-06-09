@@ -1,5 +1,5 @@
 LIBS=-std=c++14 
-CFLAGS=-Wall -Wextra -g
+CFLAGS=-g
 LDFLAGS=$(LIBS) -I/usr/include/postgresqlCC=gcc
 BIN=compiler
 CC=g++
@@ -9,7 +9,7 @@ ODIR=obj
 IDIR=inc
 BDIR=src/bison
 
-_OBJ=main.o parser.tab.o
+_OBJ=main.o parser.tab.o hasher.o symbol_node.o utils.o
 OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(BIN): $(SDIR)/lex.yy.c $(OBJ)
