@@ -197,7 +197,7 @@ statement_list
 
 statement
   : LB statement_list RB {
-    $$ = new Node("statement", "sub", yylineno); 
+    $$ = new Node("statement", "block", yylineno); 
     $$->children.push_back($2);
   }
   | IF LP expression_lst RP statement {
@@ -250,7 +250,7 @@ expression_lst
   ;
 
 expression
-  : expression LS expression RS {
+  : expression LS expression_lst RS {
     $$ = new Node("expression", "arr", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($3);

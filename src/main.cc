@@ -2,6 +2,7 @@
 #include <iostream>
 #include "../inc/symbol_node.h"
 #include "../inc/parser.tab.h"
+#include "../inc/semantic_functions.h"
 
 extern Node *root;
 extern FILE *yyin;
@@ -59,10 +60,12 @@ int main(int argc, char **argv)
         root->print_tree();
         root->generate_tree();
 
-        SymbolNode table("root", ROOT, NONE);
+        SymbolNode table("root", ROOT, NONE, 0);
         int counter = 0;
         table.generate_table(root, counter);
         table.print();
+
+        definition_validation(root, &table);
       } catch (...) {
         errCode = errCodes::AST_ERROR;
       }

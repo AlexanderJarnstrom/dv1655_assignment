@@ -4,19 +4,12 @@
 using namespace std;
 
 void 
-extract_root(Node* p_n, SymbolNode **pp_sn)
-{
-  SymbolNode *p_sn = *pp_sn;
-  p_sn = new SymbolNode("root", ROOT, NONE);
-}
-
-void 
 extract_class(Node* p_n, SymbolNode **pp_sn)
 {
   Node n = *p_n;
 
   string name = n[0]->value;
-  *pp_sn = new SymbolNode(name, CLASS, NONE);
+  *pp_sn = new SymbolNode(name, CLASS, NONE, n.lineno);
 }
 
 void 
@@ -25,7 +18,7 @@ extract_main_class(Node* p_n, SymbolNode **pp_sn)
   Node n = *p_n;
 
   string name = n[0]->value;
-  *pp_sn = new SymbolNode(name, MAIN_CLASS, NONE);
+  *pp_sn = new SymbolNode(name, MAIN_CLASS, NONE, n.lineno);
 }
 
 void
@@ -34,7 +27,7 @@ extract_main_class_args(Node* p_n, SymbolNode** pp_sn)
   Node n = *p_n;
 
   string name = n[1]->value;
-  *pp_sn = new SymbolNode(name, VARIABLE, STRING_ARR);
+  *pp_sn = new SymbolNode(name, VARIABLE, STRING_ARR, n.lineno);
 }
 
 void 
@@ -44,14 +37,14 @@ extract_statement(Node* p_n, SymbolNode **pp_sn, int counter)
 
   string type = n.value;
 
-  if (type != "if" && type != "if-else" && type != "while")
+  if (type != "block")
   {
     *pp_sn = nullptr;
     return;
   }
 
-  string name = "state_" + to_string(counter);
-  *pp_sn = new SymbolNode(name, STATEMENT, NONE);
+  string name = "block_" + to_string(counter);
+  *pp_sn = new SymbolNode(name, STATEMENT, NONE, n.lineno);
 }
 
 void 
@@ -77,7 +70,7 @@ extract_variable(Node* p_n, SymbolNode **pp_sn)
   else if (value_s == "id") value = USER_DEF;
   else value = NONE;
 
-  *pp_sn = new SymbolNode(name, VARIABLE, value);
+  *pp_sn = new SymbolNode(name, VARIABLE, value, n.lineno);
 }
 
 void 
@@ -97,7 +90,7 @@ extract_method(Node* p_n, SymbolNode **pp_sn)
   else if (value_s == "id") value = USER_DEF;
   else value = NONE;
 
-  *pp_sn = new SymbolNode(name, METHOD, value);
+  *pp_sn = new SymbolNode(name, METHOD, value, n.lineno);
 }
 
 

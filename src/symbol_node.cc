@@ -1,6 +1,8 @@
 #include "../inc/symbol_node.h"
+#include <cstdio>
 #include <exception>
 #include <functional>
+#include <iostream>
 #include <iterator>
 #include <string>
 
@@ -8,18 +10,75 @@
 
 using namespace std;
 
-SymbolNode::SymbolNode(string n, node_t nt, value_t vt) :
-  m_name(n), m_node_type(nt), m_value_type(vt),
+SymbolNode*
+SymbolNode::find_node(const hash_t h)
+{
+  if (m_hash == h)
+  {
+    return this;
+  }
+
+  if (m_hash < h && mp_right)
+  {
+    return mp_right->find_node(h);
+  }
+
+  if (m_hash > h && mp_left)
+  {
+    return mp_left->find_node(h);
+  }
+
+  return nullptr;
+}
+
+SymbolNode::SymbolNode(string n, node_t nt, value_t vt, int l) :
+  m_name(n), m_node_type(nt), m_value_type(vt), m_line_nbr(l),
   mp_left(nullptr), mp_right(nullptr), mp_table(nullptr)
 {
   m_hash = hash<string>{}(n);
 }
+
+SymbolNode::SymbolNode(SymbolNode* n) :
+  m_name(n->m_name), m_node_type(n->m_node_type), m_value_type(n->m_value_type), 
+  m_line_nbr(n->m_line_nbr), m_hash(n->m_hash),
+  mp_left(nullptr), mp_right(nullptr), mp_table(nullptr)
+{}
 
 SymbolNode::~SymbolNode()
 {
   if (mp_right) delete mp_right;
   if (mp_left) delete mp_left;
   if (mp_table) delete mp_table;
+}
+
+const string
+SymbolNode::get_name()
+{
+  return m_name;
+}
+
+const node_t
+SymbolNode::get_node_type()
+{
+  return m_node_type;
+}
+
+const value_t
+SymbolNode::get_value_type()
+{
+  return m_value_type;
+}
+
+const int
+SymbolNode::get_line_number()
+{
+  return m_line_nbr;
+}
+
+SymbolNode*
+SymbolNode::get_table()
+{
+  return mp_table;
 }
 
 void
@@ -31,13 +90,13 @@ SymbolNode::generate_table(Node* n, int &counter)
   switch (n->node_type) {
     case CLASS:
       extract_class(n, &node);
-      node->mp_table = new SymbolNode(node->m_name, CLASS, NONE);
+      node->mp_table = new SymbolNode(node);
       root->isnert_node(node);
       root = node->mp_table;
       break;
     case MAIN_CLASS:
       extract_main_class(n, &node);
-      node->mp_table = new SymbolNode(node->m_name, MAIN_CLASS, NONE);
+      node->mp_table = new SymbolNode(node);
       root->isnert_node(node);
       root = node->mp_table;
       extract_main_class_args(n, &node);
@@ -50,7 +109,7 @@ SymbolNode::generate_table(Node* n, int &counter)
         break;
 
       counter++;
-      node->mp_table = new SymbolNode(node->m_name, STATEMENT, NONE);
+      node->mp_table = new SymbolNode(node);
       root->isnert_node(node);
       root = node->mp_table;
       break;
@@ -60,7 +119,7 @@ SymbolNode::generate_table(Node* n, int &counter)
       break;
     case METHOD:
       extract_method(n, &node);
-      node->mp_table = new SymbolNode(node->m_name, METHOD, NONE);
+      node->mp_table = new SymbolNode(node);
       root->isnert_node(node);
       root = node->mp_table;
       break;
@@ -95,6 +154,13 @@ SymbolNode::isnert_node(SymbolNode* n)
   }
 }
 
+SymbolNode*
+SymbolNode::get_node(const std::string name)
+{
+  hash_t h = hash<string>{}(name);
+
+  return find_node(h);
+}
 
 void
 SymbolNode::print(int level)
@@ -105,9 +171,11 @@ SymbolNode::print(int level)
   if (mp_table)
     cout << "~";
 
-  cout << "\e[0;32m" << m_name << "\e[0m" << ": [" 
-    << m_node_type << ", "
-    << m_value_type << "]" << endl;
+  cout << "\e[0;32m" << m_name << "\e[0m" 
+    << ": [n:" << m_node_type 
+    << ", v:" << m_value_type 
+    << ", l:" << m_line_nbr 
+    <<"]" << endl;
 
   if (mp_left)
     mp_left->print(1);
@@ -117,38 +185,109 @@ SymbolNode::print(int level)
 
   if (mp_table)
   {
-    if (!mp_table->mp_right && !mp_table->mp_left)
-      return;
-
     cout << endl;
     mp_table->print();
   }
 }
 
 vector<SymbolNode*>
-SymbolNode::get_scopes()
+SymbolNode::get_classes(bool started)
 {
-  vector<SymbolNode*> scopes;  
-  vector<SymbolNode*> temp;  
+  vector<SymbolNode*> vec, temp;
 
-  if (mp_table)
+  if (m_node_type != ROOT && !started)
   {
-    scopes.push_back(mp_table);
+    cerr << "Node of wrong type, expected ROOT.\n";
+    return vec;
   }
+    
+  if (m_node_type == CLASS)
+    vec.push_back(this->mp_table);
 
   if (mp_left)
   {
-    temp = mp_left->get_scopes();
-    scopes.insert(end(scopes), begin(temp), end(temp));
-    temp.clear();
+    temp = mp_left->get_classes(true);
+    vec.insert(end(vec), begin(temp), end(temp));
   }
 
   if (mp_right)
   {
-    temp = mp_right->get_scopes();
-    scopes.insert(end(scopes), begin(temp), end(temp));
-    temp.clear();
+    temp = mp_right->get_classes(true);
+    vec.insert(end(vec), begin(temp), end(temp));
   }
 
-  return scopes;
+  return vec;
 }
+
+vector<SymbolNode*>
+SymbolNode::get_methods(bool started)
+{
+  vector<SymbolNode*> vec, temp;
+
+  if (m_node_type != CLASS && !started)
+  {
+    cerr << "Node of wrong type, expected CLASS.\n";
+    return vec;
+  }
+
+  if (m_node_type == METHOD)
+    vec.push_back(this->mp_table);
+
+  if (mp_left)
+  {
+    temp = mp_left->get_methods(true);
+    vec.insert(end(vec), begin(temp), end(temp));
+  }
+
+  if (mp_right)
+  {
+    temp = mp_right->get_methods(true);
+    vec.insert(end(vec), begin(temp), end(temp));
+  }
+
+  return vec;
+}
+
+vector<SymbolNode*>
+SymbolNode::get_blocks(bool started)
+{
+  vector<SymbolNode*> vec, temp;
+
+  if (m_node_type != METHOD && !started)
+  {
+    cerr << "Node of wrong type, expected METHOD.\n";
+    return vec;
+  }
+  if (m_node_type == STATEMENT)
+    vec.push_back(this->mp_table);
+
+  if (mp_left)
+  {
+    temp = mp_left->get_blocks(true);
+    vec.insert(end(vec), begin(temp), end(temp));
+  }
+
+  if (mp_right)
+  {
+    temp = mp_right->get_blocks(true);
+    vec.insert(end(vec), begin(temp), end(temp));
+  }
+
+  if (mp_table)
+  {
+    if (mp_table->mp_left)
+    {
+      temp = mp_table->mp_left->get_blocks(true);
+      vec.insert(end(vec), begin(temp), end(temp));
+    }
+
+    if (mp_table->mp_right)
+    {
+      temp = mp_table->mp_right->get_blocks(true);
+      vec.insert(end(vec), begin(temp), end(temp));
+    }
+  }
+
+  return vec;
+}
+

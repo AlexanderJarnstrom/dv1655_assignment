@@ -28,7 +28,7 @@ public:
     else if (t == "statement") this->node_type = STATEMENT;
     else if (t == "expression") this->node_type = EXPRESION;
     else if (t == "method_decl" && v == "declaration") this->node_type = METHOD;
-    else if (t == "var_decl") this->node_type = VARIABLE;
+    else if (t == "var_decl" || t == "method_arg") this->node_type = VARIABLE;
     else if (t == "method_arh") this->node_type = VARIABLE;
     else this->node_type = OTHER;
   }
