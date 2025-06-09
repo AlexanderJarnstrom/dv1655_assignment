@@ -41,10 +41,10 @@
 
 /* Specify types for non-terminals in the grammar */
 /* The type specifies the data type of the values associated with these non-terminals */
-%type <Node *> root main_class id statement expression_body type operator
+%type <Node *> root main_class id statement type operator
 %type <Node *> class_declaration var_declaration method_declaration class_content
 %type <Node *> class_declaration_list var_declaration_list method_declaration_list statement_list
-%type <Node *> method_arguments method_content method_head method_body expression_lst expression_head
+%type <Node *> method_arguments method_content method_head method_body expression_lst expression
 
 /* Grammar rules section */
 /* This section defines the production rules for the language being parsed */
@@ -142,11 +142,11 @@ method_head
   ;
   
 method_body
-  : LB RETURN expression_head DELI RB {
+  : LB RETURN expression_lst DELI RB {
     $$ = new Node("method_decl", "body", yylineno);
     $$->children.push_back($3);
   }
-  | LB method_content RETURN expression_head DELI RB {
+  | LB method_content RETURN expression_lst DELI RB {
     $$ = new Node("method_decl", "body", yylineno);
     $$->children.push_back($2);
     $$->children.push_back($4);
@@ -200,32 +200,32 @@ statement
     $$ = new Node("statement", "sub", yylineno); 
     $$->children.push_back($2);
   }
-  | IF LP expression_head RP statement {
+  | IF LP expression_lst RP statement {
     $$ = new Node("statement", "if", yylineno);
     $$->children.push_back($3);
     $$->children.push_back($5);
   }
-  | IF LP expression_head RP statement ELSE statement {
+  | IF LP expression_lst RP statement ELSE statement {
     $$ = new Node("statement", "if-else", yylineno);
     $$->children.push_back($3);
     $$->children.push_back($5);
     $$->children.push_back($7);
   }
-  | WHILE LP expression_head RP statement {
+  | WHILE LP expression_lst RP statement {
     $$ = new Node("statement", "while", yylineno);
     $$->children.push_back($3);
     $$->children.push_back($5);
   } 
-  | PRINT LP expression_head RP DELI {
+  | PRINT LP expression_lst RP DELI {
     $$ = new Node("statement", "print", yylineno);
     $$->children.push_back($3);
   }
-  | id ASSIGN_OP expression_head DELI {
+  | id ASSIGN_OP expression_lst DELI {
     $$ = new Node("statement", "assign", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($3);
   }
-  | id LS expression_head RS ASSIGN_OP expression_lst DELI {
+  | id LS expression_lst RS ASSIGN_OP expression_lst DELI {
     $$ = new Node("statement", "assign_arr", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($3);
@@ -234,49 +234,43 @@ statement
   ;
 
 expression_lst
-  : expression_head SEP expression_lst {
-    $$ = new Node("expression_lst", "", yylineno);
+  : expression_lst SEP expression_lst {
+    $$ = new Node("expression_lst", "sep", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($3);
   }
-  | expression_head {
-    $$ = new Node("expression", "", yylineno);
-    $$->children.push_back($1);
-  }
-  ;
-
-expression_head
-  : expression_body operator expression_body {
+  | expression_lst operator expression_lst {
     $$ = new Node("expression", "operator", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($2);
     $$->children.push_back($3);
   }
-  | expression_body LS expression_head RS {
+
+  | expression
+  ;
+
+expression
+  : expression LS expression RS {
     $$ = new Node("expression", "arr", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($3);
   }
-  | expression_body ATTR_OP LENGTH {
+  | expression ATTR_OP LENGTH {
     $$ = new Node("expression", "length", yylineno);
     $$->children.push_back($1);
   }
-  | expression_body ATTR_OP id LP RP {
-    $$ = new Node("expression", "attr", yylineno);
-    $$->children.push_back($1);
-    $$->children.push_back($3);
-  }
-  | expression_body ATTR_OP id LP expression_lst RP {
+  | expression ATTR_OP id LP expression_lst RP {
     $$ = new Node("expression", "attr", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($3);
     $$->children.push_back($5);
   }
-  | expression_body
-  ;
-
-expression_body 
-  : LP expression_head RP {
+  | expression ATTR_OP id LP RP {
+    $$ = new Node("expression", "attr", yylineno);
+    $$->children.push_back($1);
+    $$->children.push_back($3);
+  }
+  | LP expression_lst RP {
     $$ = new Node("expression", "brackets", yylineno);
     $$->children.push_back($2);
   }
@@ -298,7 +292,7 @@ expression_body
   | THIS {
     $$ = new Node("expression", "this", yylineno);
   }
-  | NEW INT LS expression_head RS {
+  | NEW INT LS expression_lst RS {
     $$ = new Node("expression", "arr", yylineno);
     $$->children.push_back($4);
   }
@@ -306,7 +300,7 @@ expression_body
     $$ = new Node("expression", "init", yylineno);
     $$->children.push_back($2);
   }
-  | NOT_OP expression_head {
+  | NOT_OP expression {
     $$ = new Node("expression", "not", yylineno);
     $$->children.push_back($2);
   }
@@ -315,6 +309,8 @@ expression_body
 operator
   : ADD_OP { $$ = new Node("operator", "add", yylineno); }
   | SUB_OP { $$ = new Node("operator", "sub", yylineno); }
+  | AND_OP { $$ = new Node("operator", "and", yylineno); }
+  | OR_OP { $$ = new Node("operator", "or", yylineno); }
   | EQ_OP { $$ = new Node("operator", "eq", yylineno); }
   | GT_OP { $$ = new Node("operator", "gt", yylineno); }
   | LT_OP { $$ = new Node("operator", "lt", yylineno); }
