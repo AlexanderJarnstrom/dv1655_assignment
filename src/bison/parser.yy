@@ -260,7 +260,7 @@ expression
     $$->children.push_back($1);
   }
   | expression ATTR_OP id LP expression_lst RP {
-    $$ = new Node("expression", "attr", yylineno);
+    $$ = new Node("expression", "attr_exp", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($3);
     $$->children.push_back($5);

@@ -10,16 +10,6 @@ extern int yylineno;
 extern int lexical_errors;
 extern yy::parser::symbol_type yylex();
 
-enum errCodes
-{
-  SUCCESS = 0,
-  LEXICAL_ERROR = 1,
-  SYNTAX_ERROR = 2,
-  AST_ERROR = 3,
-  SEMANTIC_ERROR = 4,
-  SEGMENTATION_FAULT = 139
-};
-
 int errCode = errCodes::SUCCESS;
 
 // Handling Syntax Errors
@@ -66,6 +56,7 @@ int main(int argc, char **argv)
         table.print();
 
         definition_validation(root, &table);
+        type_validation(root, &table);
       } catch (...) {
         errCode = errCodes::AST_ERROR;
       }

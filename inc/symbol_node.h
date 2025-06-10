@@ -13,6 +13,7 @@ class SymbolNode
   node_t m_node_type;
   value_t m_value_type;
   int m_line_nbr;
+  string m_user_type;
   
   hash_t m_hash;
 
@@ -31,12 +32,15 @@ public:
   const node_t get_node_type();
   const value_t get_value_type();
   const int get_line_number();
+  const std::string get_user_type();
   SymbolNode* get_table();
+
+  void set_user_type(std::string);
 
   void generate_table(Node*, int &counter);
 
   void isnert_node(SymbolNode*);
-  SymbolNode* get_node(const std::string);
+  SymbolNode* get_node(const std::string, const node_t);
 
   void print(int level = 0);
 

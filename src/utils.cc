@@ -3,6 +3,15 @@
 
 using namespace std;
 
+extern int errCode;
+
+void
+print_error(errCodes code, int line, string msg)
+{
+  cout << "@error line: " << line << ": " << msg << endl; 
+  errCode = code;
+}
+
 void 
 extract_class(Node* p_n, SymbolNode **pp_sn)
 {
@@ -71,6 +80,9 @@ extract_variable(Node* p_n, SymbolNode **pp_sn)
   else value = NONE;
 
   *pp_sn = new SymbolNode(name, VARIABLE, value, n.lineno);
+
+  if (value == USER_DEF)
+    (*pp_sn)->set_user_type((*n[0])[0]->value);
 }
 
 void 

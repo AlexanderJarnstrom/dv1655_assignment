@@ -1216,7 +1216,7 @@ namespace yy {
   case 43: // expression: expression ATTR_OP id LP expression_lst RP
 #line 262 "src/bison/parser.yy"
                                                {
-    yylhs.value.as < Node * > () = new Node("expression", "attr", yylineno);
+    yylhs.value.as < Node * > () = new Node("expression", "attr_exp", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[5].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[3].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());

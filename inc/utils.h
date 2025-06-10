@@ -3,7 +3,10 @@
 
 #include "node.h"
 #include "symbol_node.h"
+#include "types.h"
 #include <string>
+
+void print_error(errCodes, int, std::string);
 
 void extract_root(Node*, SymbolNode**);
 void extract_class(Node*, SymbolNode**);

@@ -32,10 +32,10 @@ SymbolNode::find_node(const hash_t h)
 }
 
 SymbolNode::SymbolNode(string n, node_t nt, value_t vt, int l) :
-  m_name(n), m_node_type(nt), m_value_type(vt), m_line_nbr(l),
+  m_name(n), m_node_type(nt), m_value_type(vt), m_line_nbr(l), m_user_type(""),
   mp_left(nullptr), mp_right(nullptr), mp_table(nullptr)
 {
-  m_hash = hash<string>{}(n);
+  m_hash = hash<string>{}(n + to_string(nt));
 }
 
 SymbolNode::SymbolNode(SymbolNode* n) :
@@ -75,10 +75,22 @@ SymbolNode::get_line_number()
   return m_line_nbr;
 }
 
+const string
+SymbolNode::get_user_type()
+{
+  return m_user_type;
+}
+
 SymbolNode*
 SymbolNode::get_table()
 {
   return mp_table;
+}
+
+void
+SymbolNode::set_user_type(string user_type)
+{
+  m_user_type = user_type;
 }
 
 void
@@ -150,14 +162,15 @@ SymbolNode::isnert_node(SymbolNode* n)
   }
   else
   {
+    cout << n->get_name() << " taken by " << this->get_name() << endl;
     throw exception();
   }
 }
 
 SymbolNode*
-SymbolNode::get_node(const std::string name)
+SymbolNode::get_node(const std::string name, const node_t nt)
 {
-  hash_t h = hash<string>{}(name);
+  hash_t h = hash<string>{}(name + to_string(nt));
 
   return find_node(h);
 }
@@ -173,9 +186,14 @@ SymbolNode::print(int level)
 
   cout << "\e[0;32m" << m_name << "\e[0m" 
     << ": [n:" << m_node_type 
-    << ", v:" << m_value_type 
-    << ", l:" << m_line_nbr 
-    <<"]" << endl;
+    << ", v:" << m_value_type;
+
+  if (m_value_type == USER_DEF)
+    cout << ":" << m_user_type;
+
+  cout << ", l:" << m_line_nbr 
+    <<"]\n";
+
 
   if (mp_left)
     mp_left->print(1);
