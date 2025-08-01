@@ -1,14 +1,25 @@
 #include <cstdio>
 #include <iostream>
-#include "../inc/symbol_node.h"
+#include <ostream>
+#include <stdexcept>
 #include "../inc/parser.tab.h"
-#include "../inc/semantic_functions.h"
+#include "../inc/symbol_table/table.h"
 
 extern Node *root;
 extern FILE *yyin;
 extern int yylineno;
 extern int lexical_errors;
 extern yy::parser::symbol_type yylex();
+
+enum errCodes
+{
+  SUCCESS = 0,
+  LEXICAL_ERROR = 1,
+  SYNTAX_ERROR = 2,
+  AST_ERROR = 3,
+  SEMANTIC_ERROR = 4,
+  SEGMENTATION_FAULT = 139
+};
 
 int errCode = errCodes::SUCCESS;
 
@@ -50,18 +61,32 @@ int main(int argc, char **argv)
         root->print_tree();
         root->generate_tree();
 
-        SymbolNode table("root", ROOT, NONE, 0);
-        int counter = 0;
-        table.generate_table(root, counter);
-        table.print();
+        using namespace SymbolTable;
+        Table *table = new SymbolTable::Table();
 
-        definition_validation(root, &table);
-        type_validation(root, &table);
-      } catch (...) {
+        table->build_table(root);
+        table->print();
+        table->reset();
+        table->check_identifiers(root);
+        table->check_declerations(root);
+        
+        table->print_errors();
+
+        delete table;
+      } 
+      catch (runtime_error e)
+      {
+        cerr << e.what() << endl;
+      } 
+      catch (...)
+      {
         errCode = errCodes::AST_ERROR;
       }
     }
   }
 
+  delete root;
+
   return errCode;
 }
+

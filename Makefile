@@ -9,7 +9,7 @@ ODIR=obj
 IDIR=inc
 BDIR=src/bison
 
-_OBJ=main.o parser.tab.o symbol_node.o utils.o semantic_functions.o
+_OBJ=main.o parser.tab.o symbol_table/class.o symbol_table/record.o symbol_table/method.o symbol_table/table.o symbol_table/variable.o symbol_table/children.o
 OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(BIN): $(SDIR)/lex.yy.c $(OBJ)
