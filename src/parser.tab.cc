@@ -42,7 +42,7 @@
 
 
 // Unqualified %code blocks.
-#line 18 "src/bison/parser.yy"
+#line 19 "src/bison/parser.yy"
 
   #define YY_DECL yy::parser::symbol_type yylex()
   YY_DECL;
@@ -852,9 +852,9 @@ namespace yy {
           switch (yyn)
             {
   case 2: // root: main_class class_declaration_list "end of file"
-#line 53 "src/bison/parser.yy"
+#line 54 "src/bison/parser.yy"
                                           { 
-      root = new Node("Root", "", yylineno); 
+      root = new SyRoot("root", "", yylineno); 
       root->children.push_back(yystack_[2].value.as < Node * > ());
       root->children.push_back(yystack_[1].value.as < Node * > ());
   }
@@ -862,9 +862,9 @@ namespace yy {
     break;
 
   case 3: // main_class: PUBLIC CLASS id LB PUBLIC STATIC VOID MAIN LP STRING LS RS id RP LB statement_list RB RB
-#line 61 "src/bison/parser.yy"
+#line 62 "src/bison/parser.yy"
                                                                                              {
-    yylhs.value.as < Node * > () = new Node("main_class", "", yylineno);
+    yylhs.value.as < Node * > () = new SyMainClass("main_class", "", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[15].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[5].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
@@ -873,13 +873,13 @@ namespace yy {
     break;
 
   case 4: // class_declaration_list: class_declaration
-#line 70 "src/bison/parser.yy"
+#line 71 "src/bison/parser.yy"
     { yylhs.value.as < Node * > () = yystack_[0].value.as < Node * > (); }
 #line 879 "src/parser.tab.cc"
     break;
 
   case 5: // class_declaration_list: class_declaration_list class_declaration_list
-#line 71 "src/bison/parser.yy"
+#line 72 "src/bison/parser.yy"
                                                   {
     yylhs.value.as < Node * > () = new Node("class_decl_lst", "", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
@@ -889,9 +889,9 @@ namespace yy {
     break;
 
   case 6: // class_declaration: CLASS id LB class_content RB
-#line 79 "src/bison/parser.yy"
+#line 80 "src/bison/parser.yy"
                                  {
-    yylhs.value.as < Node * > () = new Node("class_decl", "", yylineno);
+    yylhs.value.as < Node * > () = new SyClass("class_decl", "", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[3].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
   }
@@ -899,19 +899,19 @@ namespace yy {
     break;
 
   case 7: // class_content: var_declaration_list
-#line 87 "src/bison/parser.yy"
+#line 88 "src/bison/parser.yy"
     { yylhs.value.as < Node * > () = yystack_[0].value.as < Node * > (); }
 #line 905 "src/parser.tab.cc"
     break;
 
   case 8: // class_content: method_declaration_list
-#line 88 "src/bison/parser.yy"
+#line 89 "src/bison/parser.yy"
     { yylhs.value.as < Node * > () = yystack_[0].value.as < Node * > (); }
 #line 911 "src/parser.tab.cc"
     break;
 
   case 9: // class_content: class_content class_content
-#line 89 "src/bison/parser.yy"
+#line 90 "src/bison/parser.yy"
                                 {
     yylhs.value.as < Node * > () = new Node("class_content", "", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
@@ -921,13 +921,13 @@ namespace yy {
     break;
 
   case 10: // var_declaration_list: var_declaration
-#line 97 "src/bison/parser.yy"
+#line 98 "src/bison/parser.yy"
     { yylhs.value.as < Node * > () = yystack_[0].value.as < Node * > (); }
 #line 927 "src/parser.tab.cc"
     break;
 
   case 11: // var_declaration_list: var_declaration var_declaration_list
-#line 98 "src/bison/parser.yy"
+#line 99 "src/bison/parser.yy"
                                          {
     yylhs.value.as < Node * > () = new Node("var_decl_lst", "", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
@@ -937,9 +937,9 @@ namespace yy {
     break;
 
   case 12: // var_declaration: type id DELI
-#line 106 "src/bison/parser.yy"
+#line 107 "src/bison/parser.yy"
                  {
-    yylhs.value.as < Node * > () = new Node("var_decl", "", yylineno);
+    yylhs.value.as < Node * > () = new SyVariable("var_decl", "", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
   }
@@ -947,13 +947,13 @@ namespace yy {
     break;
 
   case 13: // method_declaration_list: method_declaration
-#line 114 "src/bison/parser.yy"
+#line 115 "src/bison/parser.yy"
     { yylhs.value.as < Node * > () = yystack_[0].value.as < Node * > (); }
 #line 953 "src/parser.tab.cc"
     break;
 
   case 14: // method_declaration_list: method_declaration_list method_declaration_list
-#line 115 "src/bison/parser.yy"
+#line 116 "src/bison/parser.yy"
                                                     {
     yylhs.value.as < Node * > () = new Node("method_decl_lst", "", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
@@ -963,9 +963,9 @@ namespace yy {
     break;
 
   case 15: // method_declaration: method_head LP RP method_body
-#line 123 "src/bison/parser.yy"
+#line 124 "src/bison/parser.yy"
                                   {
-    yylhs.value.as < Node * > () = new Node("method_decl", "declaration", yylineno);
+    yylhs.value.as < Node * > () = new SyMethod("method_decl", "declaration", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[3].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[0].value.as < Node * > ());
   }
@@ -973,9 +973,9 @@ namespace yy {
     break;
 
   case 16: // method_declaration: method_head LP method_arguments RP method_body
-#line 128 "src/bison/parser.yy"
+#line 129 "src/bison/parser.yy"
                                                    {
-    yylhs.value.as < Node * > () = new Node("method_decl", "declaration", yylineno);
+    yylhs.value.as < Node * > () = new SyMethod("method_decl", "declaration", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[4].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[0].value.as < Node * > ());
@@ -984,7 +984,7 @@ namespace yy {
     break;
 
   case 17: // method_head: PUBLIC type id
-#line 137 "src/bison/parser.yy"
+#line 138 "src/bison/parser.yy"
                    {
     yylhs.value.as < Node * > () = new Node("method_decl", "head", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
@@ -994,7 +994,7 @@ namespace yy {
     break;
 
   case 18: // method_body: LB RETURN expression_lst DELI RB
-#line 145 "src/bison/parser.yy"
+#line 146 "src/bison/parser.yy"
                                      {
     yylhs.value.as < Node * > () = new Node("method_decl", "body", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
@@ -1003,7 +1003,7 @@ namespace yy {
     break;
 
   case 19: // method_body: LB method_content RETURN expression_lst DELI RB
-#line 149 "src/bison/parser.yy"
+#line 150 "src/bison/parser.yy"
                                                     {
     yylhs.value.as < Node * > () = new Node("method_decl", "body", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[4].value.as < Node * > ());
@@ -1013,9 +1013,9 @@ namespace yy {
     break;
 
   case 20: // method_arguments: type id
-#line 157 "src/bison/parser.yy"
+#line 158 "src/bison/parser.yy"
             {
-    yylhs.value.as < Node * > () = new Node("method_arg", "", yylineno);
+    yylhs.value.as < Node * > () = new SyVariable("method_arg", "", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[0].value.as < Node * > ());
   }
@@ -1023,7 +1023,7 @@ namespace yy {
     break;
 
   case 21: // method_arguments: method_arguments SEP method_arguments
-#line 162 "src/bison/parser.yy"
+#line 163 "src/bison/parser.yy"
                                           {
     yylhs.value.as < Node * > () = new Node("method_arg_lst", "", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
@@ -1033,19 +1033,19 @@ namespace yy {
     break;
 
   case 22: // method_content: var_declaration
-#line 170 "src/bison/parser.yy"
+#line 171 "src/bison/parser.yy"
     { yylhs.value.as < Node * > () = yystack_[0].value.as < Node * > (); }
 #line 1039 "src/parser.tab.cc"
     break;
 
   case 23: // method_content: statement
-#line 171 "src/bison/parser.yy"
+#line 172 "src/bison/parser.yy"
     { yylhs.value.as < Node * > () = yystack_[0].value.as < Node * > (); }
 #line 1045 "src/parser.tab.cc"
     break;
 
   case 24: // method_content: method_content method_content
-#line 172 "src/bison/parser.yy"
+#line 173 "src/bison/parser.yy"
                                   {
     yylhs.value.as < Node * > () = new Node("method_content", "", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
@@ -1055,25 +1055,25 @@ namespace yy {
     break;
 
   case 25: // type: INT LS RS
-#line 180 "src/bison/parser.yy"
+#line 181 "src/bison/parser.yy"
               { yylhs.value.as < Node * > () = new Node("type", "int_arr", yylineno); }
 #line 1061 "src/parser.tab.cc"
     break;
 
   case 26: // type: BOOLEAN
-#line 181 "src/bison/parser.yy"
+#line 182 "src/bison/parser.yy"
             { yylhs.value.as < Node * > () = new Node("type", "boolean", yylineno); }
 #line 1067 "src/parser.tab.cc"
     break;
 
   case 27: // type: INT
-#line 182 "src/bison/parser.yy"
+#line 183 "src/bison/parser.yy"
         { yylhs.value.as < Node * > () = new Node("type", "int", yylineno); }
 #line 1073 "src/parser.tab.cc"
     break;
 
   case 28: // type: id
-#line 183 "src/bison/parser.yy"
+#line 184 "src/bison/parser.yy"
        { 
     yylhs.value.as < Node * > () = new Node("type", "id", yylineno); 
     yylhs.value.as < Node * > ()->children.push_back(yystack_[0].value.as < Node * > ());
@@ -1082,13 +1082,13 @@ namespace yy {
     break;
 
   case 29: // statement_list: statement
-#line 190 "src/bison/parser.yy"
+#line 191 "src/bison/parser.yy"
     { yylhs.value.as < Node * > () = yystack_[0].value.as < Node * > (); }
 #line 1088 "src/parser.tab.cc"
     break;
 
   case 30: // statement_list: statement_list statement_list
-#line 191 "src/bison/parser.yy"
+#line 192 "src/bison/parser.yy"
                                   {
     yylhs.value.as < Node * > () = new Node("statement_lst", "", yylineno); 
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
@@ -1098,7 +1098,7 @@ namespace yy {
     break;
 
   case 31: // statement: LB statement_list RB
-#line 199 "src/bison/parser.yy"
+#line 200 "src/bison/parser.yy"
                          {
     yylhs.value.as < Node * > () = new Node("statement", "block", yylineno); 
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
@@ -1107,7 +1107,7 @@ namespace yy {
     break;
 
   case 32: // statement: IF LP expression_lst RP statement
-#line 203 "src/bison/parser.yy"
+#line 204 "src/bison/parser.yy"
                                       {
     yylhs.value.as < Node * > () = new Node("statement", "if", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
@@ -1117,7 +1117,7 @@ namespace yy {
     break;
 
   case 33: // statement: IF LP expression_lst RP statement ELSE statement
-#line 208 "src/bison/parser.yy"
+#line 209 "src/bison/parser.yy"
                                                      {
     yylhs.value.as < Node * > () = new Node("statement", "if-else", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[4].value.as < Node * > ());
@@ -1128,7 +1128,7 @@ namespace yy {
     break;
 
   case 34: // statement: WHILE LP expression_lst RP statement
-#line 214 "src/bison/parser.yy"
+#line 215 "src/bison/parser.yy"
                                          {
     yylhs.value.as < Node * > () = new Node("statement", "while", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
@@ -1138,7 +1138,7 @@ namespace yy {
     break;
 
   case 35: // statement: PRINT LP expression_lst RP DELI
-#line 219 "src/bison/parser.yy"
+#line 220 "src/bison/parser.yy"
                                     {
     yylhs.value.as < Node * > () = new Node("statement", "print", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
@@ -1147,9 +1147,9 @@ namespace yy {
     break;
 
   case 36: // statement: id ASSIGN_OP expression_lst DELI
-#line 223 "src/bison/parser.yy"
+#line 224 "src/bison/parser.yy"
                                      {
-    yylhs.value.as < Node * > () = new Node("statement", "assign", yylineno);
+    yylhs.value.as < Node * > () = new SyAssign("statement", "assign", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[3].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
   }
@@ -1157,7 +1157,7 @@ namespace yy {
     break;
 
   case 37: // statement: id LS expression_lst RS ASSIGN_OP expression_lst DELI
-#line 228 "src/bison/parser.yy"
+#line 229 "src/bison/parser.yy"
                                                           {
     yylhs.value.as < Node * > () = new Node("statement", "assign_arr", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[6].value.as < Node * > ());
@@ -1168,7 +1168,7 @@ namespace yy {
     break;
 
   case 38: // expression_lst: expression_lst SEP expression_lst
-#line 237 "src/bison/parser.yy"
+#line 238 "src/bison/parser.yy"
                                       {
     yylhs.value.as < Node * > () = new Node("expression_lst", "sep", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
@@ -1178,9 +1178,9 @@ namespace yy {
     break;
 
   case 39: // expression_lst: expression_lst operator expression_lst
-#line 242 "src/bison/parser.yy"
+#line 243 "src/bison/parser.yy"
                                            {
-    yylhs.value.as < Node * > () = new Node("expression", "operator", yylineno);
+    yylhs.value.as < Node * > () = new SyOperator("expression", "operator", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[0].value.as < Node * > ());
@@ -1197,7 +1197,7 @@ namespace yy {
   case 41: // expression: expression LS expression_lst RS
 #line 253 "src/bison/parser.yy"
                                     {
-    yylhs.value.as < Node * > () = new Node("expression", "arr", yylineno);
+    yylhs.value.as < Node * > () = new SyArrayPull("expression", "arr", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[3].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
   }
@@ -1207,7 +1207,7 @@ namespace yy {
   case 42: // expression: expression ATTR_OP LENGTH
 #line 258 "src/bison/parser.yy"
                               {
-    yylhs.value.as < Node * > () = new Node("expression", "length", yylineno);
+    yylhs.value.as < Node * > () = new SyLength("expression", "length", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
   }
 #line 1214 "src/parser.tab.cc"
@@ -1216,7 +1216,7 @@ namespace yy {
   case 43: // expression: expression ATTR_OP id LP expression_lst RP
 #line 262 "src/bison/parser.yy"
                                                {
-    yylhs.value.as < Node * > () = new Node("expression", "attr_exp", yylineno);
+    yylhs.value.as < Node * > () = new SyAttribute("expression", "attr_exp", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[5].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[3].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
@@ -1227,7 +1227,7 @@ namespace yy {
   case 44: // expression: expression ATTR_OP id LP RP
 #line 268 "src/bison/parser.yy"
                                 {
-    yylhs.value.as < Node * > () = new Node("expression", "attr", yylineno);
+    yylhs.value.as < Node * > () = new SyAttribute("expression", "attr", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[4].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
   }
@@ -1237,7 +1237,7 @@ namespace yy {
   case 45: // expression: LP expression_lst RP
 #line 273 "src/bison/parser.yy"
                          {
-    yylhs.value.as < Node * > () = new Node("expression", "brackets", yylineno);
+    yylhs.value.as < Node * > () = new SyParenthesis("expression", "brackets", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
   }
 #line 1244 "src/parser.tab.cc"
@@ -1245,7 +1245,7 @@ namespace yy {
 
   case 46: // expression: NUMBER
 #line 277 "src/bison/parser.yy"
-           { yylhs.value.as < Node * > () = new Node("number", std::to_string(yystack_[0].value.as < int > ()),  yylineno); }
+           { yylhs.value.as < Node * > () = new SyNumber("number", std::to_string(yystack_[0].value.as < int > ()),  yylineno); }
 #line 1250 "src/parser.tab.cc"
     break;
 
@@ -1259,7 +1259,7 @@ namespace yy {
       val = "false";
     }
 
-    yylhs.value.as < Node * > () = new Node("bool", val, yylineno);
+    yylhs.value.as < Node * > () = new SyBoolean("bool", val, yylineno);
   }
 #line 1265 "src/parser.tab.cc"
     break;
@@ -1267,7 +1267,7 @@ namespace yy {
   case 48: // expression: id
 #line 288 "src/bison/parser.yy"
        {
-    yylhs.value.as < Node * > () = new Node("expression", "id", yylineno);
+    yylhs.value.as < Node * > () = new SyIdentifier("expression", "id", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[0].value.as < Node * > ());
   }
 #line 1274 "src/parser.tab.cc"
@@ -1276,7 +1276,7 @@ namespace yy {
   case 49: // expression: THIS
 #line 292 "src/bison/parser.yy"
          {
-    yylhs.value.as < Node * > () = new Node("expression", "this", yylineno);
+    yylhs.value.as < Node * > () = new SyThis("expression", "this", yylineno);
   }
 #line 1282 "src/parser.tab.cc"
     break;
@@ -1284,7 +1284,7 @@ namespace yy {
   case 50: // expression: NEW INT LS expression_lst RS
 #line 295 "src/bison/parser.yy"
                                  {
-    yylhs.value.as < Node * > () = new Node("expression", "arr", yylineno);
+    yylhs.value.as < Node * > () = new SyArrayInit("expression", "arr", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());
   }
 #line 1291 "src/parser.tab.cc"
@@ -1293,7 +1293,7 @@ namespace yy {
   case 51: // expression: NEW id LP RP
 #line 299 "src/bison/parser.yy"
                  {
-    yylhs.value.as < Node * > () = new Node("expression", "init", yylineno);
+    yylhs.value.as < Node * > () = new SyObjectInit("expression", "init", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[2].value.as < Node * > ());
   }
 #line 1300 "src/parser.tab.cc"
@@ -1302,7 +1302,7 @@ namespace yy {
   case 52: // expression: NOT_OP expression
 #line 303 "src/bison/parser.yy"
                       {
-    yylhs.value.as < Node * > () = new Node("expression", "not", yylineno);
+    yylhs.value.as < Node * > () = new SyNot("expression", "not", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[0].value.as < Node * > ());
   }
 #line 1309 "src/parser.tab.cc"
@@ -1925,10 +1925,10 @@ namespace yy {
   const short
   parser::yyrline_[] =
   {
-       0,    53,    53,    61,    70,    71,    79,    87,    88,    89,
-      97,    98,   106,   114,   115,   123,   128,   137,   145,   149,
-     157,   162,   170,   171,   172,   180,   181,   182,   183,   190,
-     191,   199,   203,   208,   214,   219,   223,   228,   237,   242,
+       0,    54,    54,    62,    71,    72,    80,    88,    89,    90,
+      98,    99,   107,   115,   116,   124,   129,   138,   146,   150,
+     158,   163,   171,   172,   173,   181,   182,   183,   184,   191,
+     192,   200,   204,   209,   215,   220,   224,   229,   238,   243,
      249,   253,   258,   262,   268,   273,   277,   278,   288,   292,
      295,   299,   303,   310,   311,   312,   313,   314,   315,   316,
      317,   321

@@ -1,0 +1,204 @@
+#ifndef NODE_EXECUTE
+#define NODE_EXECUTE
+
+#include "node.h"
+#include "symbol_table.h"
+#include <iostream>
+
+class SyRoot : public Node
+{
+  public:
+    SyRoot(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyRoot() : Node() {}
+    ~SyRoot() {}
+
+    void pre_execute(SymbolTable*) override;
+};
+
+class SyMainClass : public Node
+{
+  public:
+    SyMainClass(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyMainClass() : Node() {}
+    ~SyMainClass() {}
+
+    void pre_execute(SymbolTable*) override;
+};
+
+
+class SyClass : public Node
+{
+  public:
+    SyClass(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyClass() : Node() {}
+    ~SyClass() {}
+
+    void pre_execute(SymbolTable*) override;
+};
+
+class SyMethod : public Node
+{
+  public:
+    SyMethod(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyMethod() : Node() {}
+    ~SyMethod() {}
+
+    void pre_execute(SymbolTable*) override;
+    void post_execute(SymbolTable*) override;
+};
+
+class SyVariable : public Node
+{
+  public:
+    SyVariable(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyVariable() : Node() {}
+    ~SyVariable() {}
+
+    void pre_execute(SymbolTable*) override;
+    void post_execute(SymbolTable*) override;
+};
+
+class SyAssign : public Node
+{
+  public:
+    SyAssign(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyAssign() : Node() {}
+    ~SyAssign() {}
+
+    void in_execute(SymbolTable*) override;
+    void post_execute(SymbolTable*) override;
+};
+
+class SyAttribute : public Node
+{
+  public:
+    SyAttribute(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyAttribute() : Node() {}
+    ~SyAttribute() {}
+
+
+    void post_execute(SymbolTable*) override;
+    std::string get_type(SymbolTable*) override;
+};
+
+class SyOperator : public Node
+{
+  public:
+    SyOperator(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyOperator() : Node() {}
+    ~SyOperator() {}
+
+    std::string get_type(SymbolTable*) override;
+};
+
+class SyLength : public Node
+{
+  public:
+    SyLength(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyLength() : Node() {}
+    ~SyLength() {}
+
+    std::string get_type(SymbolTable*) override;
+};
+
+class SyArrayPull : public Node
+{
+  public:
+    SyArrayPull(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyArrayPull() : Node() {}
+    ~SyArrayPull() {}
+
+    std::string get_type(SymbolTable*) override;
+};
+
+class SyParenthesis : public Node
+{
+  public:
+    SyParenthesis(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyParenthesis() : Node() {}
+    ~SyParenthesis() {}
+
+    std::string get_type(SymbolTable*) override;
+};
+
+class SyNumber : public Node
+{
+  public:
+    SyNumber(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyNumber() : Node() {}
+    ~SyNumber() {}
+
+    std::string get_type(SymbolTable*) override;
+};
+
+class SyBoolean : public Node
+{
+  public:
+    SyBoolean(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyBoolean() : Node() {}
+    ~SyBoolean() {}
+
+    std::string get_type(SymbolTable*) override;
+};
+
+class SyIdentifier : public Node
+{
+  public:
+    SyIdentifier(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyIdentifier() : Node() {}
+    ~SyIdentifier() {}
+
+    std::string get_type(SymbolTable*) override;
+};
+
+class SyThis : public Node
+{
+  public:
+    SyThis(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyThis() : Node() {}
+    ~SyThis() {}
+
+    std::string get_type(SymbolTable*) override;
+};
+
+class SyArrayInit : public Node
+{
+  public:
+    SyArrayInit(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyArrayInit() : Node() {}
+    ~SyArrayInit() {}
+
+    std::string get_type(SymbolTable*) override;
+};
+
+class SyObjectInit : public Node
+{
+  public:
+    SyObjectInit(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyObjectInit() : Node() {}
+    ~SyObjectInit() {}
+
+    std::string get_type(SymbolTable*) override;
+};
+
+class SyNot : public Node
+{
+  public:
+    SyNot(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyNot() : Node() {}
+    ~SyNot() {}
+
+    std::string get_type(SymbolTable*) override;
+};
+
+class SyExpressionList : public Node
+{
+  public:
+    SyExpressionList(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyExpressionList() : Node() {}
+    ~SyExpressionList() {}
+
+    std::string get_type(SymbolTable*) override;
+};
+
+#endif // !NODE_EXECUTE

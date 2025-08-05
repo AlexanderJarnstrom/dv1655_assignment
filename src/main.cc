@@ -1,9 +1,9 @@
 #include <cstdio>
 #include <iostream>
 #include <ostream>
-#include <stdexcept>
 #include "../inc/parser.tab.h"
-#include "../inc/symbol_table/table.h"
+#include "../inc/symbol_table.h"
+#include "../inc/semantic.h"
 
 extern Node *root;
 extern FILE *yyin;
@@ -22,6 +22,8 @@ enum errCodes
 };
 
 int errCode = errCodes::SUCCESS;
+
+void build_table(SymbolTable*, Node*);
 
 // Handling Syntax Errors
 void yy::parser::error(std::string const &err)
@@ -53,30 +55,17 @@ int main(int argc, char **argv)
 
     if (lexical_errors)
       errCode = errCodes::LEXICAL_ERROR;
-    if (parseSuccess && !lexical_errors) {
-      printf("\nThe compiler successfuly generated a syntax tree for the given input! \n");
-
-      printf("\nPrint Tree:  \n");
-      try {
+    if (parseSuccess && !lexical_errors)
+    {
+      try
+      {
         root->print_tree();
         root->generate_tree();
 
-        using namespace SymbolTable;
-        Table *table = new SymbolTable::Table();
-
-        table->build_table(root);
-        table->print();
-        table->reset();
-        table->check_identifiers(root);
-        table->check_declerations(root);
-        
-        table->print_errors();
-
-        delete table;
-      } 
-      catch (runtime_error e)
-      {
-        cerr << e.what() << endl;
+        SymbolTable table;
+        semantic_analysis(root, &table);
+        table.print_root();
+        table.print_errors();
       } 
       catch (...)
       {

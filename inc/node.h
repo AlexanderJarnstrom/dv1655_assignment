@@ -7,77 +7,32 @@
 #include <vector>
 #include <unistd.h>
 #include <sys/wait.h>
-
-using namespace std;
-
+#include "symbol.h"
+#include "symbol_table.h"
 
 class Node {
 public:
 	int id, lineno;
-	string type, value;
+  std::string type, value;
 
-	list<Node*> children;
-	Node(string t, string v, int l) : type(t), value(v), lineno(l)
-  {}
+  std::list<Node*> children;
 
-	Node()
-	{
-		this->type = "uninitialised";
-		this->value = "uninitialised";
-  }   // Bison needs this.
+	Node(std::string t, std::string v, int l);
+	Node();
 
-  ~Node()
-  {
-    for (Node* n : children)
-      delete n;
-  }
+  virtual ~Node();
   
-  void print_tree(int depth=0) {
-    for(int i=0; i<depth; i++)
-      cout << "  ";
-    cout << type << ":" << value << endl; //<< " @line: "<< lineno << endl;
-    for(auto i=children.begin(); i!=children.end(); i++)
-      (*i)->print_tree(depth+1);
-  }
+  virtual void pre_execute(SymbolTable*);
+  virtual void in_execute(SymbolTable*);
+  virtual void post_execute(SymbolTable*);
 
-  Node* operator[](const int& i) {
-    int x = 0;
+  virtual std::string get_type(SymbolTable*);
 
-    for (Node* child : this->children) {
-      if (x == i) {
-        return child;
-      }
-      x++;
-    }
-
-    return nullptr;
-  }
+  void print_tree(int depth = 0);
+  Node* operator[](const int& i);
   
-  void generate_tree() {
-    std::ofstream outStream;
-    const char* filename = "tree.dot";
-    outStream.open(filename);
-
-    int count = 0;
-    outStream << "digraph {" << std::endl;
-    generate_tree_content(count, &outStream);
-    outStream << "}" << std::endl;
-    outStream.close();
-
-    printf("\nBuilt a parse-tree at %s. Use 'make tree' to generate the pdf version.\n", filename);
-  }
-
-  void generate_tree_content(int &count, ofstream *outStream) {
-    id = count++;
-    *outStream << "n" << id << " [label=\"" << type << ":" << value << "\"];" << endl;
-
-    for (auto i = children.begin(); i != children.end(); i++)
-    {
-      (*i)->generate_tree_content(count, outStream);
-      *outStream << "n" << id << " -> n" << (*i)->id << endl;
-    }
-  }
-
+  void generate_tree();
+  void generate_tree_content(int &count, std::ofstream *outStream);
 };
 
 #endif

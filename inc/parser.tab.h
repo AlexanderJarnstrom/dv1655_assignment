@@ -49,9 +49,10 @@
 
   #include <string>
   #include "node.h"
+  #include "node_execute.h"
   #define USE_LEX_ONLY false //change this macro to true if you want to isolate the lexer from the parser.
 
-#line 55 "inc/parser.tab.h"
+#line 56 "inc/parser.tab.h"
 
 
 # include <cstdlib> // std::abort
@@ -186,7 +187,7 @@
 #endif
 
 namespace yy {
-#line 190 "inc/parser.tab.h"
+#line 191 "inc/parser.tab.h"
 
 
 
@@ -2287,7 +2288,7 @@ switch (yykind)
 
 
 } // yy
-#line 2291 "inc/parser.tab.h"
+#line 2292 "inc/parser.tab.h"
 
 
 

@@ -10,6 +10,7 @@
 %code requires{
   #include <string>
   #include "node.h"
+  #include "node_execute.h"
   #define USE_LEX_ONLY false //change this macro to true if you want to isolate the lexer from the parser.
 }
 
@@ -51,7 +52,7 @@
 %%
 root
   : main_class class_declaration_list END { 
-      root = new Node("Root", "", yylineno); 
+      root = new SyRoot("root", "", yylineno); 
       root->children.push_back($1);
       root->children.push_back($2);
   }
@@ -59,7 +60,7 @@ root
 
 main_class
   : PUBLIC CLASS id LB PUBLIC STATIC VOID MAIN LP STRING LS RS id RP LB statement_list RB RB {
-    $$ = new Node("main_class", "", yylineno);
+    $$ = new SyMainClass("main_class", "", yylineno);
     $$->children.push_back($3);
     $$->children.push_back($13);
     $$->children.push_back($16);
@@ -77,7 +78,7 @@ class_declaration_list
 
 class_declaration
   : CLASS id LB class_content RB {
-    $$ = new Node("class_decl", "", yylineno);
+    $$ = new SyClass("class_decl", "", yylineno);
     $$->children.push_back($2);
     $$->children.push_back($4);
   }
@@ -104,7 +105,7 @@ var_declaration_list
 
 var_declaration
   : type id DELI {
-    $$ = new Node("var_decl", "", yylineno);
+    $$ = new SyVariable("var_decl", "", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($2);
   }
@@ -121,12 +122,12 @@ method_declaration_list
 
 method_declaration
   : method_head LP RP method_body {
-    $$ = new Node("method_decl", "declaration", yylineno);
+    $$ = new SyMethod("method_decl", "declaration", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($4);
   }
   | method_head LP method_arguments RP method_body {
-    $$ = new Node("method_decl", "declaration", yylineno);
+    $$ = new SyMethod("method_decl", "declaration", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($3);
     $$->children.push_back($5);
@@ -155,7 +156,7 @@ method_body
 
 method_arguments
   : type id {
-    $$ = new Node("method_arg", "", yylineno);
+    $$ = new SyVariable("method_arg", "", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($2);
   }
@@ -221,7 +222,7 @@ statement
     $$->children.push_back($3);
   }
   | id ASSIGN_OP expression_lst DELI {
-    $$ = new Node("statement", "assign", yylineno);
+    $$ = new SyAssign("statement", "assign", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($3);
   }
@@ -240,41 +241,40 @@ expression_lst
     $$->children.push_back($3);
   }
   | expression_lst operator expression_lst {
-    $$ = new Node("expression", "operator", yylineno);
+    $$ = new SyOperator("expression", "operator", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($2);
     $$->children.push_back($3);
   }
-
   | expression
   ;
 
 expression
   : expression LS expression_lst RS {
-    $$ = new Node("expression", "arr", yylineno);
+    $$ = new SyArrayPull("expression", "arr", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($3);
   }
   | expression ATTR_OP LENGTH {
-    $$ = new Node("expression", "length", yylineno);
+    $$ = new SyLength("expression", "length", yylineno);
     $$->children.push_back($1);
   }
   | expression ATTR_OP id LP expression_lst RP {
-    $$ = new Node("expression", "attr_exp", yylineno);
+    $$ = new SyAttribute("expression", "attr_exp", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($3);
     $$->children.push_back($5);
   }
   | expression ATTR_OP id LP RP {
-    $$ = new Node("expression", "attr", yylineno);
+    $$ = new SyAttribute("expression", "attr", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($3);
   }
   | LP expression_lst RP {
-    $$ = new Node("expression", "brackets", yylineno);
+    $$ = new SyParenthesis("expression", "brackets", yylineno);
     $$->children.push_back($2);
   }
-  | NUMBER { $$ = new Node("number", std::to_string($1),  yylineno); }
+  | NUMBER { $$ = new SyNumber("number", std::to_string($1),  yylineno); }
   | BOOL {
     std::string val;
     if ($1) {
@@ -283,25 +283,25 @@ expression
       val = "false";
     }
 
-    $$ = new Node("bool", val, yylineno);
+    $$ = new SyBoolean("bool", val, yylineno);
   }
   | id {
-    $$ = new Node("expression", "id", yylineno);
+    $$ = new SyIdentifier("expression", "id", yylineno);
     $$->children.push_back($1);
   }
   | THIS {
-    $$ = new Node("expression", "this", yylineno);
+    $$ = new SyThis("expression", "this", yylineno);
   }
   | NEW INT LS expression_lst RS {
-    $$ = new Node("expression", "arr", yylineno);
+    $$ = new SyArrayInit("expression", "arr", yylineno);
     $$->children.push_back($4);
   }
   | NEW id LP RP {
-    $$ = new Node("expression", "init", yylineno);
+    $$ = new SyObjectInit("expression", "init", yylineno);
     $$->children.push_back($2);
   }
   | NOT_OP expression {
-    $$ = new Node("expression", "not", yylineno);
+    $$ = new SyNot("expression", "not", yylineno);
     $$->children.push_back($2);
   }
   ;
