@@ -57,19 +57,18 @@ int main(int argc, char **argv)
       errCode = errCodes::LEXICAL_ERROR;
     if (parseSuccess && !lexical_errors)
     {
-      try
-      {
-        root->print_tree();
-        root->generate_tree();
+      // root->print_tree();
+      root->generate_tree();
 
-        SymbolTable table;
-        semantic_analysis(root, &table);
-        table.print_root();
-        table.print_errors();
-      } 
-      catch (...)
+      SymbolTable table;
+      semantic_analysis(root, &table);
+      // table.print_root();
+
+      if (table.m_errors.size() != 0)
       {
-        errCode = errCodes::AST_ERROR;
+        std::cerr << "Semantical errors found:" << std::endl;
+        table.print_errors();
+        errCode = errCodes::SEMANTIC_ERROR;
       }
     }
   }

@@ -81,6 +81,16 @@ class SyAttribute : public Node
     std::string get_type(SymbolTable*) override;
 };
 
+class SyAssignArr : public Node
+{
+  public:
+    SyAssignArr(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyAssignArr() : Node() {}
+    ~SyAssignArr() {}
+
+  void post_execute(SymbolTable*) override;
+};
+
 class SyOperator : public Node
 {
   public:
@@ -88,6 +98,7 @@ class SyOperator : public Node
     SyOperator() : Node() {}
     ~SyOperator() {}
 
+    void post_execute(SymbolTable*) override;
     std::string get_type(SymbolTable*) override;
 };
 
@@ -98,6 +109,7 @@ class SyLength : public Node
     SyLength() : Node() {}
     ~SyLength() {}
 
+    void post_execute(SymbolTable*) override;
     std::string get_type(SymbolTable*) override;
 };
 
@@ -108,6 +120,7 @@ class SyArrayPull : public Node
     SyArrayPull() : Node() {}
     ~SyArrayPull() {}
 
+    void post_execute(SymbolTable*) override;
     std::string get_type(SymbolTable*) override;
 };
 
@@ -188,6 +201,7 @@ class SyNot : public Node
     SyNot() : Node() {}
     ~SyNot() {}
 
+    void post_execute(SymbolTable*) override;
     std::string get_type(SymbolTable*) override;
 };
 
@@ -200,5 +214,6 @@ class SyExpressionList : public Node
 
     std::string get_type(SymbolTable*) override;
 };
+
 
 #endif // !NODE_EXECUTE

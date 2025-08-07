@@ -7,7 +7,7 @@
 #include <vector>
 
 struct sy_error {
-  std::string error;
+  std::vector<std::string> errors;
   int line;
 };
 
@@ -18,7 +18,7 @@ public:
   Scope* m_root;
   Scope* m_intrest;
 
-  std::vector<sy_error> m_errors;
+  std::vector<sy_error*> m_errors;
 
   SymbolTable();
   ~SymbolTable();
@@ -29,6 +29,7 @@ public:
   void exit_scope();
 
   void add_symbol(Symbol*);
+  void add_scope(Symbol*);
   Symbol* find_symbol(std::string);
   Symbol* check_scope(std::string, Record r = Record::ROOT);
   void remvove_symbol(std::string);

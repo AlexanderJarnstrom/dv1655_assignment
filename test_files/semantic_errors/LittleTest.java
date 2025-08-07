@@ -58,7 +58,7 @@ class Element {
     }
 
     public boolean InBool2() {
-        d = true;
+        b = true;
         return b;
     }
 }

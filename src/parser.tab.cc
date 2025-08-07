@@ -1159,7 +1159,7 @@ namespace yy {
   case 37: // statement: id LS expression_lst RS ASSIGN_OP expression_lst DELI
 #line 229 "src/bison/parser.yy"
                                                           {
-    yylhs.value.as < Node * > () = new Node("statement", "assign_arr", yylineno);
+    yylhs.value.as < Node * > () = new SyAssignArr("statement", "assign_arr", yylineno);
     yylhs.value.as < Node * > ()->children.push_back(yystack_[6].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[4].value.as < Node * > ());
     yylhs.value.as < Node * > ()->children.push_back(yystack_[1].value.as < Node * > ());

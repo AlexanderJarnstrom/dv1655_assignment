@@ -52,10 +52,10 @@ Scope::find(string id, Record r)
 Scope*
 Scope::get_scope(std::string id)
 {
-  for (Scope* c : m_scopes)
+  for (auto it = m_scopes.rbegin(); it != m_scopes.rend(); it++)
   {
-    if (c->m_id == id)
-      return c;
+    if ((*it)->m_id == id)
+      return (*it);
   }
 
   return nullptr;

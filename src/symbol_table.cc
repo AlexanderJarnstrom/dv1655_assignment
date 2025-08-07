@@ -1,7 +1,6 @@
 #include "../inc/symbol_table.h"
 #include "../inc/symbol.h"
 #include <iostream>
-#include <sstream>
 
 using namespace std;
 
@@ -12,16 +11,26 @@ SymbolTable::SymbolTable()
 SymbolTable::~SymbolTable()
 {
   delete m_root;
+  for (sy_error *err : m_errors)
+    delete err;
 }
 
 void
 SymbolTable::add_error(int l, std::string e)
 {
-  stringstream s;
-  s << "@error at line " << l
-    << ": " << e << endl;
+  for (sy_error *err : m_errors)
+  {
+    if (err->line == l)
+    {
+      err->errors.push_back(e);
+      return;
+    }
+  }
 
-  m_errors.push_back(sy_error {s.str(), l});
+  sy_error *err = new sy_error;
+  err->line = l;
+  err->errors.push_back(e);
+  m_errors.push_back(err);
 }
 
 void 
@@ -33,15 +42,9 @@ SymbolTable::enter_scope(std::string id)
   n = m_scope->get_scope(id);
 
   if (n) 
-  {
     m_scope = n;
-    return;
-  }
- 
-  t = find_symbol(id);
-  n = new Scope(t, m_scope);
-  m_scope->m_scopes.push_back(n);
-  m_scope = n;
+  
+  return;
 }
 
 void 
@@ -66,6 +69,12 @@ SymbolTable::exit_scope()
   // Scope* p = m_scope->m_parent;
   // m_scope->m_parent->remove_scope(t->m_id);
   // m_scope = p;
+}
+
+void
+SymbolTable::add_scope(Symbol* n)
+{
+  m_scope->add_scope(new Scope(n, m_scope));
 }
 
 void
@@ -132,9 +141,9 @@ SymbolTable::print_scope()
 void
 SymbolTable::print_errors()
 {
-  vector<sy_error> sorted;
+  vector<sy_error*> sorted;
 
-  for (sy_error err : m_errors)
+  for (sy_error *err : m_errors)
   {
     if (sorted.empty())   
     {
@@ -144,7 +153,7 @@ SymbolTable::print_errors()
 
     auto it = sorted.begin();
     for (; it != sorted.end(); it++) 
-      if (it->line > err.line)
+      if ((*it)->line > err->line)
         break;
 
     if (it != sorted.end())
@@ -153,6 +162,16 @@ SymbolTable::print_errors()
       sorted.push_back(err);
   }
 
-  for (sy_error err : sorted)
-    cerr << err.error;
+  for (sy_error *err : sorted)
+  {
+    cerr << "@error at line " << err->line << ": ";
+    if (err->errors.size() == 1)
+      cerr << err->errors[0] << endl;
+    else
+    {
+      cerr << endl;
+      for (string s_err : err->errors)
+        cerr << "  " << s_err << endl;
+    }
+  }
 }

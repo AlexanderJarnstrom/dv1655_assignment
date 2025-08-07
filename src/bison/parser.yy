@@ -227,7 +227,7 @@ statement
     $$->children.push_back($3);
   }
   | id LS expression_lst RS ASSIGN_OP expression_lst DELI {
-    $$ = new Node("statement", "assign_arr", yylineno);
+    $$ = new SyAssignArr("statement", "assign_arr", yylineno);
     $$->children.push_back($1);
     $$->children.push_back($3);
     $$->children.push_back($6);
