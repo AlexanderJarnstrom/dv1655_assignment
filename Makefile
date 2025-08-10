@@ -1,6 +1,7 @@
 LIBS=-std=c++14 
 CFLAGS=-g -Wall
 LDFLAGS=$(LIBS) -I/usr/include/postgresqlCC=gcc
+BFLAGS=--debug
 BIN=compiler
 CC=g++
 
@@ -25,7 +26,8 @@ $(SDIR)/lex.yy.c: $(BDIR)/lexer.flex $(SDIR)/parser.tab.cc
 	flex -o$(SDIR)/lex.yy.c $(BDIR)/lexer.flex
 
 $(SDIR)/parser.tab.cc: $(BDIR)/parser.yy
-	bison -H$(IDIR)/parser.tab.h -o$(SDIR)/parser.tab.cc $(BDIR)/parser.yy
+	bison $(BFLAGS) -H$(IDIR)/parser.tab.h -o$(SDIR)/parser.tab.cc $(BDIR)/parser.yy
+	sed -i -e 's/parser.tab.h/..\/inc\/parser.tab.h/g' $(SDIR)/parser.tab.cc
 
 clean:
 	rm -r $(ODIR)

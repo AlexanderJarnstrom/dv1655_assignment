@@ -1,5 +1,9 @@
 compiler
 
+inc/parser.tab.h
+src/lex.yy.c
+src/parser.tab.cc
+
 # Prerequisites
 *.d
 
