@@ -181,6 +181,7 @@ class SyArrayInit : public Node
     SyArrayInit() : Node() {}
     ~SyArrayInit() {}
 
+    void post_execute(SymbolTable*) override;
     std::string get_type(SymbolTable*) override;
 };
 

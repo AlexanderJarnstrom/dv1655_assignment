@@ -10,7 +10,6 @@ class MyClass {
     boolean c;
     boolean d;
     int[] e;
-    int a; 
 
     public int func() {
         int[] newVar;

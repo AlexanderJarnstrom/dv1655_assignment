@@ -1,8 +1,29 @@
 #include "../inc/node_execute.h"
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
+
+vector<string>
+get_arguments(Node* n, SymbolTable* table)
+{
+  vector<string> args;
+
+  if (n->type == "expression_lst" && n->value == "sep")
+  {
+    args.push_back(n->get_type(table));
+
+    if ((*n)[1]->type != "expression_lst")
+      args.push_back((*n)[1]->get_type(table));
+  }
+
+  for (Node* c : n->children)
+    for (string s : get_arguments(c, table))
+      args.push_back(s);
+
+  return args;
+}
 
 void
 SyRoot::pre_execute(SymbolTable* table)
@@ -123,6 +144,7 @@ SyVariable::pre_execute(SymbolTable* table)
 {
   string s_id, s_type;
   Symbol* t;
+  Record type;
 
   s_type = (*this)[0]->value;
 
@@ -130,7 +152,13 @@ SyVariable::pre_execute(SymbolTable* table)
     s_type = (*(*this)[0])[0]->value;
 
   s_id = (*this)[1]->value;
-  t = new Symbol(s_id, s_type, Record::VARIABLE);
+
+  if (this->type == "method_arg")
+    type = Record::ARGUMENT;
+  else 
+    type = Record::VARIABLE;
+
+  t = new Symbol(s_id, s_type, type);
 
   if (table->m_scope->find(t->m_id, t->m_record))
     table->add_error((*this)[0]->lineno, "Already declared Variable: '" + t->m_id + "'");
@@ -275,8 +303,44 @@ SyAttribute::post_execute(SymbolTable* table)
 
   s_attribute = (*this)[1]->value;
   if (!s->find(s_attribute, Record::METHOD))
-  table->add_error(lineno, "'" + s_id + "' does not have attribute: '" + s_attribute + "'");
+  {
+    table->add_error(lineno, "'" + s_id + "' does not have attribute: '" + s_attribute + "'");
+    return;
+  }
 
+  Scope* m = s->get_scope(s_attribute);
+  vector<Symbol*> m_param = m->find_all(Record::ARGUMENT);
+
+  if (!m_param.empty() && this->value == "attr")
+    table->add_error(this->lineno, "'" + s_attribute + "' requiers " + to_string(m_param.size()) + " arguments but non where given");
+  else if (this->value == "attr_exp")
+  {
+    Scope* t = table->m_intrest;
+    table->m_intrest = table->m_scope;
+
+    vector<string> args = get_arguments(this, table);
+
+    if (args.empty())
+    {
+      string arg = (*this)[2]->get_type(table);
+      if (arg != "")
+        args.push_back(arg);
+    }
+
+    for (int i = 0; i < m_param.size(); i++)
+    {
+      if (i >= args.size())
+      {
+        table->add_error((this->lineno), "missing " + to_string(m_param.size() - i) + " argument(s) for '" + s_attribute + "'.");
+        break;
+      }
+
+      if (args[i] != m_param[i]->m_type)
+        table->add_error((this->lineno), "invalid argument for '" + s_attribute + "' at position: " + to_string(i) + " expected '" + m_param[i]->m_type + "' but got '" + args[i] + "'");
+    }
+
+    table->m_intrest = t;
+  }
 }
 
 string
@@ -452,6 +516,23 @@ SyThis::get_type(SymbolTable* table)
   return table->m_scope->m_id;
 }
 
+void
+SyArrayInit::post_execute(SymbolTable* table)
+{
+  string s_type;
+  Scope* t;
+
+  t = table->m_intrest;
+  table->m_intrest = table->m_scope;
+
+  s_type = (*this)[0]->get_type(table);
+
+  if (s_type != "int")
+    table->add_error((*this)[0]->lineno, "expected 'int' but go '" + s_type + "'");
+
+  table->m_intrest = t;
+}
+
 string
 SyArrayInit::get_type(SymbolTable* table)
 {
@@ -490,5 +571,5 @@ SyNot::get_type(SymbolTable* table)
 std::string 
 SyExpressionList::get_type(SymbolTable* table) 
 {
-  return "";
+  return (*this)[0]->get_type(table);
 }

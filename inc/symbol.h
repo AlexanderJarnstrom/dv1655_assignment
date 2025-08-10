@@ -8,6 +8,7 @@ enum Record
   CLASS,
   VARIABLE,
   METHOD,
+  ARGUMENT,
   ROOT
 };
 

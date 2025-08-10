@@ -57,12 +57,12 @@ int main(int argc, char **argv)
       errCode = errCodes::LEXICAL_ERROR;
     if (parseSuccess && !lexical_errors)
     {
-      // root->print_tree();
+      root->print_tree();
       root->generate_tree();
 
       SymbolTable table;
       semantic_analysis(root, &table);
-      // table.print_root();
+      table.print_root();
 
       if (table.m_errors.size() != 0)
       {

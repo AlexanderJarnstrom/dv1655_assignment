@@ -18,6 +18,7 @@ public:
   ~Scope();
 
   Symbol* find(std::string, Record r = Record::ROOT);
+  std::vector<Symbol*> find_all(Record r);
   Scope* get_scope(std::string);
   Scope* get_parrent_class();
 

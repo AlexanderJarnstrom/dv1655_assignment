@@ -29,7 +29,17 @@ Scope::find(string id, Record r)
   
   for (Symbol* c : m_symbols)
   {
-    if (c->m_id == id && (c->m_record == r || r == Record::ROOT))
+    if (c->m_id == id && r == Record::ROOT)
+    {
+      t = c;
+      break;
+    }
+    else if (c->m_id == id && c->m_record == r)
+    {
+      t = c;
+      break;
+    }
+    else if (c->m_id == id && r == Record::VARIABLE && c->m_record == Record::ARGUMENT)
     {
       t = c;
       break;
@@ -41,12 +51,24 @@ Scope::find(string id, Record r)
 
   for (Scope* c : m_scopes)
   {
-    t = c->find(id);
+    t = c->find(id, r);
     if (t)
       break;
   }
 
   return t;
+}
+
+vector<Symbol*>
+Scope::find_all(Record r)
+{
+  vector<Symbol*> children;
+
+  for (Symbol* c : m_symbols)
+    if (c->m_record == r)
+      children.push_back(c);
+
+  return children;
 }
 
 Scope*

@@ -400,6 +400,7 @@ namespace yy {
       // statement_list
       // statement
       // expression_lst
+      // expression_operators
       // expression
       // operator
       // id
@@ -606,9 +607,10 @@ namespace yy {
         S_statement_list = 56,                   // statement_list
         S_statement = 57,                        // statement
         S_expression_lst = 58,                   // expression_lst
-        S_expression = 59,                       // expression
-        S_operator = 60,                         // operator
-        S_id = 61                                // id
+        S_expression_operators = 59,             // expression_operators
+        S_expression = 60,                       // expression
+        S_operator = 61,                         // operator
+        S_id = 62                                // id
       };
     };
 
@@ -660,6 +662,7 @@ namespace yy {
       case symbol_kind::S_statement_list: // statement_list
       case symbol_kind::S_statement: // statement
       case symbol_kind::S_expression_lst: // expression_lst
+      case symbol_kind::S_expression_operators: // expression_operators
       case symbol_kind::S_expression: // expression
       case symbol_kind::S_operator: // operator
       case symbol_kind::S_id: // id
@@ -823,6 +826,7 @@ switch (yykind)
       case symbol_kind::S_statement_list: // statement_list
       case symbol_kind::S_statement: // statement
       case symbol_kind::S_expression_lst: // expression_lst
+      case symbol_kind::S_expression_operators: // expression_operators
       case symbol_kind::S_expression: // expression
       case symbol_kind::S_operator: // operator
       case symbol_kind::S_id: // id
@@ -1734,7 +1738,7 @@ switch (yykind)
     static const short yypgoto_[];
 
     // YYDEFGOTO[NTERM-NUM].
-    static const signed char yydefgoto_[];
+    static const unsigned char yydefgoto_[];
 
     // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
     // positive, shift that token.  If negative, reduce the rule whose
@@ -1983,8 +1987,8 @@ switch (yykind)
     /// Constants.
     enum
     {
-      yylast_ = 355,     ///< Last index in yytable_.
-      yynnts_ = 21,  ///< Number of nonterminal symbols.
+      yylast_ = 327,     ///< Last index in yytable_.
+      yynnts_ = 22,  ///< Number of nonterminal symbols.
       yyfinal_ = 5 ///< Termination state number.
     };
 
@@ -2069,6 +2073,7 @@ switch (yykind)
       case symbol_kind::S_statement_list: // statement_list
       case symbol_kind::S_statement: // statement
       case symbol_kind::S_expression_lst: // expression_lst
+      case symbol_kind::S_expression_operators: // expression_operators
       case symbol_kind::S_expression: // expression
       case symbol_kind::S_operator: // operator
       case symbol_kind::S_id: // id
@@ -2170,6 +2175,7 @@ switch (yykind)
       case symbol_kind::S_statement_list: // statement_list
       case symbol_kind::S_statement: // statement
       case symbol_kind::S_expression_lst: // expression_lst
+      case symbol_kind::S_expression_operators: // expression_operators
       case symbol_kind::S_expression: // expression
       case symbol_kind::S_operator: // operator
       case symbol_kind::S_id: // id
@@ -2288,7 +2294,7 @@ switch (yykind)
 
 
 } // yy
-#line 2292 "inc/parser.tab.h"
+#line 2298 "inc/parser.tab.h"
 
 
 
