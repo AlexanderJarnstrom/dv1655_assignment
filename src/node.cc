@@ -29,6 +29,19 @@ void
 Node::post_execute(SymbolTable*)
 {}
 
+void
+Node::generate_block(BlockHandler* bh)
+{
+  for (Node* c : this->children)
+    c->generate_block(bh);
+}
+
+vector<TAC>
+Node::generate_tacs()
+{
+  return vector<TAC>();
+}
+
 std::string
 Node::get_type(SymbolTable*)
 {

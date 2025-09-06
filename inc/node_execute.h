@@ -1,9 +1,10 @@
 #ifndef NODE_EXECUTE
 #define NODE_EXECUTE
 
+#include <iostream>
+#include "block.h"
 #include "node.h"
 #include "symbol_table.h"
-#include <iostream>
 
 class SyRoot : public Node
 {
@@ -45,6 +46,7 @@ class SyMethod : public Node
 
     void pre_execute(SymbolTable*) override;
     void post_execute(SymbolTable*) override;
+    void generate_block(BlockHandler*) override;
 };
 
 class SyVariable : public Node
@@ -67,6 +69,7 @@ class SyAssign : public Node
 
     void in_execute(SymbolTable*) override;
     void post_execute(SymbolTable*) override;
+    void generate_block(BlockHandler *) override;
 };
 
 class SyAttribute : public Node
@@ -89,6 +92,7 @@ class SyAssignArr : public Node
     ~SyAssignArr() {}
 
   void post_execute(SymbolTable*) override;
+    void generate_block(BlockHandler *) override;
 };
 
 class SyOperator : public Node
@@ -216,5 +220,44 @@ class SyExpressionList : public Node
     std::string get_type(SymbolTable*) override;
 };
 
+class SyIf : public Node 
+{
+  public:
+    SyIf(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyIf() : Node() {}
+    ~SyIf() {}
+
+    void generate_block(BlockHandler *) override;
+};
+
+class SyIfElse : public Node 
+{
+  public:
+    SyIfElse(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyIfElse() : Node() {}
+    ~SyIfElse() {}
+
+    void generate_block(BlockHandler *) override;
+};
+
+class SyWhile : public Node 
+{
+  public:
+    SyWhile(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyWhile() : Node() {}
+    ~SyWhile() {}
+
+    void generate_block(BlockHandler *) override;
+};
+
+class SyPrint : public Node 
+{
+  public:
+    SyPrint(std::string t, std::string v, int l) : Node(t, v, l) {}
+    SyPrint() : Node() {}
+    ~SyPrint() {}
+
+    void generate_block(BlockHandler *) override;
+};
 
 #endif // !NODE_EXECUTE

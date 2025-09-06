@@ -10,7 +10,7 @@ ODIR=obj
 IDIR=inc
 BDIR=src/bison
 
-_OBJ=main.o parser.tab.o symbol_table.o scope.o symbol.o node.o node_execute.o semantic.o
+_OBJ=main.o parser.tab.o symbol_table.o scope.o symbol.o node.o semantic.o block.o ir_generation.o node_execute/generate_block.o node_execute/generate_tacs.o node_execute/get_type.o node_execute/in_execute.o node_execute/post_execute.o node_execute/pre_execute.o
 OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(BIN): $(SDIR)/lex.yy.c $(OBJ)
@@ -20,7 +20,7 @@ $(ODIR)/%.o: $(SDIR)/%.cc $(ODIR)
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 $(ODIR):
-	mkdir -p $(ODIR)
+	mkdir -p $(ODIR)/node_execute
 
 $(SDIR)/lex.yy.c: $(BDIR)/lexer.flex $(SDIR)/parser.tab.cc
 	flex -o$(SDIR)/lex.yy.c $(BDIR)/lexer.flex
@@ -30,13 +30,15 @@ $(SDIR)/parser.tab.cc: $(BDIR)/parser.yy
 	sed -i -e 's/parser.tab.h/..\/inc\/parser.tab.h/g' $(SDIR)/parser.tab.cc
 
 clean:
-	rm -r $(ODIR)
-	rm $(BIN)
-	rm $(SDIR)/lex.yy.c
-	rm $(SDIR)/parser.tab.cc
-	rm $(IDIR)/parser.tab.h
-	rm tree.dot 
-	rm tree.pdf
+	rm -fr $(ODIR)
+	rm -f $(BIN)
+	rm -f $(SDIR)/lex.yy.c
+	rm -f $(SDIR)/parser.tab.cc
+	rm -f $(IDIR)/parser.tab.h
+	rm -f tree.dot 
+	rm -f tree.pdf
+	rm -f blocks.dot 
+	rm -f blocks.pdf
 
 syntax: $(BIN) testScript.py
 	python testScript.py -syntax
@@ -55,3 +57,8 @@ lexical: $(BIN) testScript.py
 
 tree:
 	dot -Tpdf tree.dot -otree.pdf
+	llpp tree.pdf &
+
+blocks:
+	dot -Tpdf blocks.dot -oblocks.pdf
+	llpp blocks.pdf &

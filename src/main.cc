@@ -4,6 +4,8 @@
 #include "../inc/parser.tab.h"
 #include "../inc/symbol_table.h"
 #include "../inc/semantic.h"
+#include "../inc/block.h"
+#include "../inc/ir_generation.h"
 
 extern Node *root;
 extern FILE *yyin;
@@ -69,6 +71,11 @@ int main(int argc, char **argv)
         std::cerr << "Semantical errors found:" << std::endl;
         table.print_errors();
         errCode = errCodes::SEMANTIC_ERROR;
+      }
+      else 
+      {
+        BlockHandler* bh = generate_ir(root, &table);
+        bh->generate_tree();
       }
     }
   }

@@ -202,23 +202,23 @@ statement
     $$->children.push_back($2);
   }
   | IF LP expression_operators RP statement {
-    $$ = new Node("statement", "if", yylineno);
+    $$ = new SyIf("statement", "if", yylineno);
     $$->children.push_back($3);
     $$->children.push_back($5);
   }
   | IF LP expression_operators RP statement ELSE statement {
-    $$ = new Node("statement", "if-else", yylineno);
+    $$ = new SyIfElse("statement", "if-else", yylineno);
     $$->children.push_back($3);
     $$->children.push_back($5);
     $$->children.push_back($7);
   }
   | WHILE LP expression_operators RP statement {
-    $$ = new Node("statement", "while", yylineno);
+    $$ = new SyWhile("statement", "while", yylineno);
     $$->children.push_back($3);
     $$->children.push_back($5);
   } 
   | PRINT LP expression_operators RP DELI {
-    $$ = new Node("statement", "print", yylineno);
+    $$ = new SyPrint("statement", "print", yylineno);
     $$->children.push_back($3);
   }
   | id ASSIGN_OP expression_operators DELI {

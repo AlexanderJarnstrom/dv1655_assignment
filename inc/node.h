@@ -9,6 +9,7 @@
 #include <sys/wait.h>
 #include "symbol.h"
 #include "symbol_table.h"
+#include "block.h"
 
 class Node {
 public:
@@ -25,6 +26,8 @@ public:
   virtual void pre_execute(SymbolTable*);
   virtual void in_execute(SymbolTable*);
   virtual void post_execute(SymbolTable*);
+  virtual void generate_block(BlockHandler*);
+  virtual std::vector<TAC> generate_tacs();
 
   virtual std::string get_type(SymbolTable*);
 
