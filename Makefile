@@ -57,8 +57,6 @@ lexical: $(BIN) testScript.py
 
 tree:
 	dot -Tpdf tree.dot -otree.pdf
-	llpp tree.pdf &
 
 blocks:
 	dot -Tpdf blocks.dot -oblocks.pdf
-	llpp blocks.pdf &

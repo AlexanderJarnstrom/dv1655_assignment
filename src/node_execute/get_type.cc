@@ -23,8 +23,7 @@ SyAttribute::get_type(SymbolTable* table)
 string
 SyOperator::get_type(SymbolTable* table)
 {
-  Node* op = (*this)[1];
-  string s_type = op->value;
+  string s_type = this->value;
 
   bool b_num, b_bool;
 

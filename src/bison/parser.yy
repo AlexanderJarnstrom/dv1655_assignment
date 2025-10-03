@@ -36,13 +36,14 @@
 /* Operator precedence and associativity rules */
 /* Used to resolve ambiguities in parsing expressions See https://www.gnu.org/software/bison/manual/bison.html#Precedence-Decl */ 
 
-%left <std::string> ADD_OP SUB_OP MULT_OP
+%left <std::string> ADD_OP SUB_OP 
 %left <std::string> EQ_OP LT_OP GT_OP NOT_OP
 %left <std::string> AND_OP OR_OP ASSIGN_OP ATTR_OP
+%right <std::string> MULT_OP
 
 /* Specify types for non-terminals in the grammar */
 /* The type specifies the data type of the values associated with these non-terminals */
-%type <Node *> root main_class id statement type operator
+%type <Node *> root main_class id statement type
 %type <Node *> class_declaration var_declaration method_declaration class_content expression_operators
 %type <Node *> class_declaration_list var_declaration_list method_declaration_list statement_list
 %type <Node *> method_arguments method_content method_head method_body expression_lst expression
@@ -244,16 +245,48 @@ expression_lst
   ;
 
 expression_operators
-  : expression_operators operator expression_operators {
-    $$ = new SyOperator("expression", "operator", yylineno);
+  : expression_operators ADD_OP expression_operators {
+    $$ = new SyOperator("expression", "add", yylineno);
     $$->children.push_back($1);
-    $$->children.push_back($2);
+    $$->children.push_back($3);
+  }
+  | expression_operators SUB_OP expression_operators {
+    $$ = new SyOperator("expression", "sub", yylineno);
+    $$->children.push_back($1);
+    $$->children.push_back($3);
+  }
+  | expression_operators MULT_OP expression_operators {
+    $$ = new SyOperator("expression", "mult", yylineno);
+    $$->children.push_back($1);
+    $$->children.push_back($3);
+  }
+  | expression_operators AND_OP expression_operators {
+    $$ = new SyOperator("expression", "and", yylineno);
+    $$->children.push_back($1);
+    $$->children.push_back($3);
+  }
+  | expression_operators OR_OP expression_operators {
+    $$ = new SyOperator("expression", "or", yylineno);
+    $$->children.push_back($1);
+    $$->children.push_back($3);
+  }
+  | expression_operators EQ_OP expression_operators {
+    $$ = new SyOperator("expression", "eq", yylineno);
+    $$->children.push_back($1);
+    $$->children.push_back($3);
+  }
+  | expression_operators GT_OP expression_operators {
+    $$ = new SyOperator("expression", "gt", yylineno);
+    $$->children.push_back($1);
+    $$->children.push_back($3);
+  }
+  | expression_operators LT_OP expression_operators {
+    $$ = new SyOperator("expression", "lt", yylineno);
+    $$->children.push_back($1);
     $$->children.push_back($3);
   }
   | expression
   ;
-
-
 
 expression
   : expression LS expression_operators RS {
@@ -310,17 +343,6 @@ expression
     $$ = new SyNot("expression", "not", yylineno);
     $$->children.push_back($2);
   }
-  ;
-
-operator
-  : ADD_OP { $$ = new Node("operator", "add", yylineno); }
-  | SUB_OP { $$ = new Node("operator", "sub", yylineno); }
-  | AND_OP { $$ = new Node("operator", "and", yylineno); }
-  | OR_OP { $$ = new Node("operator", "or", yylineno); }
-  | EQ_OP { $$ = new Node("operator", "eq", yylineno); }
-  | GT_OP { $$ = new Node("operator", "gt", yylineno); }
-  | LT_OP { $$ = new Node("operator", "lt", yylineno); }
-  | MULT_OP { $$ = new Node("operator", "mult", yylineno); }
   ;
 
 id 

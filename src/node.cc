@@ -1,4 +1,5 @@
 #include "../inc/node.h"
+#include <vector>
 
 using namespace std;
 
@@ -36,10 +37,11 @@ Node::generate_block(BlockHandler* bh)
     c->generate_block(bh);
 }
 
-vector<TAC>
-Node::generate_tacs()
+void
+Node::generate_tacs(vector<TAC*> &tacs, string &target)
 {
-  return vector<TAC>();
+  for (Node* c : this->children)
+    c->generate_tacs(tacs, target); 
 }
 
 std::string

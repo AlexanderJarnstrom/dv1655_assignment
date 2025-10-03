@@ -1,5 +1,4 @@
 #include "../../inc/node_execute.h"
-#include <iostream>
 
 using namespace std;
 
@@ -15,9 +14,13 @@ SyMethod::generate_block(BlockHandler *bh)
 void
 SyAssign::generate_block(BlockHandler* bh) 
 {
+  string target;
   Block *temp = bh->add_next(); 
   bh->m_current->m_true_exit = temp;
   bh->m_current = temp;
+
+  target = (*this)[0]->value;
+  (*this)[1]->generate_tacs(bh->m_current->m_tacs, target);
 }
 
 void
@@ -34,7 +37,6 @@ SyIf::generate_block(BlockHandler *bh)
   Block *s_block, *t_block, *j_block;
 
   s_block = bh->add_next();
-
   bh->m_current->m_true_exit = s_block;
 
   t_block = new Block(-1);
@@ -82,7 +84,6 @@ SyWhile::generate_block(BlockHandler *bh)
   Block *s_block, *t_block, *j_block;
 
   s_block = bh->add_next();
-
   bh->m_current->m_true_exit = s_block;
 
   t_block = new Block(-1);

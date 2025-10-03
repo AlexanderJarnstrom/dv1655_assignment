@@ -241,7 +241,7 @@ SyOperator::post_execute(SymbolTable* table)
   table->m_intrest = table->m_scope;
 
   l_type = (*this)[0]->get_type(table);
-  r_type = (*this)[2]->get_type(table);
+  r_type = (*this)[1]->get_type(table);
 
   if (l_type != r_type)
   {

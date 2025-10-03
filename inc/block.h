@@ -13,10 +13,10 @@ public:
   std::string m_right;
   std::string m_operator;
 
-  TAC(std::string, std::string, std::string, std::string);
+  TAC(int, std::string, std::string, std::string);
   ~TAC();
 
-  void dump();
+  void generate_tree_content(std::ofstream*);
 };
 
 class Block
@@ -32,7 +32,6 @@ public:
   Block(int);
   ~Block();
 
-  void dump(int step = 0);
   void generate_tree_content(int&, std::ofstream*);
 };
 
@@ -42,6 +41,7 @@ class BlockHandler
 
 public:
   int m_counter;
+  int m_tac_counter;
 
   bool m_in_statement;
 

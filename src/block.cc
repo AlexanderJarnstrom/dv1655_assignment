@@ -5,20 +5,18 @@
 
 using namespace std;
 
-TAC::TAC(string t, string l, string r, string o) :
-  m_target(t), m_left(l), m_right(r), m_operator(o)
+TAC::TAC(int c, string l, string r, string o) :
+  m_target("_t" + to_string(c)), m_left(l), m_right(r), m_operator(o)
 {}
 
 TAC::~TAC()
 {}
 
 void
-TAC::dump()
+TAC::generate_tree_content(ofstream* outStream)
 {
-  cout << m_target << " := " 
-    << m_left << " "
-    << m_operator << " "
-    << m_right << endl;
+  *outStream << this->m_target << " = " << this->m_left
+    << " " << this->m_operator << " " << this->m_right << endl;
 }
 
 Block::Block(int n) :
@@ -35,29 +33,16 @@ Block::~Block()
 }
 
 void
-Block::dump(int step)
-{
-  cout << m_name << ":\n";
-  for (TAC* t : m_tacs)
-  {
-    cout << m_name << "  ";
-    t->dump();
-    cout << endl;
-  }
-
-  if (m_true_exit)
-    m_true_exit->dump();
-
-  if (m_false_exit)
-    m_false_exit->dump();
-}
-
-void
 Block::generate_tree_content(int &count, ofstream *outStream)
 {
   m_id = count++;
   *outStream << "n" << m_id << " [label=\"" 
-    << m_name << " : " << this << "\" shape=box];" << endl;
+    << m_name << " : " << this->m_tacs.size() << endl << endl;
+
+  for (TAC* tac : this->m_tacs)
+    tac->generate_tree_content(outStream);
+
+  *outStream << "\" shape=box];" << endl;
 
   if (m_false_exit)
   {
@@ -82,7 +67,7 @@ BlockHandler::generate_tree_content(int &count, ofstream *outStream)
 }
 
 BlockHandler::BlockHandler(SymbolTable *t) :
-  m_counter(0), m_table(t), m_in_statement(false)
+  m_counter(0), m_tac_counter(0), m_table(t), m_in_statement(false)
 {
   m_current = new Block(m_counter);
 }
