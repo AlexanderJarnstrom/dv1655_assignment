@@ -2,6 +2,7 @@
 #define NODE_EXECUTE
 
 #include "block.h"
+#include "block_handler.h"
 #include "node.h"
 #include "symbol_table.h"
 #include <iostream>
@@ -81,6 +82,7 @@ public:
 
   void post_execute (SymbolTable *) override;
   std::string get_type (SymbolTable *) override;
+  void generate_tacs (std::vector<TAC *> &, std::string &) override;
 };
 
 class SyAssignArr : public Node
@@ -221,6 +223,7 @@ public:
   ~SyExpressionList () {}
 
   std::string get_type (SymbolTable *) override;
+  void generate_tacs (std::vector<TAC *> &, std::string &) override;
 };
 
 class SyIf : public Node
