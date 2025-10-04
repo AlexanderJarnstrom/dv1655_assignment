@@ -1,5 +1,5 @@
 LIBS=-std=c++14 
-CFLAGS=-g -Wall
+CFLAGS=-g
 LDFLAGS=$(LIBS) -I/usr/include/postgresqlCC=gcc
 BFLAGS=--debug
 BIN=compiler

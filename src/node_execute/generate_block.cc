@@ -5,10 +5,33 @@ using namespace std;
 void
 SyMethod::generate_block (BlockHandler *bh)
 {
+  Block *return_block;
+  Node *body, *return_statement;
+  ReturnTAC *tac;
+  string target;
   bh->add_root ();
 
   for (Node *c : children)
     c->generate_block (bh);
+
+  return_block = bh->add_next ();
+  bh->m_current->m_true_exit = return_block;
+  bh->m_current = return_block;
+
+  if (this->children.size () < 3)
+    body = (*this)[1];
+  else
+    body = (*this)[2];
+
+  if (body->children.size () < 2)
+    return_statement = (*body)[0];
+  else
+    return_statement = (*body)[1];
+
+  return_statement->generate_tacs (bh->m_current->m_tacs, target);
+
+  tac = new ReturnTAC (target);
+  bh->m_current->m_tacs.push_back (tac);
 }
 
 void
@@ -20,15 +43,11 @@ SyAssign::generate_block (BlockHandler *bh)
   bh->m_current = temp;
 
   target = (*this)[0]->value;
+  (*this)[1]->generate_tacs (bh->m_current->m_tacs, target);
 
-  if ((*this)[1]->value == "id")
+  if (bh->m_current->m_tacs.empty ())
     {
-      string right = (*(*this)[1])[0]->value;
-      bh->m_current->m_tacs.push_back (new CopyTAC (target, right));
-    }
-  else
-    {
-      (*this)[1]->generate_tacs (bh->m_current->m_tacs, target);
+      bh->m_current->m_tacs.push_back (new CopyTAC ((*this)[0]->value, target));
     }
 }
 

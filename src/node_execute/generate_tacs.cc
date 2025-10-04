@@ -22,6 +22,9 @@ SyAttribute::generate_tacs (std::vector<TAC *> &tacs, std::string &target)
 
       args->generate_tacs (arguments, t_s);
 
+      if (args->type != "expression_lst")
+        arguments.push_back (new ParameterTAC (t_s));
+
       for (TAC *a : arguments)
         {
           tacs.push_back (a);
@@ -55,10 +58,17 @@ SyExpressionList::generate_tacs (std::vector<TAC *> &tacs, std::string &target)
   left->generate_tacs (tacs, l_s);
   right->generate_tacs (tacs, r_s);
 
-  tac = new ParameterTAC (l_s);
-  tacs.push_back (tac);
-  tac = new ParameterTAC (r_s);
-  tacs.push_back (tac);
+  if (!r_s.empty ())
+    {
+      tac = new ParameterTAC (r_s);
+      tacs.push_back (tac);
+    }
+
+  if (!l_s.empty ())
+    {
+      tac = new ParameterTAC (l_s);
+      tacs.push_back (tac);
+    }
 }
 
 void
