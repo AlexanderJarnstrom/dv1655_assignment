@@ -16,7 +16,7 @@ public:
   Block *m_true_exit;
   Block *m_false_exit;
 
-  Block (int);
+  Block (std::string);
   ~Block ();
 
   void generate_tree_content (int &, std::ofstream *);

@@ -32,8 +32,8 @@ CopyTAC::generate_tree_content (ofstream *s)
   *s << m_target << " := " << m_right << endl;
 }
 
-ArrayAccessTAC::ArrayAccessTAC (string t, string r, unsigned int s, bool p)
-    : m_target (t), m_right (r), m_size (s), m_pull (p), TAC ()
+ArrayAccessTAC::ArrayAccessTAC (string t, string r, string i, bool p)
+    : m_target (t), m_right (r), m_index (i), m_pull (p), TAC ()
 {
 }
 
@@ -42,11 +42,11 @@ ArrayAccessTAC::generate_tree_content (ofstream *s)
 {
   if (m_pull)
     {
-      *s << m_target << " := " << m_right << "[" << m_size << "]";
+      *s << m_target << " := " << m_right << "[" << m_index << "]" << endl;
     }
   else
     {
-      *s << m_right << "[" << m_size << "]" << " := " << m_target;
+      *s << m_target << "[" << m_index << "]" << " := " << m_right << endl;
     }
 }
 
@@ -58,7 +58,7 @@ NewObjectTAC::generate_tree_content (ofstream *s)
   *s << m_target << " := new " << m_right << endl;
 }
 
-ArrayNewTAC::ArrayNewTAC (string t, string r, unsigned int s)
+ArrayNewTAC::ArrayNewTAC (string t, string r, string s)
     : m_target (t), m_right (r), m_size (s), TAC ()
 {
 }
@@ -74,7 +74,7 @@ LengthTAC::LengthTAC (string t, string r) : m_target (t), m_right (r), TAC () {}
 void
 LengthTAC::generate_tree_content (ofstream *s)
 {
-  *s << m_target << " := new " << m_right << " length" << endl;
+  *s << m_target << " := " << m_right << ".length" << endl;
 }
 
 ParameterTAC::ParameterTAC (string t) : m_target (t), TAC () {}
@@ -93,7 +93,7 @@ MethodTAC::MethodTAC (string t, string r, unsigned int p)
 void
 MethodTAC::generate_tree_content (ofstream *s)
 {
-  *s << m_target << " := " << m_right << ", " << m_parameters << endl;
+  *s << m_target << " := call " << m_right << ", " << m_parameters << endl;
 }
 
 ReturnTAC::ReturnTAC (string t) : m_target (t), TAC () {}
@@ -109,7 +109,7 @@ UnconditionalTAC::UnconditionalTAC (string t) : m_target (t), TAC () {}
 void
 UnconditionalTAC::generate_tree_content (ofstream *s)
 {
-  *s << "goto " << m_target << endl;
+  *s << "goto: " << m_target << endl;
 }
 
 ConditionalTAC::ConditionalTAC (string t, string r) : m_target (t), m_right (r), TAC () {}
@@ -117,5 +117,5 @@ ConditionalTAC::ConditionalTAC (string t, string r) : m_target (t), m_right (r),
 void
 ConditionalTAC::generate_tree_content (ofstream *s)
 {
-  *s << "if-false" << m_right << " goto " << m_target << endl;
+  *s << "if-false: " << m_right << " goto " << m_target << endl;
 }

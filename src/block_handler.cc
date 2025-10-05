@@ -1,4 +1,5 @@
 #include "../inc/block_handler.h"
+#include <string>
 
 using namespace std;
 
@@ -12,7 +13,7 @@ BlockHandler::generate_tree_content (int &count, ofstream *outStream)
 BlockHandler::BlockHandler (SymbolTable *t)
     : m_counter (0), m_tac_counter (0), m_table (t), m_in_statement (false)
 {
-  m_current = new Block (m_counter);
+  m_current = add_next ();
 }
 
 BlockHandler::~BlockHandler ()
@@ -22,13 +23,40 @@ BlockHandler::~BlockHandler ()
 }
 
 Block *
-BlockHandler::add_root ()
+BlockHandler::add_root (string name)
+{
+  Symbol *method_obj;
+  Block *temp;
+
+  method_obj = m_table->m_scope->find (name, Record::METHOD);
+  if (method_obj->m_block.empty ())
+    method_obj->m_block = "Block_" + to_string (m_counter);
+
+  temp = new Block (method_obj->m_block);
+  m_counter++;
+  m_blocks.push_back (temp);
+
+  return temp;
+}
+
+Block *
+BlockHandler::get_block (string scope, string name)
 {
   Block *temp;
-  temp = new Block (m_counter);
-  m_counter++;
-  m_current = temp;
-  m_blocks.push_back (temp);
+  Scope *m_scope;
+  Symbol *m_symbol;
+
+  m_scope = m_table->m_root->get_scope (scope);
+  m_symbol = m_scope->find (name, Record::METHOD);
+
+  temp = nullptr;
+
+  for (Block *c : m_blocks)
+    if (c->m_name == m_symbol->m_block)
+      {
+        temp = c;
+        break;
+      }
 
   return temp;
 }
@@ -37,7 +65,7 @@ Block *
 BlockHandler::add_next ()
 {
   Block *temp;
-  temp = new Block (m_counter);
+  temp = new Block ("Block_" + to_string (m_counter));
   m_counter++;
   return temp;
 }
@@ -50,8 +78,10 @@ BlockHandler::generate_tree ()
   outStream.open (filename);
 
   int count = 0;
-  outStream << "digraph {" << std::endl;
+  outStream << "digraph {" << endl;
+  outStream << "graph [ splines = ortho ]" << endl;
+  outStream << "node [ shape = box ];" << endl;
   generate_tree_content (count, &outStream);
-  outStream << "}" << std::endl;
+  outStream << "}" << endl;
   outStream.close ();
 }

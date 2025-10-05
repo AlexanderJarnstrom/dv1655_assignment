@@ -62,10 +62,10 @@ class ArrayAccessTAC : public TAC
 public:
   std::string m_target;
   std::string m_right;
-  unsigned int m_size;
+  std::string m_index;
   bool m_pull;
 
-  ArrayAccessTAC (std::string, std::string, unsigned int, bool);
+  ArrayAccessTAC (std::string, std::string, std::string, bool);
   ~ArrayAccessTAC () {}
 
   void generate_tree_content (std::ofstream *) override;
@@ -88,9 +88,9 @@ class ArrayNewTAC : public TAC
 public:
   std::string m_target;
   std::string m_right;
-  unsigned int m_size;
+  std::string m_size;
 
-  ArrayNewTAC (std::string, std::string, unsigned int);
+  ArrayNewTAC (std::string, std::string, std::string);
   ~ArrayNewTAC () {}
 
   void generate_tree_content (std::ofstream *) override;

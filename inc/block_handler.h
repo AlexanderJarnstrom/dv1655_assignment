@@ -22,7 +22,8 @@ public:
   BlockHandler (SymbolTable *);
   ~BlockHandler ();
 
-  Block *add_root ();
+  Block *add_root (std::string);
+  Block *get_block (std::string, std::string);
   Block *add_next ();
 
   void generate_tree ();

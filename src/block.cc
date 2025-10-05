@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Block::Block (int n) : m_name ("Block_" + to_string (n)), m_id (-1) {}
+Block::Block (string name) : m_name (name), m_id (-1) {}
 
 Block::~Block ()
 {
@@ -32,13 +32,15 @@ Block::generate_tree_content (int &count, ofstream *outStream)
     {
       if (m_false_exit->m_id == -1)
         m_false_exit->generate_tree_content (count, outStream);
-      *outStream << "n" << m_id << " -> n" << m_false_exit->m_id << endl;
+      *outStream << "n" << m_id << " -> n" << m_false_exit->m_id << " [ xlabel = \" false \" ]"
+                 << endl;
     }
 
   if (m_true_exit)
     {
       if (m_true_exit->m_id == -1)
         m_true_exit->generate_tree_content (count, outStream);
-      *outStream << "n" << m_id << " -> n" << m_true_exit->m_id << endl;
+      *outStream << "n" << m_id << " -> n" << m_true_exit->m_id << " [ xlabel = \" true \" ] "
+                 << endl;
     }
 }

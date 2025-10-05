@@ -28,8 +28,9 @@ public:
   virtual void pre_execute (SymbolTable *);
   virtual void in_execute (SymbolTable *);
   virtual void post_execute (SymbolTable *);
+
   virtual void generate_block (BlockHandler *);
-  virtual void generate_tacs (std::vector<TAC *> &, std::string &);
+  virtual void generate_tacs (std::vector<TAC *> &, std::string &, BlockHandler *);
 
   virtual std::string get_type (SymbolTable *);
 
