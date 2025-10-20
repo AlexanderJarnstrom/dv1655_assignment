@@ -10,7 +10,7 @@ ODIR=obj
 IDIR=inc
 BDIR=src/bison
 
-_OBJ=main.o parser.tab.o symbol_table.o scope.o symbol.o node.o semantic.o block.o ir_generation.o node_execute/generate_block.o node_execute/generate_tacs.o node_execute/get_type.o node_execute/in_execute.o node_execute/post_execute.o node_execute/pre_execute.o block_handler.o tac.o
+_OBJ=main.o parser.tab.o symbol_table.o scope.o symbol.o node.o semantic.o block.o ir_generation.o node_execute/generate_block.o node_execute/generate_tacs.o node_execute/get_type.o node_execute/in_execute.o node_execute/post_execute.o node_execute/pre_execute.o block_handler.o tac.o code_generation.o byte_code.o
 OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(BIN): $(SDIR)/lex.yy.c $(OBJ)

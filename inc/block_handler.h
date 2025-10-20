@@ -26,6 +26,8 @@ public:
   Block *get_block (std::string, std::string);
   Block *add_next ();
 
+  void generate_code (std::ofstream *);
+
   void generate_tree ();
 };
 

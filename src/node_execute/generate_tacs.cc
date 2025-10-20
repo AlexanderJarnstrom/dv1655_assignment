@@ -6,7 +6,8 @@
 using namespace std;
 
 void
-SyAttribute::generate_tacs (std::vector<TAC *> &tacs, std::string &target, BlockHandler *bh)
+SyAttribute::generate_tacs (std::vector<TAC *> &tacs, std::string &target,
+                            BlockHandler *bh)
 {
   vector<TAC *> arguments;
   MethodTAC *tac;
@@ -23,8 +24,6 @@ SyAttribute::generate_tacs (std::vector<TAC *> &tacs, std::string &target, Block
   bh->m_table->m_intrest = bh->m_table->m_scope;
   obj_type_s = obj->get_type (bh->m_table);
   method_s = method->value;
-
-  cout << bh->m_table->m_scope->m_id << endl;
 
   m_scope = bh->m_table->m_root->get_scope (obj_type_s);
   m_symbol = m_scope->find (method_s, Record::METHOD);
@@ -51,6 +50,7 @@ SyAttribute::generate_tacs (std::vector<TAC *> &tacs, std::string &target, Block
           if (dynamic_cast<ParameterTAC *> (a) != nullptr)
             count++;
         }
+      m_symbol->m_args = count;
     }
 
   if (target.empty ())
@@ -64,7 +64,8 @@ SyAttribute::generate_tacs (std::vector<TAC *> &tacs, std::string &target, Block
 }
 
 void
-SyAssignArr::generate_tacs (std::vector<TAC *> &tacs, std::string &target, BlockHandler *bh)
+SyAssignArr::generate_tacs (std::vector<TAC *> &tacs, std::string &target,
+                            BlockHandler *bh)
 {
   string t_s, i_s, r_s;
   Node *index, *right;
@@ -81,7 +82,8 @@ SyAssignArr::generate_tacs (std::vector<TAC *> &tacs, std::string &target, Block
 }
 
 void
-SyExpressionList::generate_tacs (std::vector<TAC *> &tacs, std::string &target, BlockHandler *bh)
+SyExpressionList::generate_tacs (std::vector<TAC *> &tacs, std::string &target,
+                                 BlockHandler *bh)
 {
   Node *left, *right;
   string t_s, l_s, r_s;
@@ -107,7 +109,8 @@ SyExpressionList::generate_tacs (std::vector<TAC *> &tacs, std::string &target, 
 }
 
 void
-SyOperator::generate_tacs (vector<TAC *> &tacs, string &target, BlockHandler *bh)
+SyOperator::generate_tacs (vector<TAC *> &tacs, string &target,
+                           BlockHandler *bh)
 {
   Node *left, *right;
   string t_s, l_s, r_s, op;
@@ -136,7 +139,8 @@ SyOperator::generate_tacs (vector<TAC *> &tacs, string &target, BlockHandler *bh
 }
 
 void
-SyLength::generate_tacs (std::vector<TAC *> &tacs, std::string &target, BlockHandler *bh)
+SyLength::generate_tacs (std::vector<TAC *> &tacs, std::string &target,
+                         BlockHandler *bh)
 {
   string t_s, r_s;
   Node *right;
@@ -158,7 +162,8 @@ SyLength::generate_tacs (std::vector<TAC *> &tacs, std::string &target, BlockHan
 }
 
 void
-SyArrayPull::generate_tacs (vector<TAC *> &tacs, string &target, BlockHandler *bh)
+SyArrayPull::generate_tacs (vector<TAC *> &tacs, string &target,
+                            BlockHandler *bh)
 {
   string t_s, l_s, r_s;
   Node *left, *right;
@@ -181,31 +186,39 @@ SyArrayPull::generate_tacs (vector<TAC *> &tacs, string &target, BlockHandler *b
 }
 
 void
-SyIdentifier::generate_tacs (std::vector<TAC *> &tacs, string &target, BlockHandler *bh)
+SyIdentifier::generate_tacs (std::vector<TAC *> &tacs, string &target,
+                             BlockHandler *bh)
 {
   target = (*this)[0]->value;
 }
 
 void
-SyNumber::generate_tacs (std::vector<TAC *> &tacs, std::string &target, BlockHandler *bh)
+SyNumber::generate_tacs (std::vector<TAC *> &tacs, std::string &target,
+                         BlockHandler *bh)
 {
-  target = this->value;
+  target = "#" + this->value;
 }
 
 void
-SyBoolean::generate_tacs (std::vector<TAC *> &tacs, std::string &target, BlockHandler *bh)
+SyBoolean::generate_tacs (std::vector<TAC *> &tacs, std::string &target,
+                          BlockHandler *bh)
 {
-  target = this->value;
+  if (this->value == "true")
+    target = "#1";
+  else
+    target = "#0";
 }
 
 void
-SyThis::generate_tacs (std::vector<TAC *> &tacs, std::string &target, BlockHandler *bh)
+SyThis::generate_tacs (std::vector<TAC *> &tacs, std::string &target,
+                       BlockHandler *bh)
 {
   target = "this";
 }
 
 void
-SyArrayInit::generate_tacs (std::vector<TAC *> &tacs, std::string &target, BlockHandler *bh)
+SyArrayInit::generate_tacs (std::vector<TAC *> &tacs, std::string &target,
+                            BlockHandler *bh)
 {
   ArrayNewTAC *tac;
   Node *right;
@@ -228,7 +241,8 @@ SyArrayInit::generate_tacs (std::vector<TAC *> &tacs, std::string &target, Block
 }
 
 void
-SyObjectInit::generate_tacs (std::vector<TAC *> &tacs, std::string &target, BlockHandler *bh)
+SyObjectInit::generate_tacs (std::vector<TAC *> &tacs, std::string &target,
+                             BlockHandler *bh)
 {
   string t_s, r_s;
   NewObjectTAC *tac;
@@ -248,7 +262,8 @@ SyObjectInit::generate_tacs (std::vector<TAC *> &tacs, std::string &target, Bloc
 }
 
 void
-SyNot::generate_tacs (std::vector<TAC *> &tacs, std::string &target, BlockHandler *bh)
+SyNot::generate_tacs (std::vector<TAC *> &tacs, std::string &target,
+                      BlockHandler *bh)
 {
   Node *right;
   string t_s, l_s, r_s;

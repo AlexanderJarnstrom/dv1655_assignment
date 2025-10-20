@@ -37,9 +37,9 @@
 /* Used to resolve ambiguities in parsing expressions See https://www.gnu.org/software/bison/manual/bison.html#Precedence-Decl */ 
 
 %left <std::string> ADD_OP SUB_OP 
-%left <std::string> EQ_OP LT_OP GT_OP NOT_OP
+%left <std::string> NOT_OP
 %left <std::string> AND_OP OR_OP ASSIGN_OP ATTR_OP
-%right <std::string> MULT_OP
+%right <std::string> MULT_OP EQ_OP LT_OP GT_OP 
 
 /* Specify types for non-terminals in the grammar */
 /* The type specifies the data type of the values associated with these non-terminals */
@@ -56,6 +56,10 @@ root
       root = new SyRoot("root", "", yylineno); 
       root->children.push_back($1);
       root->children.push_back($2);
+  }
+  | main_class END {
+      root = new SyRoot("root", "", yylineno); 
+      root->children.push_back($1);
   }
   ;
 
@@ -201,6 +205,9 @@ statement
   : LB statement_list RB {
     $$ = new Node("statement", "block", yylineno); 
     $$->children.push_back($2);
+  }
+  | LB RB {
+    $$ = new SyEmpty("statement", "empty", yylineno); 
   }
   | IF LP expression_operators RP statement {
     $$ = new SyIf("statement", "if", yylineno);

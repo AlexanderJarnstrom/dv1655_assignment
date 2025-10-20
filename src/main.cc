@@ -1,3 +1,4 @@
+#include "../inc/code_generation.h"
 #include "../inc/ir_generation.h"
 #include "../inc/parser.tab.h"
 #include "../inc/semantic.h"
@@ -5,6 +6,7 @@
 #include <cstdio>
 #include <iostream>
 #include <ostream>
+#include <string>
 
 extern Node *root;
 extern FILE *yyin;
@@ -84,6 +86,7 @@ main (int argc, char **argv)
             {
               BlockHandler *bh = generate_ir (root, &table);
               bh->generate_tree ();
+              generate_code (bh, argv[1]);
             }
 
           table.print_root ();

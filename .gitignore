@@ -2,6 +2,7 @@ compiler
 
 *.pdf
 *.dot
+*.jar
 
 inc/parser.tab.h
 src/lex.yy.c

@@ -32,7 +32,7 @@ BlockHandler::add_root (string name)
   if (method_obj->m_block.empty ())
     method_obj->m_block = "Block_" + to_string (m_counter);
 
-  temp = new Block (method_obj->m_block);
+  temp = new MethodBlock (method_obj->m_block);
   m_counter++;
   m_blocks.push_back (temp);
 
@@ -68,6 +68,17 @@ BlockHandler::add_next ()
   temp = new Block ("Block_" + to_string (m_counter));
   m_counter++;
   return temp;
+}
+
+void
+BlockHandler::generate_code (ofstream *out)
+{
+  for (Block *c : m_blocks)
+    {
+      *out << c->m_name << ":" << endl;
+      c->generate_code (out, m_table);
+      *out << endl;
+    }
 }
 
 void

@@ -69,7 +69,8 @@ void
 SyAssign::generate_block (BlockHandler *bh)
 {
   string target;
-  Block *temp = bh->add_next ();
+  // Block *temp = bh->add_next ();
+  Block *temp = new AssignBlock ("Block_" + to_string (bh->m_counter++));
   bh->m_current->m_true_exit = temp;
   bh->m_current = temp;
 
@@ -78,7 +79,8 @@ SyAssign::generate_block (BlockHandler *bh)
 
   if (bh->m_current->m_tacs.empty ())
     {
-      bh->m_current->m_tacs.push_back (new CopyTAC ((*this)[0]->value, target));
+      bh->m_current->m_tacs.push_back (
+          new CopyTAC ((*this)[0]->value, target));
     }
 }
 
@@ -87,7 +89,7 @@ SyAssignArr::generate_block (BlockHandler *bh)
 {
   string target;
 
-  Block *temp = bh->add_next ();
+  Block *temp = new AssignBlock ("Block_" + to_string (bh->m_counter++));
   bh->m_current->m_true_exit = temp;
   bh->m_current = temp;
 
@@ -100,7 +102,7 @@ SyIf::generate_block (BlockHandler *bh)
   Block *s_block, *t_block, *j_block;
   string target;
 
-  s_block = bh->add_next ();
+  s_block = new IfBlock ("Block_" + to_string (bh->m_counter++));
   bh->m_current->m_true_exit = s_block;
 
   t_block = new Block ("");
@@ -108,7 +110,7 @@ SyIf::generate_block (BlockHandler *bh)
   (*this)[1]->generate_block (bh);
   s_block->m_true_exit = t_block->m_true_exit;
 
-  j_block = bh->add_next ();
+  j_block = new JoinBlock ("Block_" + to_string (bh->m_counter++));
   s_block->m_false_exit = j_block;
   bh->m_current->m_true_exit = j_block;
   bh->m_current = j_block;
@@ -124,7 +126,7 @@ SyIfElse::generate_block (BlockHandler *bh)
   Block *s_block, *t_block, *f_block, *j_block;
   string target;
 
-  s_block = bh->add_next ();
+  s_block = new IfElseBlock ("Block_" + to_string (bh->m_counter++));
   bh->m_current->m_true_exit = s_block;
 
   t_block = new Block ("");
@@ -136,12 +138,13 @@ SyIfElse::generate_block (BlockHandler *bh)
 
   f_block = new Block ("");
   bh->m_current = f_block;
+
   (*this)[2]->generate_block (bh);
   s_block->m_false_exit = f_block->m_true_exit;
 
   f_block = bh->m_current;
 
-  j_block = bh->add_next ();
+  j_block = new JoinBlock ("Block_" + to_string (bh->m_counter++));
 
   t_block->m_true_exit = bh->add_next ();
   t_block = t_block->m_true_exit;
@@ -153,7 +156,8 @@ SyIfElse::generate_block (BlockHandler *bh)
   bh->m_current = j_block;
 
   (*this)[0]->generate_tacs (s_block->m_tacs, target, bh);
-  ConditionalTAC *tac = new ConditionalTAC (s_block->m_false_exit->m_name, target);
+  ConditionalTAC *tac
+      = new ConditionalTAC (s_block->m_false_exit->m_name, target);
   s_block->m_tacs.push_back (tac);
 }
 
@@ -163,7 +167,7 @@ SyWhile::generate_block (BlockHandler *bh)
   Block *s_block, *t_block, *j_block;
   string target;
 
-  s_block = bh->add_next ();
+  s_block = new WhileBlock ("Block_" + to_string (bh->m_counter++));
   bh->m_current->m_true_exit = s_block;
 
   t_block = new Block ("");
@@ -185,7 +189,8 @@ SyWhile::generate_block (BlockHandler *bh)
   bh->m_current = j_block;
 
   (*this)[0]->generate_tacs (s_block->m_tacs, target, bh);
-  ConditionalTAC *tac = new ConditionalTAC (s_block->m_false_exit->m_name, target);
+  ConditionalTAC *tac
+      = new ConditionalTAC (s_block->m_false_exit->m_name, target);
   s_block->m_tacs.push_back (tac);
 }
 
@@ -194,11 +199,19 @@ SyPrint::generate_block (BlockHandler *bh)
 {
   string target;
 
-  Block *temp = bh->add_next ();
+  Block *temp = new PrintBlock ("Block_" + to_string (bh->m_counter++));
   bh->m_current->m_true_exit = temp;
   bh->m_current = temp;
 
   (*this).generate_tacs (bh->m_current->m_tacs, target, bh);
   bh->m_current->m_tacs.push_back (new ParameterTAC (target));
-  bh->m_current->m_tacs.push_back (new MethodTAC ("stdout", "print", 1));
+  bh->m_current->m_tacs.push_back (new PrintTAC ());
+}
+
+void
+SyEmpty::generate_block (BlockHandler *bh)
+{
+  Block *temp = new Block ("Block_" + to_string (bh->m_counter++));
+  bh->m_current->m_true_exit = temp;
+  bh->m_current = temp;
 }

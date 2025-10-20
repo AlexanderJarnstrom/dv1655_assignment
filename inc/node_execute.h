@@ -84,7 +84,8 @@ public:
 
   void post_execute (SymbolTable *) override;
   std::string get_type (SymbolTable *) override;
-  void generate_tacs (std::vector<TAC *> &, std::string &, BlockHandler *) override;
+  void generate_tacs (std::vector<TAC *> &, std::string &,
+                      BlockHandler *) override;
 };
 
 class SyAssignArr : public Node
@@ -96,7 +97,8 @@ public:
 
   void post_execute (SymbolTable *) override;
   void generate_block (BlockHandler *) override;
-  void generate_tacs (std::vector<TAC *> &, std::string &, BlockHandler *) override;
+  void generate_tacs (std::vector<TAC *> &, std::string &,
+                      BlockHandler *) override;
 };
 
 class SyOperator : public Node
@@ -108,7 +110,8 @@ public:
 
   void post_execute (SymbolTable *) override;
   std::string get_type (SymbolTable *) override;
-  void generate_tacs (std::vector<TAC *> &, std::string &, BlockHandler *) override;
+  void generate_tacs (std::vector<TAC *> &, std::string &,
+                      BlockHandler *) override;
 };
 
 class SyLength : public Node
@@ -117,10 +120,10 @@ public:
   SyLength (std::string t, std::string v, int l) : Node (t, v, l) {}
   SyLength () : Node () {}
   ~SyLength () {}
-
   void post_execute (SymbolTable *) override;
   std::string get_type (SymbolTable *) override;
-  void generate_tacs (std::vector<TAC *> &, std::string &, BlockHandler *) override;
+  void generate_tacs (std::vector<TAC *> &, std::string &,
+                      BlockHandler *) override;
 };
 
 class SyArrayPull : public Node
@@ -132,7 +135,8 @@ public:
 
   void post_execute (SymbolTable *) override;
   std::string get_type (SymbolTable *) override;
-  void generate_tacs (std::vector<TAC *> &, std::string &, BlockHandler *) override;
+  void generate_tacs (std::vector<TAC *> &, std::string &,
+                      BlockHandler *) override;
 };
 
 class SyParenthesis : public Node
@@ -153,7 +157,8 @@ public:
   ~SyNumber () {}
 
   std::string get_type (SymbolTable *) override;
-  void generate_tacs (std::vector<TAC *> &, std::string &, BlockHandler *) override;
+  void generate_tacs (std::vector<TAC *> &, std::string &,
+                      BlockHandler *) override;
 };
 
 class SyBoolean : public Node
@@ -164,7 +169,8 @@ public:
   ~SyBoolean () {}
 
   std::string get_type (SymbolTable *) override;
-  void generate_tacs (std::vector<TAC *> &, std::string &, BlockHandler *) override;
+  void generate_tacs (std::vector<TAC *> &, std::string &,
+                      BlockHandler *) override;
 };
 
 class SyIdentifier : public Node
@@ -175,7 +181,8 @@ public:
   ~SyIdentifier () {}
 
   std::string get_type (SymbolTable *) override;
-  void generate_tacs (std::vector<TAC *> &, std::string &, BlockHandler *) override;
+  void generate_tacs (std::vector<TAC *> &, std::string &,
+                      BlockHandler *) override;
 };
 
 class SyThis : public Node
@@ -186,7 +193,8 @@ public:
   ~SyThis () {}
 
   std::string get_type (SymbolTable *) override;
-  void generate_tacs (std::vector<TAC *> &, std::string &, BlockHandler *) override;
+  void generate_tacs (std::vector<TAC *> &, std::string &,
+                      BlockHandler *) override;
 };
 
 class SyArrayInit : public Node
@@ -198,7 +206,8 @@ public:
 
   void post_execute (SymbolTable *) override;
   std::string get_type (SymbolTable *) override;
-  void generate_tacs (std::vector<TAC *> &, std::string &, BlockHandler *) override;
+  void generate_tacs (std::vector<TAC *> &, std::string &,
+                      BlockHandler *) override;
 };
 
 class SyObjectInit : public Node
@@ -209,7 +218,8 @@ public:
   ~SyObjectInit () {}
 
   std::string get_type (SymbolTable *) override;
-  void generate_tacs (std::vector<TAC *> &, std::string &, BlockHandler *) override;
+  void generate_tacs (std::vector<TAC *> &, std::string &,
+                      BlockHandler *) override;
 };
 
 class SyNot : public Node
@@ -221,7 +231,8 @@ public:
 
   void post_execute (SymbolTable *) override;
   std::string get_type (SymbolTable *) override;
-  void generate_tacs (std::vector<TAC *> &, std::string &, BlockHandler *) override;
+  void generate_tacs (std::vector<TAC *> &, std::string &,
+                      BlockHandler *) override;
 };
 
 class SyExpressionList : public Node
@@ -232,7 +243,8 @@ public:
   ~SyExpressionList () {}
 
   std::string get_type (SymbolTable *) override;
-  void generate_tacs (std::vector<TAC *> &, std::string &, BlockHandler *) override;
+  void generate_tacs (std::vector<TAC *> &, std::string &,
+                      BlockHandler *) override;
 };
 
 class SyIf : public Node
@@ -271,6 +283,16 @@ public:
   SyPrint (std::string t, std::string v, int l) : Node (t, v, l) {}
   SyPrint () : Node () {}
   ~SyPrint () {}
+
+  void generate_block (BlockHandler *) override;
+};
+
+class SyEmpty : public Node
+{
+public:
+  SyEmpty (std::string t, std::string v, int l) : Node (t, v, l) {}
+  SyEmpty () : Node () {}
+  ~SyEmpty () {}
 
   void generate_block (BlockHandler *) override;
 };

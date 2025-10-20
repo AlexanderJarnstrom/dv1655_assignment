@@ -11,6 +11,7 @@ public:
   virtual ~TAC () {}
 
   virtual void generate_tree_content (std::ofstream *) = 0;
+  virtual void generate_code (std::ofstream *) = 0;
 };
 
 #endif // !TAC_H
@@ -30,6 +31,7 @@ public:
   ~ExpressionTAC () {}
 
   void generate_tree_content (std::ofstream *) override;
+  void generate_code (std::ofstream *) override;
 };
 
 class UnaryExpressionTAC : public TAC
@@ -43,6 +45,7 @@ public:
   ~UnaryExpressionTAC () {}
 
   void generate_tree_content (std::ofstream *) override;
+  void generate_code (std::ofstream *) override;
 };
 
 class CopyTAC : public TAC
@@ -55,6 +58,7 @@ public:
   ~CopyTAC () {}
 
   void generate_tree_content (std::ofstream *) override;
+  void generate_code (std::ofstream *) override;
 };
 
 class ArrayAccessTAC : public TAC
@@ -69,6 +73,7 @@ public:
   ~ArrayAccessTAC () {}
 
   void generate_tree_content (std::ofstream *) override;
+  void generate_code (std::ofstream *) override;
 };
 
 class NewObjectTAC : public TAC
@@ -81,6 +86,7 @@ public:
   ~NewObjectTAC () {}
 
   void generate_tree_content (std::ofstream *) override;
+  void generate_code (std::ofstream *) override;
 };
 
 class ArrayNewTAC : public TAC
@@ -94,6 +100,7 @@ public:
   ~ArrayNewTAC () {}
 
   void generate_tree_content (std::ofstream *) override;
+  void generate_code (std::ofstream *) override;
 };
 
 class LengthTAC : public TAC
@@ -106,6 +113,7 @@ public:
   ~LengthTAC () {}
 
   void generate_tree_content (std::ofstream *) override;
+  void generate_code (std::ofstream *) override;
 };
 
 class ParameterTAC : public TAC
@@ -116,6 +124,7 @@ public:
   ParameterTAC (std::string);
   ~ParameterTAC () {}
   void generate_tree_content (std::ofstream *) override;
+  void generate_code (std::ofstream *) override;
 };
 
 class MethodTAC : public TAC
@@ -129,6 +138,7 @@ public:
   ~MethodTAC () {}
 
   void generate_tree_content (std::ofstream *) override;
+  void generate_code (std::ofstream *) override;
 };
 
 class ReturnTAC : public TAC
@@ -140,6 +150,7 @@ public:
   ~ReturnTAC () {}
 
   void generate_tree_content (std::ofstream *) override;
+  void generate_code (std::ofstream *) override;
 };
 
 class UnconditionalTAC : public TAC
@@ -151,6 +162,7 @@ public:
   ~UnconditionalTAC () {}
 
   void generate_tree_content (std::ofstream *) override;
+  void generate_code (std::ofstream *) override;
 };
 
 class ConditionalTAC : public TAC
@@ -163,6 +175,17 @@ public:
   ~ConditionalTAC () {}
 
   void generate_tree_content (std::ofstream *) override;
+  void generate_code (std::ofstream *) override;
+};
+
+class PrintTAC : public TAC
+{
+public:
+  PrintTAC ();
+  ~PrintTAC () {}
+
+  void generate_tree_content (std::ofstream *) override;
+  void generate_code (std::ofstream *) override;
 };
 
 #endif // !TAC_NODES_H
