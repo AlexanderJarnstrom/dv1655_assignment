@@ -1,6 +1,7 @@
 #ifndef BLOCK_H
 #define BLOCK_H
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -9,19 +10,29 @@
 
 class Block
 {
+  std::shared_ptr<Block> m_true_exit;
+  std::shared_ptr<Block> m_false_exit;
+  std::weak_ptr<Block> m_weak_true_exit;
+  std::weak_ptr<Block> m_weak_false_exit;
+
  public:
   int m_id;
   std::string m_name;
   std::vector<TAC*> m_tacs;
-
-  Block* m_true_exit;
-  Block* m_false_exit;
 
   Block(std::string);
   virtual ~Block();
 
   virtual void generate_code(std::ofstream*, SymbolTable*);
   void generate_tree_content(int&, std::ofstream*);
+
+  std::shared_ptr<Block> get_true_exit();
+  std::shared_ptr<Block> get_false_exit();
+
+  void set_true_exit(std::shared_ptr<Block> e) { m_true_exit = e; }
+  void set_false_exit(std::shared_ptr<Block> e) { m_false_exit = e; }
+  void set_weak_true_exit(std::weak_ptr<Block> e) { m_weak_true_exit = e; }
+  void set_weak_false_exit(std::weak_ptr<Block> e) { m_weak_false_exit = e; }
 };
 
 class AssignBlock : public Block

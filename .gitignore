@@ -1,5 +1,6 @@
-compiler/compiler
-interpretor/build
+build/
+compiler
+interpreter
 
 *.pdf
 *.dot
