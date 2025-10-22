@@ -6,7 +6,8 @@ using namespace std;
 
 void BlockHandler::generate_tree_content(int& count, ofstream* outStream)
 {
-  for (Block* c : m_blocks) c->generate_tree_content(count, outStream);
+  for (std::shared_ptr<Block> c : m_blocks)
+    c->generate_tree_content(count, outStream);
 }
 
 BlockHandler::BlockHandler(SymbolTable* t)
@@ -15,33 +16,31 @@ BlockHandler::BlockHandler(SymbolTable* t)
   m_current = add_next();
 }
 
-BlockHandler::~BlockHandler()
-{
-  for (Block* c : m_blocks) delete c;
-}
+BlockHandler::~BlockHandler() {}
 
-Block* BlockHandler::add_root(string name)
+std::shared_ptr<Block> BlockHandler::add_root(string name)
 {
   Symbol* method_obj;
-  Block* temp;
+  std::shared_ptr<Block> temp;
 
   method_obj = m_table->m_scope->find(name, Record::METHOD);
   if (method_obj->m_block.empty())
     method_obj->m_block = "Block_" + to_string(m_counter);
 
   if (name == "main")
-    temp = new MainBlock(method_obj->m_block);
+    temp = std::shared_ptr<Block>(new MainBlock(method_obj->m_block));
   else
-    temp = new MethodBlock(method_obj->m_block);
+    temp = std::shared_ptr<Block>(new MethodBlock(method_obj->m_block));
+
   m_counter++;
   m_blocks.push_back(temp);
 
   return temp;
 }
 
-Block* BlockHandler::get_block(string scope, string name)
+std::shared_ptr<Block> BlockHandler::get_block(string scope, string name)
 {
-  Block* temp;
+  std::shared_ptr<Block> temp;
   Scope* m_scope;
   Symbol* m_symbol;
 
@@ -50,7 +49,7 @@ Block* BlockHandler::get_block(string scope, string name)
 
   temp = nullptr;
 
-  for (Block* c : m_blocks)
+  for (std::shared_ptr<Block> c : m_blocks)
     if (c->m_name == m_symbol->m_block)
     {
       temp = c;
@@ -60,17 +59,17 @@ Block* BlockHandler::get_block(string scope, string name)
   return temp;
 }
 
-Block* BlockHandler::add_next()
+std::shared_ptr<Block> BlockHandler::add_next()
 {
-  Block* temp;
-  temp = new Block("Block_" + to_string(m_counter));
+  std::shared_ptr<Block> temp;
+  temp = std::shared_ptr<Block>(new Block("Block_" + to_string(m_counter)));
   m_counter++;
   return temp;
 }
 
 void BlockHandler::generate_code(ofstream* out)
 {
-  for (Block* c : m_blocks)
+  for (std::shared_ptr<Block> c : m_blocks)
   {
     *out << c->m_name << ":" << endl;
     c->generate_code(out, m_table);

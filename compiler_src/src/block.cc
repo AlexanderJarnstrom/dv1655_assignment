@@ -13,16 +13,18 @@ using namespace std;
  * */
 
 Block::Block(string name)
-    : m_name(name), m_id(-1), m_true_exit(nullptr), m_false_exit(nullptr)
+    : m_name(name),
+      m_id(-1),
+      m_true_exit(nullptr),
+      m_false_exit(nullptr),
+      m_weak_false_exit(),
+      m_weak_true_exit()
 {
 }
 
 Block::~Block()
 {
   for (TAC* t : m_tacs) delete t;
-
-  delete m_false_exit;
-  delete m_true_exit;
 }
 
 void Block::generate_code(ofstream* out, SymbolTable* table)
@@ -60,6 +62,20 @@ void Block::generate_tree_content(int& count, ofstream* outStream)
     *outStream << "n" << m_id << " -> n" << m_true_exit->m_id
                << " [ xlabel = \" true \" ] " << endl;
   }
+}
+
+std::shared_ptr<Block> Block::get_true_exit()
+{
+  if (m_weak_true_exit.use_count()) return m_weak_true_exit.lock();
+
+  return m_true_exit;
+}
+
+std::shared_ptr<Block> Block::get_false_exit()
+{
+  if (m_weak_false_exit.use_count()) return m_weak_false_exit.lock();
+
+  return m_false_exit;
 }
 
 /*
@@ -102,7 +118,7 @@ void MainBlock::generate_code(std::ofstream* out, SymbolTable* table)
     ByteCode::istore(name, out);
   }
 
-  if (m_true_exit) m_true_exit->generate_code(out, table);
+  if (get_true_exit()) get_true_exit()->generate_code(out, table);
 
   *out << "stop\n";
 }
@@ -111,29 +127,29 @@ void IfBlock::generate_code(std::ofstream* out, SymbolTable* table)
 {
   for (TAC* t : m_tacs) t->generate_code(out);
 
-  if (m_true_exit) m_true_exit->generate_code(out, table);
+  if (get_true_exit()) get_true_exit()->generate_code(out, table);
 
-  *out << m_false_exit->m_name << ":\n";
+  *out << get_false_exit()->m_name << ":\n";
 
-  if (m_false_exit) m_false_exit->generate_code(out, table);
+  if (get_false_exit()) get_false_exit()->generate_code(out, table);
 }
 
 void IfElseBlock::generate_code(std::ofstream* out, SymbolTable* table)
 {
   for (TAC* t : m_tacs) t->generate_code(out);
 
-  if (m_true_exit) m_true_exit->generate_code(out, table);
+  if (get_true_exit()) get_true_exit()->generate_code(out, table);
 
-  *out << m_false_exit->m_name << ":\n";
+  *out << get_false_exit()->m_name << ":\n";
 
-  if (m_false_exit) m_false_exit->generate_code(out, table);
+  if (get_false_exit()) get_false_exit()->generate_code(out, table);
 }
 
 void WhileBlock::generate_code(std::ofstream* out, SymbolTable* table)
 {
   cout << "Doing " << m_name << endl;
 
-  if (m_true_exit && !m_passed)
+  if (get_true_exit() && !m_passed)
   {
     m_passed = true;
 
@@ -141,13 +157,13 @@ void WhileBlock::generate_code(std::ofstream* out, SymbolTable* table)
 
     for (TAC* t : m_tacs) t->generate_code(out);
 
-    m_true_exit->generate_code(out, table);
+    get_true_exit()->generate_code(out, table);
   }
   else
   {
-    *out << m_false_exit->m_name << ":\n";
+    *out << get_false_exit()->m_name << ":\n";
 
-    if (m_false_exit) m_false_exit->generate_code(out, table);
+    if (get_false_exit()) get_false_exit()->generate_code(out, table);
   }
 }
 
@@ -180,7 +196,7 @@ void MethodBlock::generate_code(std::ofstream* out, SymbolTable* table)
     ByteCode::istore(name, out);
   }
 
-  if (m_true_exit) m_true_exit->generate_code(out, table);
+  if (get_true_exit()) get_true_exit()->generate_code(out, table);
 }
 
 /*
@@ -197,6 +213,6 @@ void JoinBlock::generate_code(std::ofstream* out, SymbolTable* table)
   if (m_counter == 2)
   {
     *out << m_name << ":" << endl;
-    m_true_exit->generate_code(out, table);
+    get_true_exit()->generate_code(out, table);
   }
 }

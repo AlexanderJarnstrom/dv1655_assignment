@@ -1,62 +1,47 @@
 LIBS=-std=c++14 
 CFLAGS=-g
-LDFLAGS=$(LIBS) -I/usr/include/postgresqlCC=gcc
 BFLAGS=--debug
-BIN=compiler
 CC=g++
 
-SDIR=src
-ODIR=obj
-IDIR=inc
-BDIR=src/bison
+TARGET = compiler
+BUILD_DIR = build
+SRC_DIR = src
+INC_DIR = inc
+BISON_DIR = $(SRC_DIR)/bison
 
-_OBJ=main.o parser.tab.o symbol_table.o scope.o symbol.o node.o semantic.o block.o ir_generation.o node_execute/generate_block.o node_execute/generate_tacs.o node_execute/get_type.o node_execute/in_execute.o node_execute/post_execute.o node_execute/pre_execute.o block_handler.o tac.o code_generation.o byte_code.o
-OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ))
+SRCS = $(wildcard $(SRC_DIR)/node_execute/*.cc $(SRC_DIR)/*.cc)
+OBJS = $(patsubst %.cc, $(BUILD_DIR)/%.o, $(notdir $(SRCS)))
+DEPS = $(wildcard $(INC_DIR)/*.h)
 
-$(BIN): $(SDIR)/lex.yy.c $(OBJ)
-	$(CC) $^ -o $@ $(LDFLAGS)
+$(BUILD_DIR)/$(TARGET): $(BUILD_DIR)/parser.tab.o $(BUILD_DIR)/lex.yy.o $(OBJS)
+	$(CC) -o $@ $^ $(CFLAGS)
 
-$(ODIR)/%.o: $(SDIR)/%.cc $(ODIR)
-	$(CC) -c $(CFLAGS) -o $@ $<
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cc $(DEPS)
+	@mkdir -p $(BUILD_DIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
-$(ODIR):
-	mkdir -p $(ODIR)/node_execute
+$(BUILD_DIR)/%.o: $(SRC_DIR)/node_execute/%.cc $(DEPS)
+	@mkdir -p $(BUILD_DIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
-$(SDIR)/lex.yy.c: $(BDIR)/lexer.flex $(SDIR)/parser.tab.cc
-	flex -o$(SDIR)/lex.yy.c $(BDIR)/lexer.flex
+$(BUILD_DIR)/lex.yy.o: $(SRC_DIR)/lex.yy.c
+	@mkdir -p $(BUILD_DIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
-$(SDIR)/parser.tab.cc: $(BDIR)/parser.yy
-	bison $(BFLAGS) -H$(IDIR)/parser.tab.h -o$(SDIR)/parser.tab.cc $(BDIR)/parser.yy
-	sed -i -e 's/parser.tab.h/..\/inc\/parser.tab.h/g' $(SDIR)/parser.tab.cc
+$(BUILD_DIR)/parser.tab.o: $(SRC_DIR)/parser.tab.cc
+	@mkdir -p $(BUILD_DIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+$(SRC_DIR)/lex.yy.c: $(BISON_DIR)/lexer.flex $(SRC_DIR)/parser.tab.cc
+	flex -o$(SRC_DIR)/lex.yy.c $(BISON_DIR)/lexer.flex
+
+$(SRC_DIR)/parser.tab.cc: $(BISON_DIR)/parser.yy
+	bison $(BFLAGS) -H$(INC_DIR)/parser.tab.h -o$(SRC_DIR)/parser.tab.cc $(BISON_DIR)/parser.yy
+	sed -i -e 's/parser.tab.h/..\/inc\/parser.tab.h/g' $(SRC_DIR)/parser.tab.cc
 
 clean:
-	rm -fr $(ODIR)
-	rm -f $(BIN)
-	rm -f $(SDIR)/lex.yy.c
-	rm -f $(SDIR)/parser.tab.cc
-	rm -f $(IDIR)/parser.tab.h
-	rm -f tree.dot 
-	rm -f tree.pdf
-	rm -f blocks.dot 
-	rm -f blocks.pdf
+	rm -fr $(BUILD_DIR)
+	rm -f $(SRC_DIR)/lex.yy.c
+	rm -f $(SRC_DIR)/parser.tab.cc
+	rm -f $(INC_DIR)/parser.tab.h
 
-syntax: $(BIN) testScript.py
-	python testScript.py -syntax
-
-semantic: $(BIN) testScript.py
-	python testScript.py -semantic
-	
-valid: $(BIN) testScript.py
-	python testScript.py -valid
-
-interpreter: $(BIN) testScript.py
-	python testScript.py -interpreter
-
-lexical: $(BIN) testScript.py
-	python testScript.py -lexical
-
-tree:
-	dot -Tpdf tree.dot -otree.pdf
-
-blocks:
-	dot -Tpdf blocks.dot -oblocks.pdf
