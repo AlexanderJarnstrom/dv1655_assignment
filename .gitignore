@@ -1,4 +1,9 @@
-compiler
+compiler/compiler
+interpretor/build
+
+*.pdf
+*.dot
+*.jar
 
 inc/parser.tab.h
 src/lex.yy.c
