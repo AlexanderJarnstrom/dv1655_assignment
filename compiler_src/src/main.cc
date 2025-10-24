@@ -4,6 +4,7 @@
 #include <string>
 
 #include "../inc/code_generation.h"
+#include "../inc/config.h"
 #include "../inc/ir_generation.h"
 #include "../inc/parser.tab.h"
 #include "../inc/semantic.h"
@@ -45,11 +46,11 @@ void yy::parser::error(std::string const& err)
 
 int main(int argc, char** argv)
 {
-  // Reads from file if a file name is passed as an argument. Otherwise, reads
-  // from stdin.
-  if (argc > 1)
+  Config::extract_arguments(argc, argv);
+
+  if (Config::flags & Config::Flags::INPUT_File)
   {
-    if (!(yyin = fopen(argv[1], "r")))
+    if (!(yyin = fopen(Config::input_name.c_str(), "r")))
     {
       perror(argv[1]);
       return 1;
@@ -69,11 +70,11 @@ int main(int argc, char** argv)
     if (lexical_errors) errCode = errCodes::LEXICAL_ERROR;
     if (parseSuccess && !lexical_errors)
     {
-      root->print_tree();
-      root->generate_tree();
+      if (Config::flags & Config::Flags::DEBUG) root->print_tree();
+      if (Config::flags & Config::Flags::TREE) root->generate_tree();
 
       SymbolTable table;
-      semantic_analysis(root, &table);
+      Semantic::semantic_analysis(root, &table);
 
       if (table.m_errors.size() != 0)
       {
@@ -84,12 +85,12 @@ int main(int argc, char** argv)
       else
       {
         BlockHandler* bh = generate_ir(root, &table);
-        bh->generate_tree();
-        generate_code(bh, argv[1]);
+        if (Config::flags & Config::Flags::BLOCKS) bh->generate_tree();
+        CodeGeneration::generate_code(bh);
         delete bh;
       }
 
-      table.print_root();
+      if (Config::flags & Config::Flags::DEBUG) table.print_root();
     }
   }
 

@@ -9,6 +9,12 @@
 #include "heap.h"
 #include "stack.h"
 
+/**
+ * @class Engine
+ * @brief The engine.
+ *
+ * the class is responsible for handling stack, heap and activations.
+ */
 class Engine
 {
   unsigned m_program_counter;
@@ -45,8 +51,25 @@ class Engine
   ActivationStack& get_activation_stack() { return m_activation_stack; }
 
   void increment_counter() { m_program_counter++; }
+
+  /**
+   * @brief Jump to the given label
+   *
+   * @param label Label of the jump location.
+   */
   void jump(const std::string& label);
+  /**
+   * @brief Push current context to activation stack and create a new.
+   *
+   * Pushes the current context to the activation stack and jumps to the new
+   * context with the given label.
+   *
+   * @param label of the jump placement.
+   */
   void push_activation(const std::string& label);
+  /**
+   * @brief Exit current context and enther previous one.
+   */
   void pop_activation();
 
   Engine& operator=(const Engine& other);

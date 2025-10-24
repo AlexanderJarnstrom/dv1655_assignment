@@ -2,6 +2,11 @@
 #define STACK_H
 
 #include <stack>
+/**
+ * @class Stack
+ * @brief Value stack
+ *
+ */
 class Stack
 {
   std::stack<int> m_data;
@@ -13,8 +18,23 @@ class Stack
 
   Stack& operator=(const Stack& other);
 
+  /**
+   * @brief Push value to stack.
+   *
+   * @param value int.
+   */
   void push(int value);
+  /**
+   * @brief Pop last value.
+   *
+   * @return poped int.
+   */
   int pop();
+  /**
+   * @brief Top value.
+   *
+   * @return top int.
+   */
   int top();
 };
 

@@ -5,20 +5,22 @@ CBIN=compiler
 IBIN=interpreter
 
 all:
-	@$(MAKE) -C ./compiler_src/
-	@$(MAKE) -C ./interpreter_src/
-	ln -s ./compiler_src/compiler .
-	ln -s ./interpreter_src/build/interpreter .
+	@$(MAKE) -C ./$(CSRC)/
+	@$(MAKE) -C ./$(ISRC)/
+	@rm -f $(CBIN)
+	@rm -f $(IBIN)
+	@ln ./$(CSRC)/build/$(CBIN) .
+	@ln ./$(ISRC)/build/$(IBIN) .
 
 clean:
-	rm -f compiler
-	rm -f interpreter
+	rm -f $(CBIN)
+	rm -f $(IBIN)
 	rm -f tree.dot 
 	rm -f tree.pdf
 	rm -f blocks.dot 
 	rm -f blocks.pdf
-	@$(MAKE) -C ./compiler_src/ clean
-	@$(MAKE) -C ./interpreter_src/ clean
+	@$(MAKE) -C ./$(CSRC)/ clean
+	@$(MAKE) -C ./$(ISRC)/ clean
 
 test: $(CBIN) $(IBIN) testScript.py
 	python testScript.py -lexical -syntax -semantic -valid -interpreter

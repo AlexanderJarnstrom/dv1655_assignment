@@ -22,12 +22,36 @@ class BlockHandler
   BlockHandler(SymbolTable*);
   ~BlockHandler();
 
-  std::shared_ptr<Block> add_root(std::string);
-  std::shared_ptr<Block> get_block(std::string, std::string);
+  /**
+   * @brief Creates a root block.
+   *
+   * Create a root for a new IR tree.
+   *
+   * @param name Name of the block.
+   */
+  std::shared_ptr<Block> add_root(std::string name);
+  /**
+   * @brief Gets a block in the given scope.
+   *
+   * @param scope Scope name.
+   * @param name Symbol name.
+   */
+  std::shared_ptr<Block> get_block(std::string scope, std::string name);
+  /**
+   * @brief Simple create.
+   */
   std::shared_ptr<Block> add_next();
 
-  void generate_code(std::ofstream*);
+  /**
+   * @brief Write byte code to file.
+   *
+   * @param out file stream.
+   */
+  void generate_code(std::ofstream* out);
 
+  /**
+   * @brief Generate dot file.
+   */
   void generate_tree();
 };
 

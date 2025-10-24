@@ -6,7 +6,13 @@
 #include "engine.h"
 namespace Runtime
 {
+/**
+ * @brief Execute byte code.
+ *
+ * @param code vector with ByteCode.
+ * @param engine memory Engine.
+ */
 void run(const std::vector<ByteCode*>& code, Engine& engine);
-}
+}  // namespace Runtime
 
 #endif  // !RUNTIME_H

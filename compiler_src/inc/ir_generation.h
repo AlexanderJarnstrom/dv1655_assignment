@@ -5,6 +5,13 @@
 #include "node.h"
 #include "symbol_table.h"
 
-BlockHandler *generate_ir (Node *, SymbolTable *);
+/**
+ * @brief Generate IR trees.
+ *
+ * @param root Root node of the AST.
+ * @param table Symbol table.
+ * @return BlockHandler* the manager of all the blocks.
+ */
+BlockHandler* generate_ir(Node* root, SymbolTable* table);
 
-#endif // !H_IR_GEN
+#endif  // !H_IR_GEN

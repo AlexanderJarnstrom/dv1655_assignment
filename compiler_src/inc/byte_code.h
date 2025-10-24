@@ -1,3 +1,8 @@
+/**
+ * @file
+ * @brief Functions writing corresponding byte code to the file.
+ */
+
 #ifndef BYTE_CODE_H
 #define BYTE_CODE_H
 
@@ -6,14 +11,14 @@
 
 namespace ByteCode
 {
-void iload (std::string, std::ofstream *);
-void istore (std::string, std::ofstream *);
-void iop (std::string, std::ofstream *);
-void invokevirtual (std::string, std::ofstream *);
-void ireturn (std::ofstream *);
-void igoto (std::string, std::ofstream *);
-void iffalse (std::string, std::ofstream *);
-void iprint (std::ofstream *);
-}
+void iload(std::string target, std::ofstream* out);
+void istore(std::string target, std::ofstream* out);
+void iop(std::string op, std::ofstream* out);
+void invokevirtual(std::string target, std::ofstream* out);
+void ireturn(std::ofstream* out);
+void igoto(std::string target, std::ofstream* out);
+void iffalse(std::string target, std::ofstream* out);
+void iprint(std::ofstream* out);
+}  // namespace ByteCode
 
-#endif // !BYTE_CODE_H
+#endif  // !BYTE_CODE_H

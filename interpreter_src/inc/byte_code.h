@@ -1,3 +1,8 @@
+/**
+ * @file
+ * @brief Base bytecode class and all sub classes.
+ */
+
 #ifndef BYTE_CODE_H
 #define BYTE_CODE_H
 
@@ -7,9 +12,17 @@
 
 #include "engine.h"
 
+/**
+ * @class ByteCode
+ * @brief Base byte code class
+ *
+ */
 class ByteCode
 {
  public:
+  /**
+   * @brief The different byte code types.
+   */
   enum Type
   {
     ILOAD,
@@ -46,6 +59,15 @@ class ByteCode
 
   Type get_type() const { return m_type; }
 
+  /**
+   * @brief Execute the byte code.
+   *
+   * This runs the execution of the byte code. E.g loading variable if iload.
+   *
+   * @param engine execution engine.
+   *
+   * @see Engine
+   */
   virtual void execute(Engine& engine);
 };
 

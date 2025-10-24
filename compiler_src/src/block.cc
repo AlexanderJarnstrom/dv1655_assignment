@@ -147,8 +147,6 @@ void IfElseBlock::generate_code(std::ofstream* out, SymbolTable* table)
 
 void WhileBlock::generate_code(std::ofstream* out, SymbolTable* table)
 {
-  cout << "Doing " << m_name << endl;
-
   if (get_true_exit() && !m_passed)
   {
     m_passed = true;

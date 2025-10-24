@@ -2,6 +2,11 @@
 #define ACTIVATION_H
 
 #include "heap.h"
+/**
+ * @class Activation
+ * @brief Holder for other scope variables and program counter.
+ *
+ */
 class Activation
 {
   unsigned m_program_counter;
