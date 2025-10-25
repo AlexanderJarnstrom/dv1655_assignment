@@ -6,9 +6,9 @@ interpreter
 *.dot
 *.jar
 
-inc/parser.tab.h
-src/lex.yy.c
-src/parser.tab.cc
+compiler_src/inc/parser.tab.h
+compiler_src/src/lex.yy.c
+compiler_src/src/parser.tab.cc
 
 # Prerequisites
 *.d
