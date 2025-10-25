@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <string>
 
 #include "../inc/byte_code.h"
@@ -31,9 +32,12 @@ void Block::generate_code(ofstream* out, SymbolTable* table)
 {
   for (TAC* t : m_tacs) t->generate_code(out);
 
-  if (m_true_exit) m_true_exit->generate_code(out, table);
+  shared_ptr<Block> false_exit = get_false_exit();
+  shared_ptr<Block> true_exit = get_true_exit();
 
-  if (m_false_exit) m_false_exit->generate_code(out, table);
+  if (true_exit) true_exit->generate_code(out, table);
+
+  if (false_exit) false_exit->generate_code(out, table);
 }
 
 void Block::generate_tree_content(int& count, ofstream* outStream)
@@ -47,19 +51,22 @@ void Block::generate_tree_content(int& count, ofstream* outStream)
 
   *outStream << "\" shape=box];" << endl;
 
-  if (m_false_exit)
+  shared_ptr<Block> false_exit = get_false_exit();
+  shared_ptr<Block> true_exit = get_true_exit();
+
+  if (false_exit)
   {
-    if (m_false_exit->m_id == -1)
-      m_false_exit->generate_tree_content(count, outStream);
-    *outStream << "n" << m_id << " -> n" << m_false_exit->m_id
+    if (false_exit->m_id == -1)
+      false_exit->generate_tree_content(count, outStream);
+    *outStream << "n" << m_id << " -> n" << false_exit->m_id
                << " [ xlabel = \" false \" ]" << endl;
   }
 
-  if (m_true_exit)
+  if (true_exit)
   {
-    if (m_true_exit->m_id == -1)
-      m_true_exit->generate_tree_content(count, outStream);
-    *outStream << "n" << m_id << " -> n" << m_true_exit->m_id
+    if (true_exit->m_id == -1)
+      true_exit->generate_tree_content(count, outStream);
+    *outStream << "n" << m_id << " -> n" << true_exit->m_id
                << " [ xlabel = \" true \" ] " << endl;
   }
 }
@@ -129,9 +136,11 @@ void IfBlock::generate_code(std::ofstream* out, SymbolTable* table)
 
   if (get_true_exit()) get_true_exit()->generate_code(out, table);
 
-  *out << get_false_exit()->m_name << ":\n";
-
-  if (get_false_exit()) get_false_exit()->generate_code(out, table);
+  if (get_false_exit())
+  {
+    get_false_exit()->generate_code(out, table);
+    *out << get_false_exit()->m_name << ":\n";
+  }
 }
 
 void IfElseBlock::generate_code(std::ofstream* out, SymbolTable* table)
